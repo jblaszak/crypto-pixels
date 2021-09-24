@@ -1,0 +1,41 @@
+.infoTooltip {
+    font-family: "RobotoRegular", sans-serif;
+    font-size: 0.9rem;
+}
+
+.topRow {
+    display: inline-flex;
+    align-items: center;
+}
+
+.pixelLarge {
+    width: 30px;
+    height: 30px;
+    border-radius: 5px;
+}
+
+.name {
+    font-family: "RobotoBold", sans-serif;
+    margin: 0 1rem;
+}
+
+.position span,
+.sales span,
+.owner span {
+    font-family: "RobotoBold", sans-serif;
+    font-family: "RobotoBold", sans-serif;
+}
+
+.sales {
+  margin: 1rem 0;
+  background-color: var(--color-gray-900);
+  border-radius: 5px;
+  padding: 0.2rem 0.5rem;
+}
+
+.owner {
+    margin: 1rem 0 0 0;
+    background-color: var(--color-gray-900);
+    border-radius: 5px;
+    padding: 0.2rem 0.5rem;
+}
