@@ -1,9 +1,18 @@
 import { useState, useEffect, useRef, useCallback } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import classes from "./App.module.css";
 
 import PixelMap from "./components/PixelMap";
+import { fetchDataMapAll } from "./store/dataMap-actions";
 
 function App() {
+  const dispatch = useDispatch();
+  const errorMessage = useSelector((state) => state.error.errorMessage);
+
+  useEffect(() => {
+    dispatch(fetchDataMapAll());
+  }, [dispatch]);
+
   const canvasRef = useRef();
   const imageRef = useRef();
   const x = 100;
@@ -43,7 +52,10 @@ function App() {
         className={classes.dataImage}
       />
       <canvas ref={canvasRef} width={x} height={y} />
-      <PixelMap x={x} y={y} size={7} gap={1} colorData={colorData} />
+      {errorMessage && <p className={classes.errorMessage}>{errorMessage}</p>}
+      {!errorMessage && (
+        <PixelMap x={x} y={y} size={7} gap={1} colorData={colorData} />
+      )}
     </div>
   );
 }

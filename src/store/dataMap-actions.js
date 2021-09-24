@@ -1,10 +1,11 @@
 import { dataMapActions } from "./dataMap-slice";
-import { errorActions } from "./error-slice.";
+import { errorActions } from "./error-slice.js";
 
 export const fetchDataMapAll = () => {
   return async (dispatch) => {
     const fetchDataAll = async () => {
       // fetch data from firebase
+      throw new Error("error!");
     };
 
     try {
@@ -16,9 +17,10 @@ export const fetchDataMapAll = () => {
         })
       );
     } catch {
+      console.log("there was an error!");
       dispatch(
         errorActions.changeErrorMessage({
-          errorMessage: "Failed to grab data",
+          errorMessage: "Failed to grab pixel data! :'(",
         })
       );
     }

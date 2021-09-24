@@ -10,3 +10,9 @@ canvas {
 .dataImage {
   display: none;
 }
+
+.errorMessage {
+  color: white;
+  font-size: 3rem;
+  text-align: center;
+}
