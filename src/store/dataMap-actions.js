@@ -5,7 +5,7 @@ export const fetchDataMapAll = () => {
   return async (dispatch) => {
     const fetchDataAll = async () => {
       // fetch data from firebase
-      throw new Error("error!");
+      // throw new Error("error!");
     };
 
     try {

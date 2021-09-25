@@ -1,64 +1,61 @@
-import ReactTooltip from "react-tooltip";
-
+import { useState, useEffect, useRef, useCallback } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import classes from "./PixelMap.module.css";
-import InfoTooltip from "./InfoTooltip";
+
+import PixelMapImage from "./PixelMapImage";
+import { fetchDataMapAll } from "../store/dataMap-actions";
 
 const PixelMap = (props) => {
-  const xCount = props.x;
-  const yCount = props.y;
-  const squareSize = props.size + props.gap;
-  const viewBox = `0 0 ${squareSize * xCount} ${squareSize * yCount}`;
+  const dispatch = useDispatch();
+  const errorMessage = useSelector((state) => state.error.errorMessage);
 
-  const tooltipId = "tooltip";
+  useEffect(() => {
+    dispatch(fetchDataMapAll());
+  }, [dispatch]);
 
-  const createRect = (x, y) => {
-    const index = y * 100 + x;
+  const canvasRef = useRef();
+  const imageRef = useRef();
+  const x = 100;
+  const y = 100;
+  const [colorData, setColorData] = useState(Array(x * y));
 
-    const fillColor = props.colorData[index];
-
-    const dataString = JSON.stringify({
-      name: `NAME #${index + 1}`,
-      x: x,
-      y: y,
-      fillColor: fillColor,
-      timesSold: 1,
-      lastPrice: "30 ETH",
-      ownerUsername: "Bob",
-      ownerAddress: "0xf8cc874fe4696131725018138fc4bb44866433e0",
+  const getColors = useCallback((data) => {
+    setColorData((prevData) => {
+      let newData = [...prevData];
+      for (var i = 0; i < data.length; i += 4) {
+        const index = i / 4;
+        const colorValue = `#${data[i].toString(16)}${data[i + 1].toString(
+          16
+        )}${data[i + 2].toString(16)}${data[i + 3].toString(16)}`;
+        newData[index] = colorValue;
+      }
+      return newData;
     });
+  }, []);
 
-    return (
-      <rect
-        width={props.size}
-        height={props.size}
-        x={x * squareSize}
-        y={y * squareSize}
-        rx={1}
-        ry={1}
-        fill={fillColor}
-        data-for={tooltipId}
-        data-tip={dataString}
-      />
-    );
-  };
+  useEffect(() => {
+    if (imageRef.current && imageRef.current.complete) {
+      const ctx = canvasRef.current.getContext("2d");
+      ctx.drawImage(imageRef.current, 0, 0, x, y);
+      let imgData = ctx.getImageData(0, 0, x, y).data;
+      getColors(imgData);
+    }
+  }, [getColors]);
 
   return (
-    <div>
-      <svg viewBox={viewBox}>
-        {[...Array(xCount)].map((i, x) => {
-          return [...Array(yCount)].map((j, y) => {
-            return createRect(x, y);
-          });
-        })}
-      </svg>
-      <ReactTooltip
-        id={tooltipId}
-        effect="solid"
-        className={classes.tooltip}
-        type="light"
-        border={true}
-        getContent={(dataTip) => <InfoTooltip {...JSON.parse(dataTip)} />}
+    <div className={classes.pixelMap}>
+      <img
+        ref={imageRef}
+        src="https://i.imgur.com/bDaD78c.png"
+        crossOrigin="anonymous"
+        alt="data"
+        className={classes.dataImage}
       />
+      <canvas ref={canvasRef} width={x} height={y} />
+      {/* {errorMessage && <p className={classes.errorMessage}>{errorMessage}</p>} */}
+      {!errorMessage && (
+        <PixelMapImage x={x} y={y} size={7} gap={1} colorData={colorData} />
+      )}
     </div>
   );
 };
