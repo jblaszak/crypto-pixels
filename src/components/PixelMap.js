@@ -1,46 +1,64 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useLayoutEffect,
+} from "react";
 import { useSelector, useDispatch } from "react-redux";
 import classes from "./PixelMap.module.css";
 
 import PixelMapImage from "./PixelMapImage";
-import { fetchDataMapAll } from "../store/dataMap-actions";
+import Canvas from "./Canvas";
+import { fetchColorData, fetchDataMapAll } from "../store/dataMap-actions";
 
 const PixelMap = (props) => {
-  const dispatch = useDispatch();
-  const errorMessage = useSelector((state) => state.error.errorMessage);
-
-  useEffect(() => {
-    dispatch(fetchDataMapAll());
-  }, [dispatch]);
-
   const canvasRef = useRef();
   const imageRef = useRef();
+  // const canvasRefCurrent = canvasRef.current;
+  // const imageRefCurrent = imageRef.current;
   const x = 100;
   const y = 100;
-  const [colorData, setColorData] = useState(Array(x * y));
 
-  const getColors = useCallback((data) => {
-    setColorData((prevData) => {
-      let newData = [...prevData];
-      for (var i = 0; i < data.length; i += 4) {
-        const index = i / 4;
-        const colorValue = `#${data[i].toString(16)}${data[i + 1].toString(
-          16
-        )}${data[i + 2].toString(16)}${data[i + 3].toString(16)}`;
-        newData[index] = colorValue;
-      }
-      return newData;
-    });
-  }, []);
+  const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (imageRef.current && imageRef.current.complete) {
-      const ctx = canvasRef.current.getContext("2d");
-      ctx.drawImage(imageRef.current, 0, 0, x, y);
-      let imgData = ctx.getImageData(0, 0, x, y).data;
-      getColors(imgData);
-    }
-  }, [getColors]);
+  useLayoutEffect(() => {
+    // console.log(canvasRef);
+    // console.log(imageRef);
+    // dispatch(fetchColorData(canvasRef, imageRef, x, y));
+    dispatch(fetchDataMapAll());
+  }, [dispatch, canvasRef, imageRef, x, y]);
+
+  // useLayoutEffect(() => {
+
+  // })
+
+  const colorData = useSelector((state) => state.dataMap.pixels);
+
+  // const [colorData, setColorData] = useState(Array(x * y));
+
+  // const getColors = useCallback((data) => {
+  //   setColorData((prevData) => {
+  //     let newData = [...prevData];
+  //     for (var i = 0; i < data.length; i += 4) {
+  //       const index = i / 4;
+  //       const colorValue = `#${data[i].toString(16)}${data[i + 1].toString(
+  //         16
+  //       )}${data[i + 2].toString(16)}${data[i + 3].toString(16)}`;
+  //       newData[index] = colorValue;
+  //     }
+  //     return newData;
+  //   });
+  // }, []);
+
+  // useEffect(() => {
+  //   if (imageRef.current && imageRef.current.complete) {
+  //     const ctx = canvasRef.current.getContext("2d");
+  //     ctx.drawImage(imageRef.current, 0, 0, x, y);
+  //     let imgData = ctx.getImageData(0, 0, x, y).data;
+  //     getColors(imgData);
+  //   }
+  // }, [getColors]);
 
   return (
     <div className={classes.pixelMap}>
@@ -51,11 +69,8 @@ const PixelMap = (props) => {
         alt="data"
         className={classes.dataImage}
       />
-      <canvas ref={canvasRef} width={x} height={y} />
-      {/* {errorMessage && <p className={classes.errorMessage}>{errorMessage}</p>} */}
-      {!errorMessage && (
-        <PixelMapImage x={x} y={y} size={7} gap={1} colorData={colorData} />
-      )}
+      <Canvas imageRef={imageRef} width={x} height={y} />
+      <PixelMapImage x={x} y={y} size={7} gap={1} colorData={colorData} />
     </div>
   );
 };

@@ -7,6 +7,9 @@ const dataMapSlice = createSlice({
     lastUpdated: null,
   },
   reducers: {
+    replaceColorData(state, action) {
+      state.pixels = action.payload.pixels;
+    },
     replaceDataMap(state, action) {
       state.pixels = action.payload.pixels;
       state.lastUpdated = action.payload.lastUpdated;
