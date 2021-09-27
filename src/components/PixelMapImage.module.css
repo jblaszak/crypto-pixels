@@ -1,6 +1,39 @@
+:root {
+    --fade-in-delay: 0.5s;
+    --fade-in-duration: 1s;
+}
+
 .tooltip {
     opacity: 1 !important;
     transition: none !important;
     padding: 20px 20px !important;
     background-color: var(--color-gray-1000) !important;
+}
+
+.pixelMap {
+    margin: 1rem auto;
+    padding: 1rem;
+    max-width: 800px;
+}
+
+.fader1 {
+    transition: fill var(--fade-in-duration) ease-in;
+    transition-delay: var(--fade-in-delay);
+}
+
+.fader2 {
+    transition: fill var(--fade-in-duration) ease-in;
+    transition-delay: calc(var(--fade-in-delay)*2);
+}
+.fader3 {
+    transition: fill var(--fade-in-duration) ease-in;
+    transition-delay: calc(var(--fade-in-delay)*3);
+}
+.fader4 {
+    transition: fill var(--fade-in-duration) ease-in;
+    transition-delay: calc(var(--fade-in-delay)*4);
+}
+.fader5 {
+    transition: fill var(--fade-in-duration) ease-in;
+    transition-delay: calc(var(--fade-in-delay)*5);
 }

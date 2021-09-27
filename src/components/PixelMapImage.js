@@ -1,41 +1,69 @@
+import { useEffect } from "react";
 import ReactTooltip from "react-tooltip";
+import { useSelector, useDispatch } from "react-redux";
 
 import classes from "./PixelMapImage.module.css";
 import InfoTooltip from "./InfoTooltip";
+import { loadPixelData } from "../store/dataMap-actions";
 
 const PixelMapImage = (props) => {
-  const xCount = props.x;
-  const yCount = props.y;
+  const dispatch = useDispatch();
+  const data = useSelector((state) => state.dataMap.pixelData);
+
+  useEffect(() => {
+    const timedLoad = setTimeout(() => {
+      dispatch(loadPixelData());
+    }, 500);
+
+    return () => {
+      clearTimeout(timedLoad);
+    };
+  }, [dispatch]);
+
+  const xCount = Math.sqrt(data.length);
+  const yCount = xCount;
   const squareSize = props.size + props.gap;
   const viewBox = `0 0 ${squareSize * xCount} ${squareSize * yCount}`;
 
   const tooltipId = "tooltip";
 
-  const createRect = (x, y) => {
-    const index = y * 100 + x;
+  const fadeClasses = [
+    classes.fader1,
+    classes.fader2,
+    classes.fader3,
+    classes.fader4,
+    classes.fader5,
+  ];
 
-    const fillColor = props.colorData[index];
+  const getHeatMapColors = () => {};
+
+  const createRect = (x, y) => {
+    const index = y * xCount + x;
+    const pixel = data[index];
+    const name = `NAME #${index + 1}`;
 
     const dataString = JSON.stringify({
-      name: `NAME #${index + 1}`,
+      name: name,
       x: x,
       y: y,
-      fillColor: fillColor,
-      timesSold: 1,
-      lastPrice: "30 ETH",
-      ownerUsername: "Bob",
-      ownerAddress: "0xf8cc874fe4696131725018138fc4bb44866433e0",
+      fillColor: pixel.color,
+      timesSold: pixel.timesSold,
+      lastPrice: `${pixel.lastPrice} ${pixel.priceUnit}`,
+      ownerUsername: pixel.ownerUsername,
+      ownerAddress: pixel.ownerAddress,
     });
 
     return (
       <rect
+        key={name}
+        className={fadeClasses[Math.floor(Math.random() * 5)]}
         width={props.size}
         height={props.size}
         x={x * squareSize}
         y={y * squareSize}
         rx={1}
         ry={1}
-        fill={fillColor}
+        fill={pixel.color}
         data-for={tooltipId}
         data-tip={dataString}
       />
@@ -43,7 +71,7 @@ const PixelMapImage = (props) => {
   };
 
   return (
-    <div>
+    <div className={classes.pixelMap}>
       <svg viewBox={viewBox}>
         {[...Array(xCount)].map((i, x) => {
           return [...Array(yCount)].map((j, y) => {

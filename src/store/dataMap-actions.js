@@ -1,45 +1,43 @@
 import { dataMapActions } from "./dataMap-slice";
 import { errorActions } from "./error-slice.js";
+import { imageColorData } from "../assets/imageColorData";
 
-export const fetchColorData = (imgData, x, y) => {
+export const loadPixelData = () => {
   return async (dispatch) => {
-    const fetchColors = async () => {
-      // // if (imageRef.current && imageRef.current.complete) {
-      // const ctx = canvasRef.current.getContext("2d");
+    const grabDataFromStorage = async () => {
+      let pixelData = [];
+      const storageData = localStorage.getItem("pixelData");
 
-      // imageRef.current.onload = () => {
-      //   ctx.drawImage(imageRef.current, 0, 0, x, y);
-      //   let imgData = ctx.getImageData(0, 0, x, y).data;
+      if (storageData) {
+        pixelData = JSON.parse(storageData);
+        // localStorage.clear();
+        console.log("Loaded data from storage!");
+      } else {
+        pixelData = imageColorData.map((color) => ({
+          color: color,
+          lastPrice: "No data",
+          priceUnit: "ETH",
+          timesSold: "No data",
+          ownerUsername: "No data",
+          ownerAddress: "No data",
+        }));
 
-      let newData = Array(x * y);
-      for (var i = 0; i < imgData.length; i += 4) {
-        const index = i / 4;
-        const colorValue = `#${imgData[i].toString(16)}${imgData[
-          i + 1
-        ].toString(16)}${imgData[i + 2].toString(16)}${imgData[i + 3].toString(
-          16
-        )}`;
-        newData[index] = colorValue;
+        localStorage.setItem("pixelData", JSON.stringify(pixelData));
+        console.log("created new data, added to storage");
       }
-      console.log(newData);
-
-      return newData;
-      // };
-      // }
+      return pixelData;
     };
 
     try {
-      const newColors = await fetchColors();
-      if (newColors) {
+      const pixelData = await grabDataFromStorage();
+      if (pixelData) {
         dispatch(
-          dataMapActions.replaceColorData({
-            pixels: newColors,
+          dataMapActions.replacePixelData({
+            pixelData: pixelData,
           })
         );
       }
     } catch (error) {
-      console.log(error);
-      console.log("there was an error fetching colors!");
       dispatch(
         errorActions.changeErrorMessage({
           errorMessage: "Failed to grab pixel data! :'(",
@@ -49,20 +47,20 @@ export const fetchColorData = (imgData, x, y) => {
   };
 };
 
-export const fetchDataMapAll = () => {
+export const fetchPixelData = () => {
   return async (dispatch) => {
     const fetchDataAll = async () => {
       // fetch data from firebase
       // throw new Error("error!");
-      return { pixels: [] };
+      return { pixelData: [] };
     };
 
     try {
       const dataMap = await fetchDataAll();
-      if (!dataMap.pixels) {
+      if (!dataMap.pixelData) {
         dispatch(
-          dataMapActions.replaceDataMap({
-            pixels: dataMap.pixels,
+          dataMapActions.replacePixelData({
+            pixelData: dataMap.pixelData,
             lastUpdated: new Date().getDate(),
           })
         );
