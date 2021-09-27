@@ -1,10 +1,30 @@
-.pixelMapControls {
-    margin: 0.5rem auto;
+.pixelMapController {
+    margin: 1rem auto;
     max-width: 800px;
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
+}
+
+.pixelMapImage {
+    margin: 1rem auto;
+    padding: 1rem;
+    max-width: 800px;
+}
+
+.pixelInfo {
+    background-color: white;
+    color: black;
+    border-radius: 5px;
+    padding: 1rem;
+    margin: 0 1rem;
+    width: clamp(300px, 50%, 400px);
+}
+
+.pixelMapTargets {
+    margin: 0 1rem;
+    width: clamp(300px, 50%, 400px);
 }
 
 form {
@@ -22,4 +42,9 @@ button {
 
 .findPixel {
     padding: 0.25rem 1rem;
+}
+
+.selectedPixel {
+    stroke: #FFFFFF;
+    stroke-width: 3px;
 }
