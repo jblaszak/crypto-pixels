@@ -1,9 +1,9 @@
-import Layout from "./components/Layout/Layout";
-import PixelMapImage from "./components/PixelMapImage";
-
-import { useSelector } from "react-redux";
-import ErrorMessage from "./components/UI/ErrorMessage";
 import React from "react";
+import { useSelector } from "react-redux";
+
+import Layout from "./components/Layout/Layout";
+import PixelMap from "./components/PixelMap";
+import ErrorMessage from "./components/UI/ErrorMessage";
 
 function App() {
   const errorMessage = useSelector((state) => state.error.errorMessage);
@@ -11,9 +11,8 @@ function App() {
   return (
     <React.Fragment>
       {errorMessage && <ErrorMessage message={errorMessage} />}
-
       <Layout>
-        <PixelMapImage size={7} gap={1} />
+        <PixelMap />
       </Layout>
     </React.Fragment>
   );

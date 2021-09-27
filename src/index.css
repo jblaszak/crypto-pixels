@@ -16,8 +16,11 @@
     box-sizing: border-box;
   }
   
+
+  /* #3f3f3f */
   html {
     --color-text: white;
+  /* --color-background:#3f3f3f; */
   --color-background:#0e0e0e;
   --color-primary: hsl(230deg, 100%, 67%);
   --color-secondary: hsl(333deg, 100%, 52%);
@@ -54,4 +57,21 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--color-background);
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+  padding: 0.5rem 1.5rem;
+  border-radius: 6px;
+  background-color: #1a8ed1;
+  color: white;
+  border: 2px solid #1a8ed1;
+}
+
+button:hover,
+button:active {
+  background-color: transparent;
+  border-color: #1a8ed1;
+  color: white;
 }

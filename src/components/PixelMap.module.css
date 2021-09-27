@@ -1,0 +1,25 @@
+.pixelMapControls {
+    margin: 0.5rem auto;
+    max-width: 800px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+form {
+    display: flex;
+    align-items: center;
+}
+
+label {
+   padding: 0.5rem;
+}
+
+button {
+    margin: 0.5rem;
+}
+
+.findPixel {
+    padding: 0.25rem 1rem;
+}

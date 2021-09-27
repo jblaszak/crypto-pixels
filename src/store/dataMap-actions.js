@@ -17,7 +17,7 @@ export const loadPixelData = () => {
           color: color,
           lastPrice: "No data",
           priceUnit: "ETH",
-          timesSold: "No data",
+          timesSold: Math.floor(Math.random() * 10),
           ownerUsername: "No data",
           ownerAddress: "No data",
         }));

@@ -35,7 +35,35 @@ const PixelMapImage = (props) => {
     classes.fader5,
   ];
 
-  const getHeatMapColors = () => {};
+  const maxTimesSold = Math.max.apply(
+    Math,
+    data.map((pixel) => pixel.timesSold)
+  );
+
+  const getHeatMapColor = (timesSold) => {
+    const level = timesSold / maxTimesSold;
+    if (level < 0.1) {
+      return "#000000";
+    } else if (level < 0.2) {
+      return "#03045E";
+    } else if (level < 0.3) {
+      return "#023E8A";
+    } else if (level < 0.4) {
+      return "#0077B6";
+    } else if (level < 0.5) {
+      return "#0096C7";
+    } else if (level < 0.6) {
+      return "#00B4D8";
+    } else if (level < 0.7) {
+      return "#48CAE4";
+    } else if (level < 0.8) {
+      return "#90E0EF";
+    } else if (level < 0.9) {
+      return "#ADE8F4";
+    } else {
+      return "#CAF0F8";
+    }
+  };
 
   const createRect = (x, y) => {
     const index = y * xCount + x;
@@ -55,7 +83,8 @@ const PixelMapImage = (props) => {
 
     return (
       <rect
-        key={name}
+        key={`${index + 1}`}
+        id={`${index + 1}`}
         className={fadeClasses[Math.floor(Math.random() * 5)]}
         width={props.size}
         height={props.size}
@@ -63,9 +92,10 @@ const PixelMapImage = (props) => {
         y={y * squareSize}
         rx={1}
         ry={1}
-        fill={pixel.color}
+        fill={props.isHeatMap ? getHeatMapColor(pixel.timesSold) : pixel.color}
         data-for={tooltipId}
         data-tip={dataString}
+        data-event="click"
       />
     );
   };
@@ -86,6 +116,7 @@ const PixelMapImage = (props) => {
         type="light"
         border={true}
         getContent={(dataTip) => <InfoTooltip {...JSON.parse(dataTip)} />}
+        clickable={true}
       />
     </div>
   );

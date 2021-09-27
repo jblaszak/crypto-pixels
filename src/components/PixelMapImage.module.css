@@ -18,22 +18,21 @@
 
 .fader1 {
     transition: fill var(--fade-in-duration) ease-in;
-    transition-delay: var(--fade-in-delay);
 }
 
 .fader2 {
     transition: fill var(--fade-in-duration) ease-in;
-    transition-delay: calc(var(--fade-in-delay)*2);
+    transition-delay: calc(var(--fade-in-delay)*1);
 }
 .fader3 {
     transition: fill var(--fade-in-duration) ease-in;
-    transition-delay: calc(var(--fade-in-delay)*3);
+    transition-delay: calc(var(--fade-in-delay)*2);
 }
 .fader4 {
     transition: fill var(--fade-in-duration) ease-in;
-    transition-delay: calc(var(--fade-in-delay)*4);
+    transition-delay: calc(var(--fade-in-delay)*3);
 }
 .fader5 {
     transition: fill var(--fade-in-duration) ease-in;
-    transition-delay: calc(var(--fade-in-delay)*5);
+    transition-delay: calc(var(--fade-in-delay)*4);
 }
