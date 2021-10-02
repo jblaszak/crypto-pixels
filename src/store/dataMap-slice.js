@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { imageColorData } from "../assets/imageColorData";
+import { imageColorData } from "../data-loading/imageColorData";
 
 const initialPixelData = () => {
   return imageColorData.map((color) => ({

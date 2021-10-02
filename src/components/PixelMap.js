@@ -56,7 +56,7 @@ const PixelMap = () => {
       </div>
       <PixelMapImage
         size={7}
-        gap={1}
+        gap={0.5}
         isHeatMap={isHeatMap}
         className={classes.pixelMapImage}
       />
