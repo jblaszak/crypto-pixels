@@ -21,6 +21,53 @@ export const loadPixelData = () => {
           pixelAttributes: pixelAttributes,
         });
 
+        let pixelsString = "";
+        const pixelAtts = ["dia", "e", "m", "d", "f", "h", "i"];
+        const coins = [
+          "LUNA",
+          "AVAX",
+          "LINK",
+          "UNI",
+          "ETH",
+          "ADA",
+          "LTC",
+          "DOT",
+          "BTC",
+          "BNB",
+          "XRP",
+          "ALGO",
+          "ATOM",
+          "DOGE",
+          "SOL",
+        ];
+        const pad = (padding, value) => {
+          return ("0" * padding + value).slice(-padding);
+        };
+
+        for (let i = 0; i < Object.keys(pixelAttributes).length; i++) {
+          const pixel = pixelAttributes[`${i + 1}`];
+          console.log(pixel);
+          let pixelString = `${pad(3, pixel["r"].toString())}${pad(
+            3,
+            pixel["g"].toString()
+          )}${pad(3, pixel["b"].toString())}${pad(2, pixel["d2c"].toString())}`;
+          for (const att of pixelAtts) {
+            if (pixel[att]) {
+              pixelString += "1";
+            } else {
+              pixelString += "0";
+            }
+          }
+          if (pixel["c"]) {
+            pixelString += pad(2, (coins.indexOf(pixel["c"]) + 1).toString());
+          } else {
+            pixelString += "00";
+          }
+          pixelsString += pixelString;
+        }
+
+        console.log(pixelsString);
+
         // // set(ref(db, "pixels/"), null);
         // console.log("adding pixelStats");
         // await set(ref(db, "pixelStats/"), pixelStats);
@@ -33,6 +80,14 @@ export const loadPixelData = () => {
 
         console.log("Loaded data from storage!");
       } else {
+        // TODO:
+        // get pixel stats from server
+
+        pixelData = {
+          pixelStats,
+          pixelAttributes,
+        };
+
         pixelData = imageColorData.map((color) => ({
           color: `rgb(${color[0]}, ${color[1]}, ${color[2]})`,
           lastPrice: 0,
@@ -45,6 +100,11 @@ export const loadPixelData = () => {
         localStorage.setItem("pixelData", JSON.stringify(pixelData));
         console.log("created new data, added to storage");
       }
+
+      // TODO:
+      // start subscription to stats changes
+      // update stats based on changes
+
       return pixelData;
     };
 
