@@ -1,15 +1,11 @@
-import { useSelector } from "react-redux";
-
 import PixelMapImagePixels from "./PixelMapImagePixels";
 import PixelMapImageHighlight from "./PixelMapImageHighlight";
 
-const PixelMapImage = (props) => {
-  const data = useSelector((state) => state.dataMap.pixelData);
+import { MAX_WIDTH } from "../constants";
 
-  const xCount = Math.sqrt(data.length);
-  const yCount = xCount;
+const PixelMapImage = (props) => {
   const squareSize = props.size + props.gap;
-  const viewBox = `0 0 ${squareSize * xCount} ${squareSize * yCount}`;
+  const viewBox = `0 0 ${squareSize * MAX_WIDTH} ${squareSize * MAX_WIDTH}`;
 
   return (
     <div className={props.className}>
@@ -18,9 +14,6 @@ const PixelMapImage = (props) => {
           viewBox={viewBox}
           size={props.size}
           squareSize={squareSize}
-          data={data}
-          xCount={xCount}
-          yCount={yCount}
           isHeatMap={props.isHeatMap}
         />
         <PixelMapImageHighlight

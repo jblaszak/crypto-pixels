@@ -1,40 +1,46 @@
 import { useSelector } from "react-redux";
 
+import * as CONSTANTS from "../constants";
 import classes from "./PixelInfo.module.css";
 
 const PixelInfo = (props) => {
   const selectedPixel = useSelector((state) => state.dataMap.selectedPixel);
-  const allPixelData = useSelector((state) => state.dataMap.pixelData);
-  const pixelData = allPixelData[selectedPixel];
+  let pixelAttributes = useSelector((state) => state.dataMap.pixelAttributes);
+  pixelAttributes = pixelAttributes[selectedPixel];
+  let pixelStats = useSelector((state) => state.dataMap.pixelStats);
+  pixelStats = pixelStats[selectedPixel];
+  const color = `rgb(${pixelAttributes.r}, ${pixelAttributes.g}, ${pixelAttributes.b})`;
 
   return (
     <div className={props.className}>
       <div className={classes.topRow}>
         <div
           className={classes.pixelLarge}
-          style={{ backgroundColor: pixelData.color }}
+          style={{ backgroundColor: color }}
         />
-        <div className={classes.name}>{`NAME #${selectedPixel + 1}`}</div>
+        <div className={classes.name}>
+          {CONSTANTS.NAME} #{selectedPixel}
+        </div>
         <div className={classes.position}>
           Position:{" "}
-          <span>{`(${selectedPixel % 100},${Math.floor(
-            selectedPixel / 100
+          <span>{`(${(selectedPixel - 1) % CONSTANTS.MAX_WIDTH},${Math.floor(
+            (selectedPixel - 1) / CONSTANTS.MAX_WIDTH
           )})`}</span>
         </div>
       </div>
       <div className={classes.sales}>
         <div>
-          Last Price: <span>{`${pixelData.lastPrice}`}</span>
+          Last Price: <span>{`${pixelStats.price}`}</span>
         </div>
         <div>
-          Times Sold: <span>{`${pixelData.timesSold}`}</span>
+          Times Sold: <span>{`${pixelStats.timesSold}`}</span>
         </div>
       </div>
       <div className={classes.owner}>
         <div>
-          Owner Username: <span>{`${pixelData.ownerUsername}`}</span>
+          Owner Username: <span>{pixelStats.username}</span>
         </div>
-        <div>{`Owner Address: ${pixelData.ownerAddress}`}</div>
+        <div>{`Owner Address: ${pixelStats.address}`}</div>
       </div>
     </div>
   );

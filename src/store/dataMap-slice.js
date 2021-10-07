@@ -1,26 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { imageColorData } from "../data-loading/imageColorData";
-
-const initialPixelData = () => {
-  return imageColorData.map((color) => ({
-    color: "#000000",
-    lastPrice: "No data",
-    priceUnit: "ETH",
-    timesSold: "No data",
-    ownerUsername: "No data",
-    ownerAddress: "No data",
-  }));
-};
+import { getAttributes, getAttributeCounts, getPixelStats } from "../data/";
 
 const dataMapSlice = createSlice({
   name: "dataMap",
   initialState: {
-    pixelData: initialPixelData(),
-    selectedPixel: 0,
+    pixelAttributes: getAttributes(),
+    pixelAttributeCounts: getAttributeCounts(),
+    pixelStats: getPixelStats(),
+    pixelStatsVersion: 0,
+    selectedPixel: 1,
   },
   reducers: {
-    replacePixelData(state, action) {
-      state.pixelData = action.payload.pixelData;
+    updatePixelStats(state, action) {
+      state.pixelStats = action.payload.pixelStats;
+      state.pixelStatsVersion = action.payload.pixelStatsVersion;
     },
     updateSelectedPixel(state, action) {
       state.selectedPixel = action.payload;

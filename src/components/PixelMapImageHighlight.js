@@ -2,8 +2,8 @@ import { useSelector } from "react-redux";
 
 const PixelMapImageHighlight = (props) => {
   const selectedPixel = useSelector((state) => state.dataMap.selectedPixel);
-  const x = selectedPixel % 100;
-  const y = Math.floor(selectedPixel / 100);
+  const x = (selectedPixel - 1) % 100;
+  const y = Math.floor((selectedPixel - 1) / 100);
 
   return (
     <svg viewBox={props.viewBox} x="0" y="0">

@@ -1,22 +1,25 @@
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
-import classes from "./PixelMapImagePixels.module.css";
-import { loadPixelData } from "../store/dataMap-actions";
 import { dataMapActions } from "../store/dataMap-slice";
 
+import { MAX_WIDTH } from "../constants";
+import classes from "./PixelMapImagePixels.module.css";
+
 const PixelMapImagePixels = (props) => {
+  const pixelAttributes = useSelector((state) => state.dataMap.pixelAttributes);
+  const pixelStats = useSelector((state) => state.dataMap.pixelStats);
+
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    const timedLoad = setTimeout(() => {
-      dispatch(loadPixelData());
-    }, 500);
+  // useEffect(() => {
+  //   const timedLoad = setTimeout(() => {
+  //     dispatch(loadPixelData());
+  //   }, 500);
 
-    return () => {
-      clearTimeout(timedLoad);
-    };
-  }, [dispatch]);
+  //   return () => {
+  //     clearTimeout(timedLoad);
+  //   };
+  // }, [dispatch]);
 
   const fadeClasses = [
     classes.fader1,
@@ -28,7 +31,7 @@ const PixelMapImagePixels = (props) => {
 
   const maxTimesSold = Math.max.apply(
     Math,
-    props.data.map((pixel) => pixel.timesSold)
+    Object.values(pixelStats).map((pixel) => pixel.timesSold)
   );
 
   const getHeatMapColor = (timesSold) => {
@@ -61,13 +64,13 @@ const PixelMapImagePixels = (props) => {
   };
 
   const createRect = (x, y) => {
-    const index = y * props.xCount + x;
-    const pixel = props.data[index];
+    const index = y * MAX_WIDTH + x + 1;
+    const pixelColor = `rgb(${pixelAttributes[index].r} , ${pixelAttributes[index].g}, ${pixelAttributes[index].b})`;
 
     return (
       <rect
-        key={`${index + 1}`}
-        id={`${index + 1}`}
+        key={index}
+        id={index}
         className={fadeClasses[Math.floor(Math.random() * 5)]}
         width={props.size}
         height={props.size}
@@ -75,7 +78,11 @@ const PixelMapImagePixels = (props) => {
         y={y * props.squareSize}
         rx={1}
         ry={1}
-        fill={props.isHeatMap ? getHeatMapColor(pixel.timesSold) : pixel.color}
+        fill={
+          props.isHeatMap
+            ? getHeatMapColor(pixelStats[index].timesSold)
+            : pixelColor
+        }
         onMouseOver={() => mouseOverHandler(index)}
       />
     );
@@ -83,8 +90,8 @@ const PixelMapImagePixels = (props) => {
 
   return (
     <svg viewBox={props.viewBox} x="0" y="0">
-      {[...Array(props.xCount)].map((i, x) => {
-        return [...Array(props.yCount)].map((j, y) => {
+      {[...Array(MAX_WIDTH)].map((i, x) => {
+        return [...Array(MAX_WIDTH)].map((j, y) => {
           return createRect(x, y);
         });
       })}
