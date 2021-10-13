@@ -1,5 +1,6 @@
 import PixelMapImagePixels from "./PixelMapImagePixels";
 import PixelMapImageHighlight from "./PixelMapImageHighlight";
+import Card from "./UI/Card";
 
 import { MAX_WIDTH } from "../constants";
 
@@ -8,7 +9,7 @@ const PixelMapImage = (props) => {
   const viewBox = `0 0 ${squareSize * MAX_WIDTH} ${squareSize * MAX_WIDTH}`;
 
   return (
-    <div className={props.className}>
+    <Card>
       <svg viewBox={viewBox}>
         <PixelMapImagePixels
           viewBox={viewBox}
@@ -22,7 +23,7 @@ const PixelMapImage = (props) => {
           squareSize={squareSize}
         />
       </svg>
-    </div>
+    </Card>
   );
 };
 

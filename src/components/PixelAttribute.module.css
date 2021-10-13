@@ -1,0 +1,44 @@
+.attribute {
+    /* margin: 0.5rem; */
+    padding: 0.5rem;
+    border-radius: 8px;
+    /* background: linear-gradient(45deg, rgba(250,100,100,1) 0%, rgba(179,183,130,1) 25%, rgba(123,179,129,1) 51%, rgba(63,210,216,1) 75%, rgba(0,18,255,1) 100%); */
+    background: rgb(43,75,120);
+    background: linear-gradient(255deg, rgba(43,75,120,1) 0%, rgba(68,106,149,1) 100%);
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    width: 8.5rem;
+}
+
+.title {
+    margin: 0px;
+    padding: 0px;
+    font-size: 0.75rem;
+}
+
+.attributeName {
+    margin: 0.3rem 0;
+    padding: 0px;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+}
+
+.attributeValue {
+    margin-left: 0.25rem;
+    font-size: 1rem;
+    color: #41b964;
+}
+
+.rarity {
+    margin: 0px;
+    padding: 0px;
+    font-size: 0.75rem;
+}
+
+.rarityValue {
+    font-family: 'InterBold', sans-serif;
+    font-size: 0.8rem;
+    color: #41b964;
+}

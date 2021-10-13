@@ -66,12 +66,19 @@ const PixelMapImagePixels = (props) => {
   const createRect = (x, y) => {
     const index = y * MAX_WIDTH + x + 1;
     const pixelColor = `rgb(${pixelAttributes[index].r} , ${pixelAttributes[index].g}, ${pixelAttributes[index].b})`;
+    let pixelClasses = fadeClasses[Math.floor(Math.random() * 5)];
+    if (pixelAttributes[index]["f"] && !props.isHeatMap) {
+      pixelClasses = `${pixelClasses} ${classes.flashy}`;
+    }
+    if (pixelAttributes[index]["d"] && !props.isHeatMap) {
+      pixelClasses = `${pixelClasses} ${classes.dead}`;
+    }
 
     return (
       <rect
         key={index}
         id={index}
-        className={fadeClasses[Math.floor(Math.random() * 5)]}
+        className={pixelClasses}
         width={props.size}
         height={props.size}
         x={x * props.squareSize}

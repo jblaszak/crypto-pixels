@@ -21,15 +21,15 @@ function loaded(img) {
   let edgePixels = [];
   let fortyTwoPixels = [];
 
-  // find edge, diag, and fortyTwo pixels
+  // find edge and fortyTwo pixels
   for (let i = 1; i <= MAX_WIDTH; i++) {
-    diagPixels.push((i - 1) * MAX_WIDTH + 1); // '\' diagonal
-    diagPixels.push((i - 1) * MAX_WIDTH - i + 1); // '/' diagonal
+    // diagPixels.push((i - 1) * MAX_WIDTH + 1); // '\' diagonal
+    // diagPixels.push((i - 1) * MAX_WIDTH - i + 1); // '/' diagonal
     edgePixels.push(i); // top edge
     edgePixels.push(MAX_WIDTH * (MAX_WIDTH - 1) + i); // bottom edge
     if (i !== 1 && i !== MAX_WIDTH) {
       edgePixels.push(1 + (i - 1) * MAX_WIDTH); // left edge
-      edgePixels.push((i - 1) * MAX_WIDTH); // right edge
+      edgePixels.push(i * MAX_WIDTH); // right edge
     }
     fortyTwoPixels.push(43 + (i - 1) * 100); // vertical 42 pixels (x = 42)
     const horizontal42 = 42 * MAX_WIDTH + i;
@@ -37,6 +37,13 @@ function loaded(img) {
       fortyTwoPixels.push(horizontal42); // horizontal 42 pixels (y = 42)
     }
   }
+
+  for (let i = 0; i < MAX_WIDTH; i++) {
+    diagPixels.push(i * MAX_WIDTH + i + 1); // '\' diagonal
+    diagPixels.push((i + 1) * MAX_WIDTH - i); // '/' diagonal
+  }
+
+  console.log(diagPixels);
 
   // function to add all pixels of a coin given a starting pixel
   const addCoinPixels = (coinPixelArray, startingPixel) => {

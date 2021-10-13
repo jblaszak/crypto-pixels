@@ -1,36 +1,67 @@
-.topRow {
+.infoHeader {
     display: inline-flex;
     align-items: center;
+    padding-bottom: 1rem;
+    overflow: hidden;
+    width: 100%;
+    border-bottom: 1px solid var(--color-border);
 }
 
 .pixelLarge {
-    width: 30px;
-    height: 30px;
-    border-radius: 5px;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 8px;
 }
 
-.name {
-    font-family: "RobotoBold", sans-serif;
+.flashy {
+    animation: flashy 2s linear infinite; 
+}
+
+@keyframes flashy {
+    0% {background-color: red;}
+    25% {background-color: yellow;}
+    50% {background-color: green;}
+    75% {background-color: blue;}
+    100% {background-color: red;}
+}
+
+.dead {
+    background-color: black;
+}
+
+.name,
+.position {
+    font-family: "InterBold", sans-serif;
     margin: 0 1rem;
+    padding: 0;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-bottom: 1px solid var(--color-border);   
+}
+
+.stats div {
+    margin: 0.75rem 0;
+}
+
+.stats p {
+    margin: 0.5rem 0;
 }
 
 .position span,
 .sales span,
 .owner span {
-    font-family: "RobotoBold", sans-serif;
-    font-family: "RobotoBold", sans-serif;
+    font-family: "InterBold", sans-serif;
+    font-family: "InterBold", sans-serif;
+    padding: 0px;
+    margin: 0px;
 }
 
-.sales {
-  margin: 1rem 0;
-  background-color: var(--color-gray-900);
-  border-radius: 5px;
-  padding: 0.2rem 0.5rem;
-}
-
-.owner {
-    margin: 1rem 0 0 0;
-    background-color: var(--color-gray-900);
-    border-radius: 5px;
-    padding: 0.2rem 0.5rem;
+.attributes {
+    margin-top: 1rem;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 1rem;
 }

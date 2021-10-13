@@ -3,6 +3,22 @@
     --fade-in-duration: 1s;
 }
 
+.flashy {
+    animation: flashy 2s linear infinite; 
+}
+
+@keyframes flashy {
+    0% {fill: red;}
+    25% {fill: yellow;}
+    50% {fill: green;}
+    75% {fill: blue;}
+    100% {fill: red;}
+}
+
+.dead {
+    fill: black;
+}
+
 .fader1 {
     transition: fill var(--fade-in-duration) ease-in;
 }
