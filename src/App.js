@@ -1,10 +1,14 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { useSelector } from "react-redux";
+import { Route, Switch } from "react-router-dom";
 
 import Layout from "./components/Layout/Layout";
-import Hero from "./components/Hero";
-import PixelMap from "./components/PixelMap";
+import LoadingSpinner from "./components/UI/LoadingSpinner";
 import ErrorMessage from "./components/UI/ErrorMessage";
+
+const NotFound = React.lazy(() => import("./Pages/NotFound"));
+const Home = React.lazy(() => import("./Pages/Home"));
+const PixelMap = React.lazy(() => import("./Pages/PixelMap"));
 
 function App() {
   const errorMessage = useSelector((state) => state.error.errorMessage);
@@ -13,8 +17,25 @@ function App() {
     <React.Fragment>
       {errorMessage && <ErrorMessage message={errorMessage} />}
       <Layout>
-        <Hero />
-        <PixelMap />
+        <Suspense
+          fallback={
+            <div className="centered">
+              <LoadingSpinner />
+            </div>
+          }
+        >
+          <Switch>
+            <Route path="/" exact>
+              <Home />
+            </Route>
+            <Route path="/pixelmap" exact>
+              <PixelMap />
+            </Route>
+            <Route path="*">
+              <NotFound />
+            </Route>
+          </Switch>
+        </Suspense>
       </Layout>
     </React.Fragment>
   );

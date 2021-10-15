@@ -40,7 +40,8 @@
   --color-background2: #141e2e;
   --color-card-background: #1f2a37;
   --color-green-dark: #2e8848;
-  --color-green-light: #2ea44f; 
+  --color-green-light: #2ea44f;
+  --color-green-very-light: #4ad471;
   --color-border: #374251;
   --color-primary: hsl(230deg, 100%, 67%);
   --color-secondary: hsl(333deg, 100%, 52%);
@@ -92,4 +93,17 @@ button:hover,
 button:active {
   background-color: var(--color-green-light);
   border: 1px solid var(--color-green-light);
+}
+
+.centered {
+  margin: 3rem auto;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bigWhiteText {
+  color: white;
+  font-size: 2rem;
 }

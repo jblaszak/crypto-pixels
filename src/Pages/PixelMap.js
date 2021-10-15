@@ -2,12 +2,12 @@ import React, { useState, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { dataMapActions } from "../store/dataMap-slice";
 
-import PixelMapImage from "./PixelMapImage";
-import PixelInfo from "./PixelInfo";
-import Card from "./UI/Card";
+import PixelMapImage from "../components/PixelMapImage";
+import PixelInfo from "../components/PixelInfo";
+import Card from "../components/UI/Card";
 
 import classes from "./PixelMap.module.css";
-import Section from "./Layout/Section";
+import Section from "../components/Layout/Section";
 
 const PixelMap = () => {
   const [isHeatMap, setIsHeatMap] = useState(false);
