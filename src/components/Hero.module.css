@@ -1,0 +1,42 @@
+.container {
+   position: relative;
+}
+
+.canvas {
+   position: absolute;
+   top: 0;
+   left: 0;
+   bottom: 0;
+   right: 0;
+}
+
+.content {
+   position: absolute;
+   top: 0;
+   left: 0;
+   bottom: 0;
+   right: 0;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   color: white;
+   flex-direction: column;
+}
+
+.title {
+    font-size: 4rem;
+    margin: 1rem;
+    padding: 0.5rem 1rem;
+    background-color: rgba(17,25,40,.25);
+    backdrop-filter: blur(3px);
+    border-radius: 1rem;
+}
+
+.subtitle {
+    font-size: 1.5rem;
+    margin: 0;
+    padding: 0.5rem 1rem;
+    background-color: rgba(17,25,40,.25);
+    backdrop-filter: blur(3px);
+    border-radius: 1rem;
+}
