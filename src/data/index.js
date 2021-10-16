@@ -2,23 +2,6 @@ import * as CONSTANTS from "../constants";
 
 import { attributeData } from "./attributeData";
 
-// localStorage.clear();
-
-// const getAttributes = async () => {
-//   let data = localStorage.getItem("attributeData");
-//   if (!data) {
-//     data = await import("./attributeData");
-//     localStorage.setItem("attributeData", data);
-//     console.log("set attributeData to storage");
-//   } else {
-//     console.log("loaded attributeData from storage");
-//   }
-//   return data;
-// };
-
-// const attributeData = getAttributes();
-// console.log(attributeData);
-
 const atts = ["dia", "e", "42", "m", "d", "f", "h", "i"];
 const coins = [
   "LUNA",
@@ -93,7 +76,6 @@ export const getAttributeCounts = () => {
       }
     }
   }
-  console.log(attributeCountsTemp);
   return attributeCountsTemp;
 };
 

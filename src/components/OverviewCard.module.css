@@ -1,0 +1,18 @@
+.card {
+}
+
+.title {
+    margin: 0 0 0.75rem 0;
+    padding: 0;
+    font-family: 'InterBold';
+    font-size: 1.5rem;
+    color: white;
+}
+
+.description {
+    margin: 0;
+    padding: 0;
+    font-size: 1rem;
+    line-height: 1.4rem;
+    color: var(--color-soft-text);
+}
