@@ -57,7 +57,7 @@ const Hero = () => {
 
   return (
     <div className={classes.container}>
-      <canvas className={classes.hero} ref={canvasRef} />
+      <canvas ref={canvasRef} />
       <div className={classes.content}>
         <h1 className={classes.title}>Crypto Flex Pixels</h1>
         <h2 className={classes.subtitle}>An innovative new NFT project</h2>

@@ -35,7 +35,7 @@ export const getAttributeCounts = () => {
     attributeCountsTemp[atts[i]] = 0;
   }
 
-  for (let i = 0; i < 21 * CONSTANTS.MAX_WIDTH_SQUARED; i += 21) {
+  for (let i = 0; i < 21 * CONSTANTS.COLLECTION_SIZE; i += 21) {
     // 'r' attribute
     if (attributeData.slice(i, i + 3) in attributeCountsTemp["r"]) {
       attributeCountsTemp["r"][attributeData.slice(i, i + 3)]++;
@@ -82,7 +82,7 @@ export const getAttributeCounts = () => {
 export const getAttributes = () => {
   // console.log("inside get attributes!");
   let attributesTemp = {};
-  for (let i = 0; i < 21 * CONSTANTS.MAX_WIDTH_SQUARED; i += 21) {
+  for (let i = 0; i < 21 * CONSTANTS.COLLECTION_SIZE; i += 21) {
     let pixel = {};
 
     // 'r' attribute
@@ -111,10 +111,9 @@ export const getAttributes = () => {
   return attributesTemp;
 };
 
-//// Generate some dummy data in firebase
 export const getPixelStats = () => {
   let pixelStatsTemp = {};
-  for (let i = 1; i <= CONSTANTS.MAX_WIDTH_SQUARED; i++) {
+  for (let i = 1; i <= CONSTANTS.COLLECTION_SIZE; i++) {
     pixelStatsTemp[i] = {
       price: 0,
       coin: "ETH",

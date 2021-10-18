@@ -70,6 +70,7 @@ const PixelAttributeList = (props) => {
 
     attributesList.push(
       <PixelAttribute
+        key={attribute}
         attribute={attribute}
         value={attributeValue}
         rarity={rarity}

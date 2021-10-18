@@ -21,14 +21,14 @@
 
 .header p {
     margin-top: 1rem;
+    font-size: 1.25rem;
     padding: 0;
     color: var(--color-soft-text);
-    max-width: 50%;
+    max-width: 60%;
 }
 
 .timeline {
     margin: 2rem auto;
-
 }
 
 .timeline li {
@@ -75,11 +75,13 @@
 }
 
 .isReached .title {
-    color: var(--color-link-color);
+    background: linear-gradient(255deg, white 50%, var(--color-link-color) 100%);
+    background-clip: text;
+    color: transparent;
 }
 
 .description {
-    font-size: 1rem;
+    font-size: 1.25rem;
     color: var(--color-gray-600);
 }
 

@@ -8,6 +8,7 @@ import Card from "../components/UI/Card";
 
 import classes from "./PixelMap.module.css";
 import Section from "../components/Layout/Section";
+import CollectionViewer from "../components/CollectionViewer";
 
 const PixelMap = () => {
   const [isHeatMap, setIsHeatMap] = useState(false);
@@ -31,7 +32,7 @@ const PixelMap = () => {
 
   return (
     <React.Fragment>
-      <Section>
+      {/* <Section>
         <Card>
           <div className={classes.bothForms}>
             <form onSubmit={submitHandler} className={classes.positionFinder}>
@@ -92,6 +93,9 @@ const PixelMap = () => {
       </Section>
       <Section>
         <PixelMapImage size={7} gap={0.5} isHeatMap={isHeatMap} />
+      </Section> */}
+      <Section>
+        <CollectionViewer />
       </Section>
     </React.Fragment>
   );
