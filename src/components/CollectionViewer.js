@@ -18,17 +18,43 @@ class Pixel {
     this.color = data["d"]
       ? "rgb(0,0,0)"
       : `rgb(${data["r"]},${data["g"]},${data["b"]})`;
-    this.flashyTime = data["f"] ? Date.now() : false;
+    this.flashyTime = data["f"] ? Date.now() + Math.random() * 1000 : false;
   }
   lerp = (a, b, n) => {
     return (b - a) * n + a;
   };
   getColor = () => {
     if (this.flashyTime) {
-      const n = (Date.now() - this.flashyTime) * 0.001;
-      const red = this.lerp(0, 255, n);
-      const green = this.lerp(0, 255, n);
-      const blue = this.lerp(0, 255, n);
+      // 100% red (255, 0, 0)
+      let t = (Date.now() - this.flashyTime) % 2000;
+      let red = 255;
+      let green = 0;
+      let blue = 0;
+      //   console.log(t);
+      if (t <= 500) {
+        // 0% red (255, 0, 0)
+        t = t / 500;
+        green = this.lerp(0, 255, t);
+      } else if (t <= 1000) {
+        // 25% yellow (255, 255, 0)
+        t = (t - 500) / 500;
+        green = 255;
+        red = this.lerp(255, 0, t);
+      } else if (t <= 1500) {
+        // 50% green (0, 255, 0)
+        t = (t - 1000) / 500;
+        red = 0;
+        green = this.lerp(255, 0, t);
+        blue = this.lerp(0, 255, t);
+      } else if (t <= 2000) {
+        // 75% blue (0, 0, 255)
+        t = (t - 1500) / 500;
+        blue = this.lerp(255, 0, t);
+        red = this.lerp(0, 255, t);
+      }
+      //   console.log(
+      //     `r: ${red.toFixed(0)}, g: ${green.toFixed(0)} b: ${blue.toFixed(0)}`
+      //   );
       return `rgb(${red},${green},${blue})`;
     } else {
       return this.color;
@@ -65,7 +91,16 @@ class Pixel {
 }
 
 class PixelField {
-  constructor(ctx, width, height, data, mouseX, mouseY) {
+  constructor(
+    ctx,
+    width,
+    height,
+    data,
+    mouseX,
+    mouseY,
+    pixelFieldAnimation,
+    didChangeHappen
+  ) {
     this.ctx = ctx;
     this.width = width;
     this.height = height;
@@ -75,6 +110,8 @@ class PixelField {
       (val, index) => new Pixel(ctx, data[index + 1], index + 1)
     );
     this.lastTime = 0;
+    this.pixelFieldAnimation = pixelFieldAnimation;
+    this.didChangeHappen = didChangeHappen;
   }
   isMouseNear = (x, y) => {
     let dx = this.mouseX - x;
@@ -96,19 +133,45 @@ class PixelField {
     }
   };
   animate = (timeStamp) => {
-    const deltaTime = timeStamp - this.lastTime;
-    this.lastTime = timeStamp;
-    console.log(deltaTime);
+    cancelAnimationFrame(this.pixelFieldAnimation);
+    // const deltaTime = timeStamp - this.lastTime;
+    // this.lastTime = timeStamp;
+    // console.log(deltaTime);
 
-    this.ctx.clearRect(0, 0, this.width, this.height);
-    this.pixelArray.forEach((pixel) => {
-      const [isNearPixel, posMod, sizeMod] = this.isMouseNear(pixel.x, pixel.y);
-      if (isNearPixel) {
-        pixel.draw(posMod, sizeMod);
-      } else {
-        pixel.draw();
-      }
-    });
+    if (this.didChangeHappen) {
+      // All pixels need to be changed!
+      this.ctx.clearRect(0, 0, this.width, this.height);
+      this.pixelArray.forEach((pixel) => {
+        const [isNearPixel, posMod, sizeMod] = this.isMouseNear(
+          pixel.x,
+          pixel.y
+        );
+        if (isNearPixel) {
+          pixel.draw(posMod, sizeMod);
+        } else {
+          pixel.draw();
+        }
+      });
+
+      this.didChangeHappen = false;
+    } else {
+      // No change in canvas size/mouse position happened, just change flashy pixels
+      this.pixelArray.forEach((pixel) => {
+        if (pixel.flashyTime) {
+          const [isNearPixel, posMod, sizeMod] = this.isMouseNear(
+            pixel.x,
+            pixel.y
+          );
+
+          if (isNearPixel) {
+            pixel.draw(posMod, sizeMod);
+          } else {
+            pixel.draw();
+          }
+        }
+      });
+    }
+    this.pixelFieldAnimation = requestAnimationFrame(this.animate.bind(this));
   };
 }
 
@@ -126,35 +189,51 @@ const useCanvas = () => {
     canvas.width = CONSTANTS.INITIAL_CANVAS_WIDTH;
     canvas.height = CONSTANTS.INITIAL_CANVAS_WIDTH;
 
+    let pixelFieldAnimation;
+    let didChangeHappen = true;
+
     const pixelField = new PixelField(
       ctx,
       canvas.width,
       canvas.height,
       data,
       initialMouseX,
-      initialMouseY
+      initialMouseY,
+      pixelFieldAnimation,
+      didChangeHappen
     );
 
-    let pixelFieldAnimation = requestAnimationFrame(pixelField.animate);
+    pixelField.pixelFieldAnimation = requestAnimationFrame(pixelField.animate);
 
     const handleResize = (e) => {
-      cancelAnimationFrame(pixelFieldAnimation);
+      cancelAnimationFrame(pixelField.pixelFieldAnimation);
       //   canvas.width = document.documentElement.clientWidth;
       //   pixelField.width = canvas.width;
-      pixelFieldAnimation = requestAnimationFrame(pixelField.animate);
+      pixelField.didChangeHappen = true;
+
+      pixelField.pixelFieldAnimation = requestAnimationFrame(
+        pixelField.animate
+      );
     };
 
     const handleMouseMove = (e) => {
-      cancelAnimationFrame(pixelFieldAnimation);
+      cancelAnimationFrame(pixelField.pixelFieldAnimation);
+
+      pixelField.didChangeHappen = true;
+
       const bodyCoords = document.body.getBoundingClientRect();
       const canvasCoords = canvas.getBoundingClientRect();
+
       pixelField.mouseX =
         (e.x - (canvasCoords.left - bodyCoords.left)) *
         (CONSTANTS.INITIAL_CANVAS_WIDTH / canvasCoords.width);
       pixelField.mouseY =
         (e.y - (canvasCoords.top - bodyCoords.top)) *
         (CONSTANTS.INITIAL_CANVAS_WIDTH / canvasCoords.height);
-      pixelFieldAnimation = requestAnimationFrame(pixelField.animate);
+
+      pixelField.pixelFieldAnimation = requestAnimationFrame(
+        pixelField.animate
+      );
     };
 
     window.addEventListener("resize", handleResize);
