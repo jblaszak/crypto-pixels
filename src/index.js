@@ -8,6 +8,7 @@ import "./fonts/Roboto-Regular.ttf";
 
 import "./index.css";
 import store from "./store";
+import ScrollToTop from "./components/UI/ScrollToTop";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
@@ -15,6 +16,7 @@ ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <Provider store={store}>
+        <ScrollToTop />
         <App />
       </Provider>
     </BrowserRouter>

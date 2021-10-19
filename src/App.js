@@ -8,7 +8,7 @@ import ErrorMessage from "./components/UI/ErrorMessage";
 
 const NotFound = React.lazy(() => import("./Pages/NotFound"));
 const Home = React.lazy(() => import("./Pages/Home"));
-const PixelMap = React.lazy(() => import("./Pages/PixelMap"));
+const CollectionViewer = React.lazy(() => import("./Pages/CollectionViewer"));
 
 function App() {
   const errorMessage = useSelector((state) => state.error.errorMessage);
@@ -28,8 +28,8 @@ function App() {
             <Route path="/" exact>
               <Home />
             </Route>
-            <Route path="/pixelmap" exact>
-              <PixelMap />
+            <Route path="/collection-viewer" exact>
+              <CollectionViewer />
             </Route>
             <Route path="*">
               <NotFound />

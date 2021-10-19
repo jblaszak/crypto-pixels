@@ -5,14 +5,21 @@
     width: 100%;
     z-index: 9999;
     height: 4rem;
-    padding: 0 10%;
+    background-color: rgba(17,25,40,.75);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(255, 255, 255, .125);
+    display: flex;
+    justify-content: center;
+  }
+  
+  .container {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    backdrop-filter: blur(8px);
-    /* background-color: var(--color-background2); */
-    background-color: rgba(17,25,40,.75);
-    border-bottom: 1px solid rgba(255, 255, 255, .125);
+    height: 100%;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 1rem;
   }
 
   .logo {

@@ -2,15 +2,14 @@ import React, { useState, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { dataMapActions } from "../store/dataMap-slice";
 
-import PixelMapImage from "../components/PixelMapImage";
 import PixelInfo from "../components/PixelInfo";
 import Card from "../components/UI/Card";
-
-import classes from "./PixelMap.module.css";
 import Section from "../components/Layout/Section";
-import CollectionViewer from "../components/CollectionViewer";
+import PixelMap from "../components/PixelMap/PixelMap";
 
-const PixelMap = () => {
+import classes from "./CollectionViewer.module.css";
+
+const CollectionViewer = () => {
   const [isHeatMap, setIsHeatMap] = useState(false);
   const dispatch = useDispatch();
 
@@ -20,19 +19,23 @@ const PixelMap = () => {
 
   const submitHandler = (event) => {
     event.preventDefault();
-    const index = +xRef.current.value + +yRef.current.value * 100;
+    const index = +xRef.current.value + 1 + +yRef.current.value * 100;
     dispatch(dataMapActions.updateSelectedPixel(index));
   };
 
   const submitHandler2 = (event) => {
     event.preventDefault();
-    const index = +numRef.current.value - 1;
+    const index = +numRef.current.value;
     dispatch(dataMapActions.updateSelectedPixel(index));
   };
 
   return (
     <React.Fragment>
-      {/* <Section>
+      <Section>
+        <p className={classes.usageDescription}>
+          Enter information below or click on pixel to get more information
+          about it!
+        </p>
         <Card>
           <div className={classes.bothForms}>
             <form onSubmit={submitHandler} className={classes.positionFinder}>
@@ -82,23 +85,20 @@ const PixelMap = () => {
               </button>
             </form>
           </div>
-          <div className={classes.pixelMapSettings}>
+          {/* <div className={classes.pixelMapSettings}>
             <button onClick={() => setIsHeatMap(false)}>Color Pixels</button>
             <button onClick={() => setIsHeatMap(true)}>Sales Heatmap</button>
-          </div>
+          </div> */}
         </Card>
       </Section>
       <Section>
         <PixelInfo className={classes.pixelInfo} />
       </Section>
       <Section>
-        <PixelMapImage size={7} gap={0.5} isHeatMap={isHeatMap} />
-      </Section> */}
-      <Section>
-        <CollectionViewer />
+        <PixelMap />
       </Section>
     </React.Fragment>
   );
 };
 
-export default PixelMap;
+export default CollectionViewer;

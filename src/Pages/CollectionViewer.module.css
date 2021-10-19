@@ -106,3 +106,8 @@ label {
     stroke: #FFFFFF;
     stroke-width: 3px;
 }
+
+.usageDescription {
+    color: white;
+    text-align: center;
+}
