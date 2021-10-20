@@ -1,5 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+
+import IconLinks from "./IconLinks";
 import classes from "./MainHeader.module.css";
 
 const MainHeader = (props) => {
@@ -25,6 +27,7 @@ const MainHeader = (props) => {
               </li>
             </ul>
           </nav>
+          <IconLinks />
         </div>
       </header>
       <div className={classes.spacer} />

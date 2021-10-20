@@ -1,0 +1,34 @@
+.iconLinks {
+    display: flex;
+}
+
+.iconLinks div {
+    border: 1px solid var(--color-green-dark);
+    margin-left: 0.5rem;
+    transition: all 0.3s;
+}
+
+.iconLinks div:hover {
+    background-color: var(--color-green-light);
+}
+
+.iconLinks a {
+    width: 44px;
+    height: 44px;
+    display: block;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+}
+
+.twitter {
+    -webkit-mask: url(../../assets/twitter.svg) no-repeat center;
+}
+
+.discord {
+    -webkit-mask: url(../../assets/discord.svg) no-repeat center;
+}
+
+.opensea {
+    -webkit-mask: url(../../assets/opensea.svg) no-repeat center;
+}

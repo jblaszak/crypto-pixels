@@ -1,4 +1,7 @@
 import { Link } from "react-router-dom";
+
+import IconLinks from "./IconLinks";
+
 import classes from "./Footer.module.css";
 
 const Footer = () => {
@@ -22,17 +25,7 @@ const Footer = () => {
           <div>
             {`© ${new Date().getFullYear()} Crypto Flex Pixels. All rights reserved.`}
           </div>
-          <div>
-            <Link to="/" target="_blank" rel="noopener noreferrer">
-              Twitter
-            </Link>
-            <Link to="/" target="_blank" rel="noopener noreferrer">
-              Discord
-            </Link>
-            <Link to="/" target="_blank" rel="noopener noreferrer">
-              Opensea
-            </Link>
-          </div>
+          <IconLinks />
         </div>
       </div>
     </footer>
