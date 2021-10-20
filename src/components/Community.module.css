@@ -1,0 +1,30 @@
+.container {
+    display: flex;
+    justify-content: center;
+}
+
+.community {
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.community h1 {
+    margin: 0;
+    font-family: 'InterBold';
+    font-size: 1.75rem;
+}
+
+.community a {
+    text-decoration: none;
+    padding: 1rem;
+    color: white;
+    border-radius: 5px;
+    background-color: #404eed;
+}
+
+.community a:hover {
+    filter: brightness(120%);
+}
