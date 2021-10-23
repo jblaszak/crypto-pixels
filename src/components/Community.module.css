@@ -19,6 +19,8 @@
 
 .community a {
     text-decoration: none;
+    font-family: 'InterBold';
+    font-size: 1.25rem;
     padding: 1rem;
     color: white;
     border-radius: 5px;
