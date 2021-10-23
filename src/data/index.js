@@ -119,7 +119,7 @@ export const getPixelStats = () => {
       coin: "ETH",
       timesSold: 0,
       username: 0,
-      address: 0,
+      address: "0xAb5801a7D398351b8bE11C439e05C5B3259aeC9B",
     };
   }
   return pixelStatsTemp;

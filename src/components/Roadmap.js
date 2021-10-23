@@ -1,3 +1,4 @@
+import Section from "./Layout/Section";
 import classes from "./Roadmap.module.css";
 
 const Roadmap = () => {
@@ -32,7 +33,7 @@ const Roadmap = () => {
   ];
 
   return (
-    <section className={classes.section}>
+    <Section className={classes.roadmap}>
       <div className={classes.header}>
         <h1>Roadmap</h1>
         <p>
@@ -43,13 +44,16 @@ const Roadmap = () => {
       </div>
       <ul className={classes.timeline}>
         {roadmapList.map((item) => (
-          <li className={item.isReached ? classes.isReached : null}>
+          <li
+            className={item.isReached ? classes.isReached : null}
+            key={item.title}
+          >
             <div className={classes.title}>{item.title}</div>
             <div className={classes.description}>{item.description}</div>
           </li>
         ))}
       </ul>
-    </section>
+    </Section>
   );
 };
 

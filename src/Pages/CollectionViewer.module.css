@@ -10,17 +10,44 @@
 }
 
 .bothForms {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    grid-gap: 1rem;
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    align-items: center;
 }
 
-.positionFinder {
+.bothForms form {
     display: contents;
+}
+
+.positionFinder,
+.numberFinder {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    width: 100%;
 }
 
 .numberFinder {
-    display: contents;
+    justify-content: flex-end;
+}
+
+
+@media (max-width: 820px) {
+    .bothForms {
+        flex-direction: column;
+    }
+
+    .positionFinder,
+    .numberFinder {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 400px) {
+    label {
+        left: 0.25rem !important;
+    }
 }
 
 .formEntry {
@@ -100,6 +127,7 @@ label {
 
 .findPixel {
     padding: 0.25rem 1rem;
+    min-width: 100px;
 }
 
 .selectedPixel {

@@ -60,7 +60,6 @@ const useCanvas = () => {
 
       const bodyCoords = document.body.getBoundingClientRect();
       const canvasCoords = canvas.getBoundingClientRect();
-      console.log("scroll:", window.scrollY);
 
       pixelField.mouseX =
         (e.x - (canvasCoords.left - bodyCoords.left)) *

@@ -1,4 +1,5 @@
 .footer {
+    width: 100%;
     margin-top: auto;
     margin-left: auto;
     margin-right: auto;
@@ -36,7 +37,8 @@
 .links {
     display: flex;
     flex-direction: column;
-    align-items: end;
+    align-items: flex-end;
+    text-align: right;
 }
 
 .links a,
@@ -59,4 +61,14 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+@media (max-width: 8500px) {
+    .footer {
+        padding: 0 1rem;
+    }
+
+    .container {
+        margin: 2rem 0;
+    }
 }

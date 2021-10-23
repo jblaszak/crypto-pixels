@@ -1,5 +1,6 @@
-import React, { useState, useRef } from "react";
+import React, { useRef } from "react";
 import { useDispatch } from "react-redux";
+import useReponsive from "../hooks/useResponsive";
 import { dataMapActions } from "../store/dataMap-slice";
 
 import PixelInfo from "../components/PixelInfo";
@@ -10,7 +11,9 @@ import PixelMap from "../components/PixelMap/PixelMap";
 import classes from "./CollectionViewer.module.css";
 
 const CollectionViewer = () => {
-  const [isHeatMap, setIsHeatMap] = useState(false);
+  // const [isHeatMap, setIsHeatMap] = useState(false);
+  const isSmallScreen = useReponsive("(max-width: 475px)");
+
   const dispatch = useDispatch();
 
   const xRef = useRef();
@@ -38,52 +41,60 @@ const CollectionViewer = () => {
         </p>
         <Card>
           <div className={classes.bothForms}>
-            <form onSubmit={submitHandler} className={classes.positionFinder}>
-              <div className={classes.formEntry}>
-                <input
-                  ref={xRef}
-                  id="x"
-                  type="number"
-                  min="0"
-                  max="99"
-                  placeholder=" "
-                  autoComplete="off"
-                />
-                <label htmlFor="x">X Position</label>
-              </div>
-              <div className={classes.formEntry}>
-                <input
-                  ref={yRef}
-                  id="y"
-                  type="number"
-                  min="0"
-                  max="99"
-                  placeholder=" "
-                  autoComplete="off"
-                />
-                <label htmlFor="y">Y Position</label>
-              </div>
-              <button type="submit" className={classes.findPixel}>
-                Find Pixel
-              </button>
-            </form>
-            <form onSubmit={submitHandler2} className={classes.numberFinder}>
-              <div className={classes.formEntry}>
-                <input
-                  ref={numRef}
-                  id="number"
-                  type="number"
-                  min="1"
-                  max="10000"
-                  placeholder=" "
-                  autoComplete="off"
-                />
-                <label htmlFor="number">Pixel Number</label>
-              </div>
-              <button type="submit" className={classes.findPixel}>
-                Find Pixel
-              </button>
-            </form>
+            <div className={classes.positionFinder}>
+              <form onSubmit={submitHandler}>
+                <div className={classes.formEntry}>
+                  <input
+                    ref={xRef}
+                    id="x"
+                    type="number"
+                    min="0"
+                    max="99"
+                    placeholder=" "
+                    autoComplete="off"
+                  />
+                  <label htmlFor="x">
+                    {isSmallScreen ? "X Pos" : "X Position"}
+                  </label>
+                </div>
+                <div className={classes.formEntry}>
+                  <input
+                    ref={yRef}
+                    id="y"
+                    type="number"
+                    min="0"
+                    max="99"
+                    placeholder=" "
+                    autoComplete="off"
+                  />
+                  <label htmlFor="y">
+                    {isSmallScreen ? "Y Pos" : "Y Position"}
+                  </label>
+                </div>
+                <button type="submit" className={classes.findPixel}>
+                  Find Pixel
+                </button>
+              </form>
+            </div>
+            <div className={classes.numberFinder}>
+              <form onSubmit={submitHandler2}>
+                <div className={classes.formEntry}>
+                  <input
+                    ref={numRef}
+                    id="number"
+                    type="number"
+                    min="1"
+                    max="10000"
+                    placeholder=" "
+                    autoComplete="off"
+                  />
+                  <label htmlFor="number">Pixel Number</label>
+                </div>
+                <button type="submit" className={classes.findPixel}>
+                  Find Pixel
+                </button>
+              </form>
+            </div>
           </div>
           {/* <div className={classes.pixelMapSettings}>
             <button onClick={() => setIsHeatMap(false)}>Color Pixels</button>

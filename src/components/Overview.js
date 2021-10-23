@@ -1,4 +1,5 @@
 import OverviewCard from "./OverviewCard";
+import Section from "./Layout/Section";
 
 import classes from "./Overview.module.css";
 
@@ -22,12 +23,12 @@ const Overview = () => {
     {
       title: "Community Perks",
       description:
-        "Giveaways and bonuses on future projects! The gift that keeps on giving. ",
+        "Giveaways and bonuses on future projects! The gift that keeps on giving.",
     },
     {
-      title: "Charitable",
+      title: "Low Gas Fees",
       description:
-        "Portion of collection will be donated to generate funds for SpaceX.",
+        "NFT exists on the Polygon network to reduce the gas fees that collectors pay.",
     },
     {
       title: "Less Stagnation",
@@ -37,7 +38,7 @@ const Overview = () => {
   ];
 
   return (
-    <section className={classes.section}>
+    <Section className={classes.overview}>
       {overviewCardData.map((card) => (
         <OverviewCard
           key={card.title}
@@ -45,7 +46,7 @@ const Overview = () => {
           description={card.description}
         />
       ))}
-    </section>
+    </Section>
   );
 };
 

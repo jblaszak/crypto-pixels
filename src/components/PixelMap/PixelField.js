@@ -64,8 +64,6 @@ export default class PixelField {
       this.mouseY / (CONSTANTS.PIXEL_WIDTH + CONSTANTS.PIXEL_GAP)
     );
     this.hoveredPixel = pixelXCoord + 1 + pixelYCoord * 100;
-
-    console.log(this.hoveredPixel);
   };
   animate = (timeStamp) => {
     cancelAnimationFrame(this.pixelFieldAnimation);

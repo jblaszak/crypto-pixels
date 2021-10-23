@@ -1,8 +1,7 @@
-import { Link } from "react-router-dom";
-
-import classes from "./Community.module.css";
 import Section from "./Layout/Section";
 import Card from "./UI/Card";
+
+import classes from "./Community.module.css";
 
 const Community = () => {
   return (
@@ -15,9 +14,14 @@ const Community = () => {
             attributes hold the most value! Join us to get the news as soon as
             possible and follow our latest announcements.
           </p>
-          <Link to="/" target="_blank" rel="noopener noreferrer">
+          <a
+            href="https://discord.gg/Epy2xtzZrx"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Join our discord"
+          >
             Join Our Discord
-          </Link>
+          </a>
         </Card>
       </div>
     </Section>

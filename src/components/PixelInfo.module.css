@@ -10,6 +10,8 @@
 .pixelLarge {
     width: 2.5rem;
     height: 2.5rem;
+    min-height: 2.5rem;
+    min-width: 2.5rem;
     border-radius: 8px;
 }
 
@@ -39,10 +41,8 @@
 .stats {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    grid-column-gap: 0.75rem;
     border-bottom: 1px solid var(--color-border);   
-}
-
-.stats div {
     margin: 0.75rem 0;
 }
 
@@ -54,14 +54,66 @@
 .sales span,
 .owner span {
     font-family: "InterBold", sans-serif;
-    font-family: "InterBold", sans-serif;
     padding: 0px;
     margin: 0px;
+}
+
+.owner {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.addressContainer {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    margin-top: -3px !important;
+}
+
+.address {
+    flex: 1;
+    padding-right: 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.copy {
+    box-sizing: border-box;
+    white-space: nowrap;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--color-card-background);
+    border-radius: 20px;
+    border: 1px solid var(--color-border);
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+}
+
+.copy:hover {
+    border-color: white;
+}
+
+.copy > svg {
+    margin: 0.3rem;
+}
+
+.copy:active > svg {
+    fill: white;
 }
 
 .attributes {
     margin-top: 1rem;
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(8.5rem, 1fr));
     grid-gap: 1rem;
+}
+
+@media (max-width: 650px) {
+    .stats {
+        grid-template-columns: 1fr;
+    }
 }
