@@ -7,13 +7,15 @@ const Overview = () => {
   const overviewCardData = [
     {
       title: "Polarizing",
-      description:
-        "Some of the best art is loved by people precisely because others hate it. (link to banksy)",
+      description: "Some of the best art is loved by people precisely ",
+      linkText: "because others hate it.",
+      link: "https://wapo.st/3CF24o9",
     },
     {
       title: "Simple is Best",
-      description:
-        "Examples of very simple pieces of art that have sold for millions - (https://bit.ly/3FLmeil)",
+      description: "Examples of very simple pieces of art that have ",
+      linkText: "sold for millions.",
+      link: "https://bit.ly/3FLmeil",
     },
     {
       title: "Bigger Picture",
@@ -28,12 +30,12 @@ const Overview = () => {
     {
       title: "Low Gas Fees",
       description:
-        "NFT exists on the Polygon network to reduce the gas fees that collectors pay.",
+        "NFT created on the Polygon network to greatly reduce the gas fees that collectors pay.",
     },
     {
-      title: "Less Stagnation",
+      title: "Early Adopter Bonus",
       description:
-        "Cheer on your favorite crypto as market prices for coins rise/fall and change collection value.",
+        "A scaling mint fee means early adopters to the project are rewarded",
     },
   ];
 
@@ -44,6 +46,8 @@ const Overview = () => {
           key={card.title}
           title={card.title}
           description={card.description}
+          linkText={card.linkText}
+          link={card.link}
         />
       ))}
     </Section>

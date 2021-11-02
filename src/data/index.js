@@ -30,6 +30,9 @@ export const getAttributeCounts = () => {
     c: {},
   };
 
+  let influential = [];
+  let musky = [];
+
   // initialize counts in atts list
   for (let i = 0; i < atts.length; i++) {
     attributeCountsTemp[atts[i]] = 0;
@@ -64,6 +67,13 @@ export const getAttributeCounts = () => {
     for (const att of atts) {
       if (attributeData[i + 11 + atts.indexOf(att)] === "1") {
         attributeCountsTemp[att]++;
+
+        if (att === "i") {
+          influential.push(i / 21 + 1);
+        }
+        if (att === "m") {
+          musky.push(i / 21 + 1);
+        }
       }
     }
     // 'c' attribute
@@ -76,6 +86,10 @@ export const getAttributeCounts = () => {
       }
     }
   }
+
+  // const giveaways = influential.concat(musky).sort((a, b) => b - a);
+  // console.log(giveaways);
+
   return attributeCountsTemp;
 };
 
@@ -109,18 +123,4 @@ export const getAttributes = () => {
     attributesTemp[i / 21 + 1] = pixel;
   }
   return attributesTemp;
-};
-
-export const getPixelStats = () => {
-  let pixelStatsTemp = {};
-  for (let i = 1; i <= CONSTANTS.COLLECTION_SIZE; i++) {
-    pixelStatsTemp[i] = {
-      price: 0,
-      coin: "ETH",
-      timesSold: 0,
-      username: 0,
-      address: "0xAb5801a7D398351b8bE11C439e05C5B3259aeC9B",
-    };
-  }
-  return pixelStatsTemp;
 };

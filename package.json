@@ -3,10 +3,15 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@nomiclabs/hardhat-ethers": "^2.0.2",
+    "@nomiclabs/hardhat-truffle5": "^2.0.2",
+    "@nomiclabs/hardhat-waffle": "^2.0.1",
+    "@openzeppelin/contracts": "^4.3.2",
     "@reduxjs/toolkit": "^1.6.1",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
+    "dotenv": "^10.0.0",
     "firebase": "^9.1.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -15,7 +20,9 @@
     "react-router-dom": "^5.3.0",
     "react-scripts": "^4.0.3",
     "react-tooltip": "^4.2.21",
-    "web-vitals": "^1.0.1"
+    "web-vitals": "^1.0.1",
+    "web3": "^1.6.0",
+    "web3modal": "^1.9.4"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -40,5 +47,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@nomiclabs/hardhat-etherscan": "^2.1.7",
+    "hardhat": "^2.6.7",
+    "hardhat-deploy": "^0.9.4"
   }
 }

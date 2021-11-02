@@ -1,6 +1,3 @@
-.card {
-}
-
 .title {
     margin: 0 0 0.75rem 0;
     padding: 0;
@@ -15,4 +12,13 @@
     font-size: 1.1rem;
     line-height: 1.4rem;
     color: var(--color-soft-text);
+}
+
+a {
+    text-decoration: none;
+    color: #0af;
+}
+
+a:hover {
+    text-decoration: underline;
 }
