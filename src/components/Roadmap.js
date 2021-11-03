@@ -22,7 +22,9 @@ const Roadmap = () => {
     {
       isReached: false,
       title: "50% Sold Out",
-      description: "Gifting last 50 influential pixels to discord members",
+      description: `We are half-way there! Pixel lovers have shown their support and have generated considerable momentum for the 
+      project. At this milestone will be doing another community giveaway for our Discord members totally another 50 influential
+      pixels.`,
     },
     {
       isReached: false,

@@ -6,3 +6,6 @@ export const DISTANCE_THRESHOLD_IN_PIXELS = 8 * (PIXEL_WIDTH + PIXEL_GAP);
 export const DISTANCE_THRESHOLD = DISTANCE_THRESHOLD_IN_PIXELS ** 2;
 export const INITIAL_CANVAS_WIDTH = 800;
 export const NAME = "Crypto Flex Pixels";
+export const DISCORD = "https://discord.gg/Epy2xtzZrx";
+export const TWITTER = "https://twitter.com/Flex_Pixels_NFT";
+export const OPENSEA = "";

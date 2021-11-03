@@ -1,5 +1,6 @@
 import Section from "./Layout/Section";
 import Card from "./UI/Card";
+import * as CONSTANTS from "../constants";
 
 import classes from "./Community.module.css";
 
@@ -15,7 +16,7 @@ const Community = () => {
             possible and follow our latest announcements.
           </p>
           <a
-            href="https://discord.gg/Epy2xtzZrx"
+            href={CONSTANTS.DISCORD}
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Join our discord"

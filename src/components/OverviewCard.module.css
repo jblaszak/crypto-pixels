@@ -14,11 +14,11 @@
     color: var(--color-soft-text);
 }
 
-a {
+.card a {
     text-decoration: none;
     color: #0af;
 }
 
-a:hover {
+.card a:hover {
     text-decoration: underline;
 }

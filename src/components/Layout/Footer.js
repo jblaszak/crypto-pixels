@@ -18,7 +18,7 @@ const Footer = () => {
               Home
             </Link>
             <Link to="/collection-viewer">Collection Viewer</Link>
-            <Link to="/privacy-policy">Privacy Policy</Link>
+            {/* <Link to="/privacy-policy">Privacy Policy</Link> */}
           </div>
         </div>
         <div className={classes.bottom}>

@@ -9,6 +9,7 @@ import Section from "../components/Layout/Section";
 import PixelMap from "../components/PixelMap/PixelMap";
 
 import classes from "./CollectionViewer.module.css";
+import Minting from "../components/Minting";
 
 const CollectionViewer = () => {
   // const [isHeatMap, setIsHeatMap] = useState(false);
@@ -35,9 +36,10 @@ const CollectionViewer = () => {
   return (
     <React.Fragment>
       <Section>
+        <Minting />
         <p className={classes.usageDescription}>
           Enter information below or click on pixel to get more information
-          about it!
+          about it! Best viewed on desktop.
         </p>
         <Card>
           <div className={classes.bothForms}>

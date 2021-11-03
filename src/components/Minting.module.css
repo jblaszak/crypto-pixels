@@ -1,0 +1,42 @@
+.container {
+    background-color: var(--color-background2);
+    border-radius: 20px;
+    padding: 2.5rem;
+    margin-bottom: 4rem;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.message {
+    display: flex;
+    align-items: center;
+    font-size: 1.25rem;
+    font-family: 'InterRegular';
+    margin-bottom: 1rem;
+}
+
+.message > span {
+    font-size: 1.5rem;
+    font-family: 'InterBold';
+    margin-left: 1rem;
+}
+
+.mintFee {
+    display: flex;
+    align-items: center;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+}
+
+.mintFee span {
+    margin-left: 1rem;
+    color: #a977ff;
+}
+
+.container button {
+    padding: 1rem;
+    font-size: 1.25rem;
+}

@@ -1,5 +1,7 @@
 // import { Link } from "react-router-dom";
 
+import * as CONSTANTS from "../../constants";
+
 import classes from "./IconLinks.module.css";
 
 const IconLinks = () => {
@@ -8,7 +10,7 @@ const IconLinks = () => {
       <div>
         <a
           className={classes.twitter}
-          href="https://twitter.com/Flex_Pixels_NFT"
+          href={CONSTANTS.TWITTER}
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Twitter"
@@ -19,7 +21,7 @@ const IconLinks = () => {
       <div>
         <a
           className={classes.discord}
-          href="https://discord.gg/Epy2xtzZrx"
+          href={CONSTANTS.DISCORD}
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Discord"
@@ -30,7 +32,7 @@ const IconLinks = () => {
       <div>
         <a
           className={classes.opensea}
-          href="/"
+          href={CONSTANTS.OPENSEA}
           target="_blank"
           rel="noopener noreferrer"
           aria-label="OpenSea"

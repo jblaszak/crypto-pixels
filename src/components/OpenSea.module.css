@@ -1,0 +1,52 @@
+.opensea {
+    display: grid;
+    grid-template-columns: 1fr 310px;
+    grid-column-gap: 1rem;
+    grid-row-gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    margin-top: 4rem;
+    padding: 2rem;
+    background-color: var(--color-background2);
+    color: white;
+    font-size: 1.2rem;
+    border-radius: 20px;
+}
+
+.link {
+    margin: 1rem 0;
+    justify-self: center;
+    align-items: center;
+}
+
+.opensea a {
+    text-decoration: none;
+    font-family: 'InterBold';
+    font-size: 1.25rem;
+    padding: 1rem;
+    color: white;
+    border-radius: 5px;
+    background-color: #2898f3;
+    white-space: nowrap;
+}
+
+.opensea a:hover {
+    filter: brightness(120%);
+}
+
+@media (max-width: 500px) {
+    .opensea a {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 700px) {
+    .opensea {
+        grid-template-columns: 1fr;
+        row-gap: 1rem;
+    }
+
+    .description {
+        text-align: center;
+    }
+}
