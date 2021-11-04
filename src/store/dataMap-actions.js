@@ -1,6 +1,3 @@
-import { set, ref } from "firebase/database";
-import db from "../services/firebase";
-
 import { dataMapActions } from "./dataMap-slice";
 import { errorActions } from "./error-slice.js";
 

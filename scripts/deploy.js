@@ -14,10 +14,25 @@ async function main() {
   // await hre.run('compile');
 
   // We get the contract to deploy
-  const CFPNFT = await hre.ethers.getContractFactory("NFT");
+  const CFPNFT = await hre.ethers.getContractFactory("CryptoFlexPixelsNFT");
   const cfpnft = await CFPNFT.deploy();
   await cfpnft.deployed();
   console.log("CryptoFlexPixelsNft deployed to:", cfpnft.address);
+
+  console.log("---------------------");
+  console.log("Populating tokens...");
+  for (let i = 0; i < 100; i++) {
+    const shift = i * 100;
+    await cfpnft.populateAvailableTokens(1 + shift, 100 + shift);
+  }
+  console.log("Done!");
+  console.log("---------------------");
+  console.log("Creating giveaway tokens");
+  for (let j = 1; j <= 601; j++) {
+    await cfpnft.createGiveAway(j);
+  }
+  console.log("Done!");
+  console.log("---------------------");
 }
 
 // We recommend this pattern to be able to use async/await everywhere

@@ -7,10 +7,8 @@ const mintSlice = createSlice({
     mintFee: 0,
   },
   reducers: {
-    updateMintCount(state, actions) {
+    updateMintInfo(state, actions) {
       state.mintCount = actions.payload.mintCount;
-    },
-    updateMintFee(state, actions) {
       state.mintFee = actions.payload.mintFee;
     },
   },

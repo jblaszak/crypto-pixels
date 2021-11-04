@@ -111,7 +111,7 @@ contract CryptoFlexPixelsNFT is ERC721URIStorage, ERC165Storage, ERC2981Collecti
         availableTokens[index] = availableTokens[numLeft-1];
         availableTokens.pop();
         addressToMintCount[msg.sender]++;
-        emit createdRandomNFT(msg.sender, tokenId, numLeft);
+        emit createdRandomNFT(msg.sender, tokenId, numLeft-1);
         return tokenId;
     }
 }

@@ -40,7 +40,7 @@ module.exports = {
       },
     },
     localhost: {
-      chainId: 31337,
+      chainId: 1337,
       accounts: {
         mnemonic:
           "grunt lion omit energy kick vibrant route dinner large glance wage estate super top demise",
@@ -104,6 +104,10 @@ module.exports = {
         },
       },
     ],
+  },
+  paths: {
+    tests: "./test",
+    artifacts: "./src/artifacts",
   },
   mocha: {
     timeout: 1000000,
