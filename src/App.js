@@ -4,18 +4,20 @@ import { Route, Switch } from "react-router-dom";
 
 import Layout from "./components/Layout/Layout";
 import LoadingSpinner from "./components/UI/LoadingSpinner";
-import ErrorMessage from "./components/UI/ErrorMessage";
+import StatusMessage from "./components/UI/StatusMessage";
 
 const NotFound = React.lazy(() => import("./Pages/NotFound"));
 const Home = React.lazy(() => import("./Pages/Home"));
 const CollectionViewer = React.lazy(() => import("./Pages/CollectionViewer"));
 
 function App() {
-  const errorMessage = useSelector((state) => state.error.errorMessage);
+  const { statusMessage, statusType } = useSelector((state) => state.status);
 
   return (
     <React.Fragment>
-      {errorMessage && <ErrorMessage message={errorMessage} />}
+      {statusMessage && (
+        <StatusMessage message={statusMessage} type={statusType} />
+      )}
       <Layout>
         <Suspense
           fallback={

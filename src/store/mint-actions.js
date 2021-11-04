@@ -6,7 +6,7 @@ import CryptoFlexPixelsNFT from "../artifacts/contracts/CryptoFlexPixelsNFT.sol/
 import { contractAddress } from "../config";
 
 import { mintActions } from "./mint-slice";
-import { errorActions } from "./error-slice.js";
+import { statusActions } from "./status-slice.js";
 
 export const getMintInfo = () => {
   return async (dispatch) => {
@@ -41,8 +41,9 @@ export const getMintInfo = () => {
     } catch (error) {
       console.log("there was an error updating!", error);
       dispatch(
-        errorActions.changeErrorMessage({
-          errorMessage: "Failed to grab minting info! :'(",
+        statusActions.changeStatus({
+          statusMessage: "Failed to grab minting info! :'(",
+          statusType: "error",
         })
       );
     }
@@ -72,11 +73,18 @@ export const mint = (mintFee) => {
     try {
       const tokenId = await mintNewToken();
       console.log("minted: ", tokenId);
+      dispatch(
+        statusActions.changeStatus({
+          statusMessage: `Successfully minted ${tokenId}`,
+          statusType: "success",
+        })
+      );
     } catch (error) {
       console.log("There was an error minting!", error);
       dispatch(
-        errorActions.changeErrorMessage({
-          errorMessage: "Failed to mint! :'(",
+        statusActions.changeStatus({
+          statusMessage: "Failed to mint token! :'(",
+          statusType: "error",
         })
       );
     }
@@ -109,8 +117,8 @@ export const setupWeb3 = () => {
     } catch (error) {
       console.log("There was an error setting up listener!", error);
       dispatch(
-        errorActions.changeErrorMessage({
-          errorMessage: "Failed to setup web3 and listener! :'(",
+        statusActions.changeStatus({
+          statusMessage: "Failed to setup web3 and listener! :'(",
         })
       );
     }

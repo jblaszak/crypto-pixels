@@ -35,15 +35,13 @@ module.exports = {
       // }
       chainId: 1337,
       accounts: {
-        mnemonic:
-          "grunt lion omit energy kick vibrant route dinner large glance wage estate super top demise",
+        mnemonic: MNEMONIC,
       },
     },
     localhost: {
       chainId: 1337,
       accounts: {
-        mnemonic:
-          "grunt lion omit energy kick vibrant route dinner large glance wage estate super top demise",
+        mnemonic: MNEMONIC,
       },
     },
     kovan: {

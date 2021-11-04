@@ -1,5 +1,5 @@
 import { dataMapActions } from "./dataMap-slice";
-import { errorActions } from "./error-slice.js";
+import { statusActions } from "./status-slice.js";
 
 export const fetchPixelData = () => {
   return async (dispatch) => {
@@ -22,8 +22,9 @@ export const fetchPixelData = () => {
     } catch {
       console.log("there was an error replacing data map!");
       dispatch(
-        errorActions.changeErrorMessage({
-          errorMessage: "Failed to grab pixel data! :'(",
+        statusActions.changeStatus({
+          statusMessage: "Failed to grab pixel data! :'(",
+          statusType: "error",
         })
       );
     }
