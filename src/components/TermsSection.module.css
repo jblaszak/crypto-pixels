@@ -1,0 +1,9 @@
+.termsSection {
+    color: white;
+    margin-bottom: 3rem;
+}
+
+.termsSection p {
+    color: var(--color-soft-text);
+    line-height: 1.5rem;
+}
