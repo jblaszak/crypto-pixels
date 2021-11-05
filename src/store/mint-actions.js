@@ -67,7 +67,9 @@ export const mint = (mintFee) => {
 
       let tx = await nftContract.connect(signer).create({ value: mintFee });
       tx = await tx.wait();
-      return tx.events[0].args[2].toNumber();
+      const address = tx.events[0].args[1].toString();
+      const tokenId = tx.events[0].args[2].toNumber();
+      return [address, tokenId];
     };
 
     try {
@@ -75,7 +77,7 @@ export const mint = (mintFee) => {
       console.log("minted: ", tokenId);
       dispatch(
         statusActions.changeStatus({
-          statusMessage: `Successfully minted ${tokenId}`,
+          statusMessage: `Minted CFP #${tokenId}! Congrats!`,
           statusType: "success",
         })
       );

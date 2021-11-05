@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import { NavLink } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import useOutsideCheck from "../../hooks/useOutsideCheck";
 import useResponsive from "../../hooks/useResponsive";
@@ -14,11 +15,17 @@ const MainHeader = (props) => {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
 
+  const statusMessage = useSelector((state) => state.status.statusMessage);
+
   const onClickHandler = (e) => {
     setOpen(!open);
   };
 
   useOutsideCheck(dropdownRef, onClickHandler);
+
+  const headerClasses = `${classes.header} ${
+    statusMessage ? classes.downShifted : ""
+  }`;
 
   let navbar = (
     <nav className={classes.navbar}>
@@ -64,7 +71,7 @@ const MainHeader = (props) => {
 
   return (
     <React.Fragment>
-      <header className={classes.header}>
+      <header className={headerClasses}>
         <div className={classes.container}>
           <div className={classes.logo}>Crypto Flex Pixels</div>
           {navbar}

@@ -5,6 +5,7 @@ const statusSlice = createSlice({
   initialState: {
     statusMessage: "",
     statusType: "",
+    isPrivacyChecked: false,
   },
   reducers: {
     changeStatus(state, actions) {

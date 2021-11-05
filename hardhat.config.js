@@ -19,7 +19,7 @@ const RINKEBY_RPC_URL =
 const KOVAN_RPC_URL =
   process.env.KOVAN_RPC_URL ||
   "https://eth-kovan.alchemyapi.io/v2/your-api-key";
-const MNEMONIC = process.env.MNEMONIC || "your mnemonic";
+const MNEMONIC = process.env.MNEMONIC;
 const ETHERSCAN_API_KEY =
   process.env.ETHERSCAN_API_KEY || "Your etherscan API key";
 // optional
