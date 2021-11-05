@@ -1,15 +1,18 @@
 .statusMessage {
     /* width: 100%; */
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
     height: 3rem;
     display: flex;
     justify-content: center;
     padding: 0.5rem 10%;
     align-items: center;
-    /* color: white; */
-    /* transition: height 0.5s; */
-    animation: appear 0.25s ease-in forwards;
+    animation: appear 0.25s linear forwards;
     display: relative;
     z-index: 99999;
+    color: transparent;
 
   }
   
@@ -34,16 +37,19 @@
 
 .error {
   background-color: #690000;
-  color: #690000;
+  color: white;
+  transition: all 0.5s;
+  /* color: #690000; */
 }
 
 .success {
   background-color: seagreen;
-  color: seagreen;
-  animation: color 0.25s ease-in forwards;
+  color: white;
+  transition: all 0.5s;
+  /* animation: color 0.25s ease-in forwards; */
 }
 
-@keyframes color {
+/* @keyframes color {
   0% {
     
   }
@@ -53,4 +59,4 @@
   100% {
     color: white;
   }
-}
+} */
