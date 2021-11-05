@@ -35,7 +35,7 @@ const Overview = () => {
     {
       title: "Early Adopter Bonus",
       description:
-        "A scaling mint fee means early adopters to the project are rewarded",
+        "A scaling mint fee means early adopters to the project are rewarded.",
     },
   ];
 

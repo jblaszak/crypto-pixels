@@ -1,0 +1,38 @@
+.container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--color-background2);
+    border-top: 1px solid var(--color-border);
+    color: white;
+}
+
+.container h1 {
+    font-size: 1.25rem;
+    margin: 0;
+    margin-bottom: 0.5rem;
+    padding: 0;
+}
+
+.privacy {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+    color: var(--color-soft-text);
+}
+
+.privacy p {
+    margin: 0;
+    padding: 0;
+}
+
+.privacy a {
+    text-decoration: none;
+    color: #0af;
+}
+
+.privacy a:hover {
+    text-decoration: underline;
+}

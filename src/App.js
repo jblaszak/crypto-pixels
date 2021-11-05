@@ -5,13 +5,16 @@ import { Route, Switch } from "react-router-dom";
 import Layout from "./components/Layout/Layout";
 import LoadingSpinner from "./components/UI/LoadingSpinner";
 import StatusMessage from "./components/UI/StatusMessage";
+import TermsPopup from "./components/UI/TermsPopup";
 
 const NotFound = React.lazy(() => import("./Pages/NotFound"));
 const Home = React.lazy(() => import("./Pages/Home"));
 const CollectionViewer = React.lazy(() => import("./Pages/CollectionViewer"));
 
 function App() {
-  const { statusMessage, statusType } = useSelector((state) => state.status);
+  const { statusMessage, statusType, isPrivacyChecked } = useSelector(
+    (state) => state.status
+  );
 
   return (
     <React.Fragment>
@@ -39,6 +42,7 @@ function App() {
           </Switch>
         </Suspense>
       </Layout>
+      {!isPrivacyChecked && <TermsPopup />}
     </React.Fragment>
   );
 }

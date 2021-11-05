@@ -12,6 +12,9 @@ const statusSlice = createSlice({
       state.statusMessage = actions.payload.statusMessage;
       state.statusType = actions.payload.statusType;
     },
+    changePrivacyStatus(state, actions) {
+      state.isPrivacyChecked = actions.payload;
+    },
   },
 });
 
