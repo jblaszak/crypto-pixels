@@ -14,7 +14,7 @@
 
 .downShifted {
   transform: translateY(3rem);
-  transition: all 0.3s;
+  transition: transform 0.25s linear;
 }
 
 .container {

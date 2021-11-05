@@ -73,22 +73,24 @@ export const mint = (mintFee) => {
     };
 
     try {
-      const tokenId = await mintNewToken();
+      const [address, tokenId] = await mintNewToken();
       console.log("minted: ", tokenId);
       dispatch(
         statusActions.changeStatus({
-          statusMessage: `Minted CFP #${tokenId}! Congrats!`,
+          statusMessage: `You minted CFP #${tokenId}! Congrats!`,
           statusType: "success",
         })
       );
     } catch (error) {
       console.log("There was an error minting!", error);
-      dispatch(
-        statusActions.changeStatus({
-          statusMessage: "Failed to mint token! :'(",
-          statusType: "error",
-        })
-      );
+      if (error.message.includes("insufficient funds")) {
+        dispatch(
+          statusActions.changeStatus({
+            statusMessage: "Failed to mint: insufficient funds.",
+            statusType: "error",
+          })
+        );
+      }
     }
   };
 };

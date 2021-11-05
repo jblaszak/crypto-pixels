@@ -33,9 +33,7 @@
 
   /* #3f3f3f */
   html {
-    --color-text: white;
-  /* --color-background:#3f3f3f; */
-  /* --color-background:#0e0e0e; */
+  --color-text: white;
   --color-background:#111927;
   --color-background2: #141e2e;
   --color-card-background: #1f2a37;
@@ -45,6 +43,9 @@
   --color-soft-text: #b4d5fb;
   --color-link-color: #0af;
   --color-border: #374251;
+  --color-success: #4CAF50;
+  --color-error: #F44336;
+  --color-notification: #2196F3;
   --color-primary: hsl(230deg, 100%, 67%);
   --color-secondary: hsl(333deg, 100%, 52%);
   --color-tertiary: hsl(53deg, 100%, 50%);
