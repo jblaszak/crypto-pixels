@@ -47,7 +47,7 @@
 .links a:visited{
     text-decoration: none;
     color: var(--color-green-dark);
-    transition: all 0.5s all;
+    transition: all 0.25s;
 }
 
 .homeLink,

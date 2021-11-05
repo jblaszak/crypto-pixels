@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import Web3Modal from "web3modal";
 import { ethers } from "ethers";
 import CryptoFlexPixelsNFT from "../artifacts/contracts/CryptoFlexPixelsNFT.sol/CryptoFlexPixelsNFT.json";
-import { contractAddress } from "../config";
+import * as CONSTANTS from "../constants";
 
 import { mintActions } from "./mint-slice";
 import { statusActions } from "./status-slice.js";
@@ -16,7 +16,7 @@ export const getMintInfo = () => {
       const provider = new ethers.providers.Web3Provider(connection);
 
       const nftContract = new ethers.Contract(
-        contractAddress,
+        CONSTANTS.CONTRACT_ADDRESS,
         CryptoFlexPixelsNFT.abi,
         provider
       );
@@ -59,7 +59,7 @@ export const mint = (mintFee) => {
       const provider = new ethers.providers.Web3Provider(connection);
 
       const nftContract = new ethers.Contract(
-        contractAddress,
+        CONSTANTS.CONTRACT_ADDRESS,
         CryptoFlexPixelsNFT.abi,
         provider
       );
@@ -99,7 +99,7 @@ export const setupWeb3 = () => {
       console.log("getting info... start");
       const provider = new ethers.providers.JsonRpcProvider();
       const tokenContract = new ethers.Contract(
-        contractAddress,
+        CONSTANTS.CONTRACT_ADDRESS,
         CryptoFlexPixelsNFT.abi,
         provider
       );

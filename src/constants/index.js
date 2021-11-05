@@ -10,3 +10,4 @@ export const NAME_SHORT = "CFP";
 export const DISCORD = "https://discord.gg/Epy2xtzZrx";
 export const TWITTER = "https://twitter.com/Flex_Pixels_NFT";
 export const OPENSEA = "";
+export const CONTRACT_ADDRESS = "0x1D514d1FF604d6BF12faEfe80786567b4d1439ba";

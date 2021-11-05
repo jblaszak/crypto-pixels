@@ -1,10 +1,5 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
-import Web3Modal from "web3modal";
-import { ethers } from "ethers";
-import CryptoFlexPixelsNFT from "../artifacts/contracts/CryptoFlexPixelsNFT.sol/CryptoFlexPixelsNFT.json";
-import { contractAddress } from "../config";
 import { getMintInfo, mint, setupWeb3 } from "../store/mint-actions";
 
 import Section from "./Layout/Section";

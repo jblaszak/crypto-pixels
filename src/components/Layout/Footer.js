@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 
 import IconLinks from "./IconLinks";
+import * as CONSTANTS from "../../constants";
 
 import classes from "./Footer.module.css";
 
@@ -19,6 +20,14 @@ const Footer = () => {
             </Link>
             <Link to="/collection-viewer">Collection Viewer</Link>
             <Link to="/terms">Terms & Conditions</Link>
+            <a
+              href={`https://polygonscan.com/address/${CONSTANTS.CONTRACT_ADDRESS}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Contract Address"
+            >
+              Contract Address
+            </a>
           </div>
         </div>
         <div className={classes.bottom}>
