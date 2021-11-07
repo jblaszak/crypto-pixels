@@ -67,7 +67,7 @@ contract CryptoFlexPixelsNFT is ERC721URIStorage, ERC165Storage, ERC2981Collecti
     }
 
     function batchCreateGiveAway(uint256[] memory tokenIds) public onlyOwner {
-        for (uint i=0; i<=tokenIds.length; i++) {
+        for (uint i=0; i<tokenIds.length; i++) {
             createGiveAway(tokenIds[i]);
         }
     }

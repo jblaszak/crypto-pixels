@@ -42,6 +42,20 @@ describe("NFTMarket", () => {
   //   numTokens = await CFPNFT.getAvailableTokensCount();
   //   expect(numTokens.toNumber() == 9999).to.be.true;
   // });
+  it("Should allow batch creation of giveaways by owner", async () => {
+    for (let i = 0; i < 100; i++) {
+      const shift = i * 100;
+      await CFPNFT.populateAvailableTokens(1 + shift, 100 + shift);
+    }
+    const giveaways = [
+      9942, 9916, 9915, 9914, 9913, 9912, 9911, 9910, 9909, 9908, 9907, 9906,
+      9905,
+    ];
+    let tx = await CFPNFT.batchCreateGiveAway(giveaways);
+    tx = await tx.wait();
+    numTokens = await CFPNFT.getAvailableTokensCount();
+    expect(numTokens.toNumber() == 9987).to.be.true;
+  });
   // it("Should allow creation of giveaways by owner only up to 601", async () => {
   //   for (let i = 0; i < 100; i++) {
   //     const shift = i * 100;
