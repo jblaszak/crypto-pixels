@@ -50,7 +50,7 @@ contract CryptoFlexPixelsNFT is ERC721URIStorage, ERC165Storage, ERC2981Collecti
 
     function populateAvailableTokens(uint256 _start, uint256 _end) public onlyOwner {
         totalPop = totalPop + _end - _start + 1;
-        require(totalPop <= 10000, "Max tokens populated!");
+        require(totalPop <= 10000, "Max tokens already populated!");
 
         for (uint i=_start; i<=_end; i++) {
             availableTokens.push(i);
@@ -58,7 +58,7 @@ contract CryptoFlexPixelsNFT is ERC721URIStorage, ERC165Storage, ERC2981Collecti
     }
 
     function createGiveAway(uint256 tokenId) public onlyOwner {
-        require(giveAwayCounter < 601, "All giveaway NFTs minted");
+        require(giveAwayCounter < 601, "All giveaway NFTs already minted");
         _safeMint(owner(), tokenId);
         availableTokens[tokenId-1] = availableTokens[availableTokens.length-1];
         availableTokens.pop();
@@ -66,9 +66,9 @@ contract CryptoFlexPixelsNFT is ERC721URIStorage, ERC165Storage, ERC2981Collecti
         emit createdGiveAwayNFT(msg.sender, tokenId, availableTokens.length);
     }
 
-    function batchCreateGiveAway(uint256 _start, uint256 _end) public onlyOwner {
-        for (uint i=_start; i<=_end; i++) {
-            createGiveAway(i);
+    function batchCreateGiveAway(uint256[] memory tokenIds) public onlyOwner {
+        for (uint i=0; i<=tokenIds.length; i++) {
+            createGiveAway(tokenIds[i]);
         }
     }
 

@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "C:\\Users\\Jo\\Desktop\\crypto-pixels\\contracts\\CryptoFlexPixelsNFT.sol": {
-      "lastModificationDate": 1636001945037,
-      "contentHash": "8bfac1bba475ce365d4a18bc179ce1d0",
+      "lastModificationDate": 1636146321278,
+      "contentHash": "620c5ce6a25d8a9dfc59d3b3d92ed733",
       "sourceName": "contracts/CryptoFlexPixelsNFT.sol",
       "solcConfig": {
         "version": "0.8.0",

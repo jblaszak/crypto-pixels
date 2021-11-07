@@ -1,11 +1,7 @@
-import React, { useEffect, useContext } from "react";
+import React, { useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { ethers } from "ethers";
 
 import { updateStatus } from "../helpers/updateStatus";
-import { mintActions } from "../store/mint-slice";
-import * as CONSTANTS from "../constants";
-import CryptoFlexPixelsNFT from "../artifacts/contracts/CryptoFlexPixelsNFT.sol/CryptoFlexPixelsNFT.json";
 
 import Section from "./Layout/Section";
 import CryptoContext from "../store/cryptoContext";
@@ -18,7 +14,6 @@ const Minting = () => {
   const dispatch = useDispatch();
 
   const mint = async () => {
-    console.log("minting new token");
     const mintNewToken = async () => {
       const provider = ctx.provider;
       const contract = ctx.contract;
@@ -33,7 +28,6 @@ const Minting = () => {
 
     try {
       const [address, tokenId] = await mintNewToken();
-      console.log("minted: ", tokenId);
       updateStatus(
         "success",
         `You minted CFP #${tokenId}! Congrats!`,
@@ -41,8 +35,31 @@ const Minting = () => {
       );
     } catch (error) {
       console.log("There was an error minting!", error);
-      if (error.message.includes("insufficient funds")) {
+      if (
+        error.message.includes("insufficient funds") ||
+        error.data.message.includes("Insufficient funds!")
+      ) {
         updateStatus("error", "Failed to mint: insufficient funds.", dispatch);
+      } else if (
+        error.data.message.includes(
+          "Already minted max amount for this address!"
+        )
+      ) {
+        updateStatus(
+          "error",
+          "Failed to mint: max amount minted for this address (20).",
+          dispatch
+        );
+      } else if (error.data.message.includes("No tokens left")) {
+        updateStatus("error", "Failed to mint: no tokens left!", dispatch);
+      } else if (
+        error.data.message.includes("Giveaway tokens not minted yet!")
+      ) {
+        updateStatus(
+          "error",
+          "Failed to mint: giveaways not minted yet.",
+          dispatch
+        );
       }
     }
   };

@@ -25,7 +25,6 @@ export const CryptoContextProvider = (props) => {
   }, []);
 
   const connectWeb3 = async () => {
-    console.log("connectingWeb3");
     const setupContract = async () => {
       const newProvider = new ethers.providers.JsonRpcProvider();
 
@@ -60,7 +59,7 @@ export const CryptoContextProvider = (props) => {
     try {
       await setupContract();
     } catch (error) {
-      console.log("There was an error setting up listener!", error);
+      console.log("There was an error setting up web3!", error);
       updateStatus("error", "Failed to setup web3!", dispatch);
     }
   };
@@ -80,10 +79,9 @@ export const CryptoContextProvider = (props) => {
 
       const network = await provider.getNetwork();
       const chainId = network.chainId;
-      console.log("CHAIN ID:", chainId);
-      if (chainId !== 1) {
-        throw "NOT_MAIN_NET";
-      }
+      // if (chainId !== 1) {
+      //   throw "NOT_MAIN_NET";
+      // }
 
       const signer = newProvider.getSigner();
       const signerAddress = await signer.getAddress();
@@ -140,15 +138,13 @@ export const CryptoContextProvider = (props) => {
     };
 
     try {
-      console.log("getting mint info...");
-      console.log(contract);
       const [mintCount, mintFee] = await fetchMintInfo();
       dispatch(
         mintActions.updateMintInfo({ mintCount: mintCount, mintFee: mintFee })
       );
     } catch (error) {
       console.log("There was an error updating mint info!", error);
-      updateStatus("error", "Failed to grab minting info! :'(", dispatch);
+      updateStatus("error", "Failed to grab minting info!", dispatch);
     }
   };
 
