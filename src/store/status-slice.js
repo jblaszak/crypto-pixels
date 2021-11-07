@@ -1,11 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const checkPrivacy = () => {
+  if (localStorage.getItem("privacy")) return true;
+  return false;
+};
+
 const statusSlice = createSlice({
   name: "status",
   initialState: {
     statusMessage: "",
     statusType: "",
-    isPrivacyChecked: false,
+    isPrivacyChecked: checkPrivacy(),
   },
   reducers: {
     changeStatus(state, actions) {
@@ -13,6 +18,7 @@ const statusSlice = createSlice({
       state.statusType = actions.payload.statusType;
     },
     changePrivacyStatus(state, actions) {
+      localStorage.setItem("privacy", true);
       state.isPrivacyChecked = actions.payload;
     },
   },

@@ -5,6 +5,8 @@ const mintSlice = createSlice({
   initialState: {
     mintCount: 0,
     mintFee: 0,
+    provider: null,
+    contract: null,
   },
   reducers: {
     updateMintInfo(state, actions) {

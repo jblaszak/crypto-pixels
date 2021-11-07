@@ -10,7 +10,11 @@ const StatusMessage = (props) => {
   const dispatch = useDispatch();
 
   const className = `${classes.statusMessage} ${
-    props.type === "success" ? classes.success : classes.error
+    props.type === "success"
+      ? classes.success
+      : props.type === "notification"
+      ? classes.notification
+      : classes.error
   }`;
 
   useEffect(() => {

@@ -24,9 +24,9 @@ const Footer = () => {
               href={`https://polygonscan.com/address/${CONSTANTS.CONTRACT_ADDRESS}`}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Contract Address"
+              aria-label="Smart Contract"
             >
-              Contract Address
+              Smart Contract
             </a>
           </div>
         </div>

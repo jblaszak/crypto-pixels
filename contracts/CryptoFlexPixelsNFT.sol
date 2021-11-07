@@ -15,12 +15,10 @@ contract CryptoFlexPixelsNFT is ERC721URIStorage, ERC165Storage, ERC2981Collecti
     mapping(address => uint256) public addressToMintCount;
 
     uint[] public availableTokens;
-    // bool internal paused = false;
     bytes4 private constant _INTERFACE_ID_IERC2981 = 0x2a55205a;
     bytes4 private constant _INTERFACE_ID_ERC2981Collection = 0x6af56a00;
-    uint16 internal constant maxMints = 10000;
+    uint16 internal constant maxMints = 3;
     uint8 internal constant royaltyPercent = 5;
-    // uint16 internal numTokensLeft = 10000;
     uint16 internal giveAwayCounter = 0;
     uint256 internal totalPop = 0;
     string internal baseURI = 'ipfs://ouwoeiruoiau/';
@@ -83,6 +81,7 @@ contract CryptoFlexPixelsNFT is ERC721URIStorage, ERC165Storage, ERC2981Collecti
     }
 
     function getMintFee() public view returns (uint256) {
+        require(availableTokens.length <= 9399, "Giveaway tokens not minted yet!");
         uint256 startingPrice = 0.001 ether;
         uint256 endingPrice = 0.2 ether;
         uint256 numLeft = availableTokens.length;
@@ -91,16 +90,10 @@ contract CryptoFlexPixelsNFT is ERC721URIStorage, ERC165Storage, ERC2981Collecti
     }
 
     function create() public payable returns(uint256) {
-        // require(!paused, "Minting is currently paused.");
         require(addressToMintCount[msg.sender] < maxMints, "Already minted max amount for this address!");
         uint256 numLeft = availableTokens.length;
         require(numLeft <= 9399, "Giveaway tokens not minted yet!");
         require(numLeft > 0, "No tokens left");
-
-        // uint256 startingPrice = 0.001 ether;
-        // uint256 endingPrice = 0.2 ether;
-        // uint256 mintPrice = (numLeft) * (endingPrice-startingPrice) / 9300 + startingPrice;
-        // uint256 mintPrice = (numLeft) * (endingPrice-startingPrice) / 100000 + startingPrice;
         require(msg.value >= getMintFee(), "Insufficient funds!");
 
         uint256 index = uint256(keccak256(abi.encodePacked(block.timestamp, msg.sender, numLeft))) % numLeft;
