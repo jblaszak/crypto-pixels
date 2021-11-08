@@ -75,12 +75,10 @@ export const CryptoContextProvider = (props) => {
     let tokensMinted;
     const tryUpdateMintedPixels = async () => {
       let tokensAvailable = await contract.getAvailableTokensList();
-      tokensAvailable = tokensAvailable.map((token) => token.toNumber());
       tokensMinted = CONSTANTS.TOTAL_TOKENS_ARRAY.filter(
         (x) => !tokensAvailable.includes(x)
       );
       setMintedPixels(tokensMinted);
-      console.log(tokensMinted);
     };
     try {
       await tryUpdateMintedPixels();
@@ -126,6 +124,7 @@ export const CryptoContextProvider = (props) => {
         newProvider
       );
 
+      await getMintInfo(newContract);
       await updateMintedPixels(newContract);
 
       setProvider(newProvider);

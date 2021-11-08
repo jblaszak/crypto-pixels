@@ -12,17 +12,17 @@ contract CryptoFlexPixelsNFT is ERC721URIStorage, ERC165Storage, ERC2981Collecti
     event createdRandomNFT(address indexed createdBy, uint256 indexed tokenId, uint256 indexed tokensLeft);
     event createdGiveAwayNFT(address indexed createdBy, uint256 indexed tokenId, uint256 indexed tokensLeft);
 
-    mapping(address => uint256) public addressToMintCount;
+    mapping(address => uint8) public addressToMintCount;
 
-    uint[] public availableTokens;
     bytes4 private constant _INTERFACE_ID_IERC2981 = 0x2a55205a;
     bytes4 private constant _INTERFACE_ID_ERC2981Collection = 0x6af56a00;
-    uint16 internal constant maxMints = 20;
-    uint8 internal constant royaltyPercent = 5;
-    uint16 internal giveAwayCounter = 0;
-    uint256 internal totalPop = 0;
-    string internal baseURI = 'ipfs://ouwoeiruoiau/';
-    string internal constant URIextension = '.json';
+    uint8 public constant maxMints = 20;
+    uint8 public constant royaltyPercent = 5;
+    uint16 public giveAwayCounter = 0;
+    uint16 public totalPop = 0;
+    uint16[] public availableTokens = new uint16[](10000);
+    uint256 public numLeft = 10000;
+    string public baseURI = 'ipfs://ouwoeiruoiau/';
 
     constructor() 
     ERC721("CryptoFlexPixels", "CFPNFT")
@@ -48,52 +48,56 @@ contract CryptoFlexPixelsNFT is ERC721URIStorage, ERC165Storage, ERC2981Collecti
         payable(owner()).transfer(address(this).balance);
     }
 
-    function populateAvailableTokens(uint256 _start, uint256 _end) public onlyOwner {
+    function populateAvailableTokens(uint16 _start, uint16 _end) public onlyOwner {
         totalPop = totalPop + _end - _start + 1;
         require(totalPop <= 10000, "Max tokens already populated!");
 
-        for (uint i=_start; i<=_end; i++) {
-            availableTokens.push(i);
+        for (uint16 i=_start; i<=_end; i++) {
+            availableTokens[i-1] = i;
         }
     }
 
-    function createGiveAway(uint256 tokenId) public onlyOwner {
+    function createGiveAway(uint16 tokenId) public onlyOwner {
         require(giveAwayCounter < 601, "All giveaway NFTs already minted");
-        _safeMint(owner(), tokenId);
-        availableTokens[tokenId-1] = availableTokens[availableTokens.length-1];
-        availableTokens.pop();
+        _safeMint(owner(), uint256(tokenId));
+        numLeft--;
+        availableTokens[tokenId-1] = availableTokens[numLeft];
         giveAwayCounter++;
-        emit createdGiveAwayNFT(msg.sender, tokenId, availableTokens.length);
+        emit createdGiveAwayNFT(msg.sender, tokenId, numLeft);
     }
 
-    function batchCreateGiveAway(uint256[] memory tokenIds) public onlyOwner {
+    function batchCreateGiveAway(uint16[] memory tokenIds) public onlyOwner {
         for (uint i=0; i<tokenIds.length; i++) {
             createGiveAway(tokenIds[i]);
         }
     }
 
-    function getAvailableTokensList() public view returns (uint[] memory) {
-        return availableTokens;
+    function getAvailableTokensList() public view returns (uint16[] memory) {
+        uint numberLeft = numLeft;
+        uint16[] memory tokensList = new uint16[](numberLeft);
+        for (uint i=0; i<numberLeft; i++) {
+            tokensList[i] = availableTokens[i];
+        }
+        return tokensList;
     }
 
-    function getAvailableTokensCount() public view returns (uint) {
-        return availableTokens.length;
+    function getAvailableTokensCount() public view returns (uint256) {
+        return numLeft;
     }
 
     function getMintFee() public view returns (uint256) {
-        require(availableTokens.length <= 9399, "Giveaway tokens not minted yet!");
+        uint256 numberLeft = numLeft;
+        require(numberLeft <= 9399, "Giveaway tokens not minted yet!");
         uint256 startingPrice = 0.001 ether;
         uint256 endingPrice = 0.2 ether;
-        uint256 numLeft = availableTokens.length;
-        uint256 mintFee = (9399 - numLeft) * (endingPrice-startingPrice) / 9398 + startingPrice;
+        uint256 mintFee = (9399 - numberLeft) * (endingPrice-startingPrice) / 9398 + startingPrice;
         return mintFee;
     }
 
     function create() public payable returns(uint256) {
         require(addressToMintCount[msg.sender] < maxMints, "Already minted max amount for this address!");
-        uint256 numLeft = availableTokens.length;
+        require(numLeft > 0, "No tokens left!");
         require(numLeft <= 9399, "Giveaway tokens not minted yet!");
-        require(numLeft > 0, "No tokens left");
         require(msg.value >= getMintFee(), "Insufficient funds!");
 
         uint256 index = uint256(keccak256(abi.encodePacked(block.timestamp, msg.sender, numLeft))) % numLeft;
@@ -102,9 +106,9 @@ contract CryptoFlexPixelsNFT is ERC721URIStorage, ERC165Storage, ERC2981Collecti
         _safeMint(msg.sender, tokenId);
         // _setTokenURI(tokenId, string(abi.encodePacked(Strings.toString(tokenId), URIextension)));
         availableTokens[index] = availableTokens[numLeft-1];
-        availableTokens.pop();
+        numLeft--;
         addressToMintCount[msg.sender]++;
-        emit createdRandomNFT(msg.sender, tokenId, numLeft-1);
+        emit createdRandomNFT(msg.sender, tokenId, numLeft);
         return tokenId;
     }
 }

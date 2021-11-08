@@ -1,7 +1,7 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
 
-describe("NFTMarket", () => {
+describe("CryptoFlexPixelsNFT", () => {
   let CFPNFT;
 
   beforeEach(async () => {
@@ -13,28 +13,29 @@ describe("NFTMarket", () => {
     console.log("Nft deployed to:", CFPNFT.address);
   });
   // it("Should populate array of available tokens to 10000 but not more", async () => {
-  //   for (let i = 0; i < 100; i++) {
-  //     const shift = i * 100;
-  //     await CFPNFT.populateAvailableTokens(1 + shift, 100 + shift);
+  //   for (let i = 0; i < 10; i++) {
+  //     const shift = i * 1000;
+  //     await CFPNFT.populateAvailableTokens(1 + shift, 1000 + shift);
   //   }
   //   let numTokens = await CFPNFT.getAvailableTokensCount();
   //   console.log(`numTokens: ${numTokens}`);
-  //   expect(numTokens == 10000).to.be.true;
+  //   expect(numTokens.toNumber() == 10000).to.be.true;
   //   try {
   //     await CFPNFT.populateAvailableTokens(10001, 10001);
   //     numTokens = await CFPNFT.getAvailableTokensCount();
   //     console.log(`numTokens: ${numTokens}`);
   //   } catch (error) {
+  //     console.log(error);
   //     expect(
   //       error ==
-  //         "Error: VM Exception while processing transaction: reverted with reason string 'Max tokens populated!'"
+  //         "Error: VM Exception while processing transaction: reverted with reason string 'Max tokens already populated!'"
   //     ).to.be.true;
   //   }
   // });
   // it("Should allow creation of giveaways by owner", async () => {
-  //   for (let i = 0; i < 100; i++) {
-  //     const shift = i * 100;
-  //     await CFPNFT.populateAvailableTokens(1 + shift, 100 + shift);
+  //   for (let i = 0; i < 10; i++) {
+  //     const shift = i * 1000;
+  //     await CFPNFT.populateAvailableTokens(1 + shift, 1000 + shift);
   //   }
 
   //   let tx = await CFPNFT.createGiveAway(1);
@@ -42,24 +43,24 @@ describe("NFTMarket", () => {
   //   numTokens = await CFPNFT.getAvailableTokensCount();
   //   expect(numTokens.toNumber() == 9999).to.be.true;
   // });
-  it("Should allow batch creation of giveaways by owner", async () => {
-    for (let i = 0; i < 100; i++) {
-      const shift = i * 100;
-      await CFPNFT.populateAvailableTokens(1 + shift, 100 + shift);
-    }
-    const giveaways = [
-      9942, 9916, 9915, 9914, 9913, 9912, 9911, 9910, 9909, 9908, 9907, 9906,
-      9905,
-    ];
-    let tx = await CFPNFT.batchCreateGiveAway(giveaways);
-    tx = await tx.wait();
-    numTokens = await CFPNFT.getAvailableTokensCount();
-    expect(numTokens.toNumber() == 9987).to.be.true;
-  });
+  // it("Should allow batch creation of giveaways by owner", async () => {
+  //   for (let i = 0; i < 10; i++) {
+  //     const shift = i * 1000;
+  //     await CFPNFT.populateAvailableTokens(1 + shift, 1000 + shift);
+  //   }
+  //   const giveaways = [
+  //     9942, 9916, 9915, 9914, 9913, 9912, 9911, 9910, 9909, 9908, 9907, 9906,
+  //     9905,
+  //   ];
+  //   let tx = await CFPNFT.batchCreateGiveAway(giveaways);
+  //   tx = await tx.wait();
+  //   numTokens = await CFPNFT.getAvailableTokensCount();
+  //   expect(numTokens.toNumber() == 9987).to.be.true;
+  // });
   // it("Should allow creation of giveaways by owner only up to 601", async () => {
-  //   for (let i = 0; i < 100; i++) {
-  //     const shift = i * 100;
-  //     await CFPNFT.populateAvailableTokens(1 + shift, 100 + shift);
+  //   for (let i = 0; i < 10; i++) {
+  //     const shift = i * 1000;
+  //     await CFPNFT.populateAvailableTokens(1 + shift, 1000 + shift);
   //   }
   //   for (let j = 1; j <= 601; j++) {
   //     await CFPNFT.createGiveAway(j);
@@ -82,21 +83,24 @@ describe("NFTMarket", () => {
   //   }
   // });
 
+  // CHANGE numLeft to 0 to make this work, or rewrite to mint all 10k and wait forever!
   // it("Should fail if no NFTs left", async () => {
   //   try {
   //     tx = await CFPNFT.create();
+  //     console.log(tx);
   //   } catch (error) {
+  //     console.log(error);
   //     expect(
   //       error ==
-  //         "Error: VM Exception while processing transaction: reverted with reason string 'No tokens left'"
+  //         "Error: VM Exception while processing transaction: reverted with reason string 'No tokens left!'"
   //     ).to.be.true;
   //   }
   // });
 
   // it("Should fail if giveaway tokens not minted yet", async () => {
-  //   for (let i = 0; i < 100; i++) {
-  //     const shift = i * 100;
-  //     await CFPNFT.populateAvailableTokens(1 + shift, 100 + shift);
+  //   for (let i = 0; i < 10; i++) {
+  //     const shift = i * 1000;
+  //     await CFPNFT.populateAvailableTokens(1 + shift, 1000 + shift);
   //   }
 
   //   try {
@@ -110,9 +114,9 @@ describe("NFTMarket", () => {
   // });
 
   // it("Should succeeed if giveaways minted and starting w/ correct starting price", async () => {
-  //   for (let i = 0; i < 100; i++) {
-  //     const shift = i * 100;
-  //     await CFPNFT.populateAvailableTokens(1 + shift, 100 + shift);
+  //   for (let i = 0; i < 10; i++) {
+  //     const shift = i * 10;
+  //     await CFPNFT.populateAvailableTokens(1 + shift, 1000 + shift);
   //   }
 
   //   for (let j = 1; j <= 601; j++) {
@@ -131,9 +135,9 @@ describe("NFTMarket", () => {
   // });
 
   // it("Should fail if giveaways minted and starting w/ incorrect starting price", async () => {
-  //   for (let i = 0; i < 100; i++) {
-  //     const shift = i * 100;
-  //     await CFPNFT.populateAvailableTokens(1 + shift, 100 + shift);
+  //   for (let i = 0; i < 10; i++) {
+  //     const shift = i * 10;
+  //     await CFPNFT.populateAvailableTokens(1 + shift, 1000 + shift);
   //   }
 
   //   for (let j = 1; j <= 601; j++) {
@@ -155,9 +159,9 @@ describe("NFTMarket", () => {
   // Also, it is required to change the maxMints per account to 10,000 so it
   // doesn't fail...  Turn it back after!
   // it("Should have correct minting price at end", async () => {
-  //   for (let i = 0; i < 100; i++) {
-  //     const shift = i * 100;
-  //     await CFPNFT.populateAvailableTokens(1 + shift, 100 + shift);
+  //   for (let i = 0; i < 10; i++) {
+  //     const shift = i * 10;
+  //     await CFPNFT.populateAvailableTokens(1 + shift, 1000 + shift);
   //   }
 
   //   for (let j = 1; j <= 601; j++) {

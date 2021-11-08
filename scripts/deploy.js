@@ -21,9 +21,9 @@ async function main() {
 
   console.log("---------------------");
   console.log("Populating tokens...");
-  for (let i = 0; i < 100; i++) {
-    const shift = i * 100;
-    await cfpnft.populateAvailableTokens(1 + shift, 100 + shift);
+  for (let i = 0; i < 10; i++) {
+    const shift = i * 1000;
+    await cfpnft.populateAvailableTokens(1 + shift, 1000 + shift);
   }
   console.log("Done!");
   console.log("---------------------");
@@ -82,11 +82,18 @@ async function main() {
     437, 385, 319, 309, 298, 282, 191, 186, 180, 161, 82,
   ];
 
+  console.log(combinedGiveAways.length);
   for (let j = 0; j < combinedGiveAways.length; j++) {
     await cfpnft.createGiveAway(combinedGiveAways[j]);
   }
+
+  const tokensLeft = await cfpnft.getAvailableTokensList();
+  console.log("tokensLeft:", tokensLeft);
+  const numLeft = await cfpnft.getAvailableTokensCount();
+  console.log(`Numleft: ${numLeft}`);
   console.log("Done!");
   console.log("---------------------");
+  console.log("CryptoFlexPixelsNft deployed to:", cfpnft.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
