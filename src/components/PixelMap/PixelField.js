@@ -11,7 +11,8 @@ export default class PixelField {
     mouseY,
     pixelFieldAnimation,
     didChangeHappen,
-    hoveredPixel
+    hoveredPixel,
+    mintedPixels
   ) {
     this.ctx = ctx;
     this.width = width;
@@ -19,7 +20,13 @@ export default class PixelField {
     this.mouseX = mouseX;
     this.mouseY = mouseY;
     this.pixelArray = [...Array(CONSTANTS.COLLECTION_SIZE)].map(
-      (val, index) => new Pixel(ctx, data[index + 1], index + 1)
+      (val, index) => {
+        if (mintedPixels.includes(index + 1)) {
+          return new Pixel(ctx, data[index + 1], index + 1, true);
+        } else {
+          return new Pixel(ctx, data[index + 1], index + 1, false);
+        }
+      }
     );
     this.lastTime = 0;
     this.pixelFieldAnimation = pixelFieldAnimation;

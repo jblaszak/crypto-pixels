@@ -64,6 +64,8 @@ const PixelAttributeList = (props) => {
       case "h":
         attribute = "Hand Crafted";
         break;
+      case "minted":
+        continue;
       default:
         break;
     }

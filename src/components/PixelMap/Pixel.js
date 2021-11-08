@@ -1,8 +1,10 @@
 import * as CONSTANTS from "../../constants";
 
 export default class Pixel {
-  constructor(ctx, data, index) {
+  constructor(ctx, data, index, isMinted) {
     this.ctx = ctx;
+    this.index = index;
+    this.visibility = isMinted;
     this.x =
       ((index - 1) % CONSTANTS.MAX_WIDTH) *
       (CONSTANTS.PIXEL_WIDTH + CONSTANTS.PIXEL_GAP);
@@ -18,6 +20,9 @@ export default class Pixel {
     return (b - a) * n + a;
   };
   getColor = () => {
+    if (!this.visibility) {
+      return `rgb(0,0,0)`;
+    }
     if (this.flashyTime) {
       // 100% red (255, 0, 0)
       let t = (Date.now() - this.flashyTime) % 2000;

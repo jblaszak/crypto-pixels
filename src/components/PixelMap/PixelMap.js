@@ -1,10 +1,11 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useContext } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import PixelField from "./PixelField";
 import Card from "../UI/Card";
 
 import { dataMapActions } from "../../store/dataMap-slice";
+import CryptoContext from "../../store/cryptoContext";
 import * as CONSTANTS from "../../constants";
 
 import classes from "./PixelMap.module.css";
@@ -14,6 +15,8 @@ const useCanvas = () => {
   const dispatch = useDispatch();
 
   const data = useSelector((state) => state.dataMap.pixelAttributes);
+  const cryptoCtx = useContext(CryptoContext);
+
   // const selectedPixel = useSelector((state) => state.dataMap.selectedPixel);
 
   const initialMouseX = 0;
@@ -28,6 +31,7 @@ const useCanvas = () => {
     let pixelFieldAnimation;
     const didChangeHappen = true;
     const hoveredPixel = -1;
+    const mintedPixels = cryptoCtx.mintedPixels;
 
     const pixelField = new PixelField(
       ctx,
@@ -38,7 +42,8 @@ const useCanvas = () => {
       initialMouseY,
       pixelFieldAnimation,
       didChangeHappen,
-      hoveredPixel
+      hoveredPixel,
+      mintedPixels
     );
 
     pixelField.pixelFieldAnimation = requestAnimationFrame(pixelField.animate);
@@ -79,13 +84,33 @@ const useCanvas = () => {
       }
     };
 
+    const handleMintChange = (e) => {
+      cancelAnimationFrame(pixelField.pixelFieldAnimation);
+
+      pixelField.didChangeHappen = true;
+
+      const mintedPixels = e.detail;
+
+      pixelField.pixelArray.forEach((pixel) => {
+        if (mintedPixels.includes(pixel.index)) {
+          pixel.visibility = true;
+        }
+      });
+
+      pixelField.pixelFieldAnimation = requestAnimationFrame(
+        pixelField.animate
+      );
+    };
+
     window.addEventListener("resize", handleResize);
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("click", handleClick);
+    window.addEventListener("mintChange", handleMintChange);
     return () => {
       window.removeEventListener("resize", handleResize);
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("click", handleClick);
+      window.removeEventListener("mintChange", handleMintChange);
     };
   }, [data, dispatch]);
 

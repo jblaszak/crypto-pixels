@@ -17,7 +17,7 @@ contract CryptoFlexPixelsNFT is ERC721URIStorage, ERC165Storage, ERC2981Collecti
     uint[] public availableTokens;
     bytes4 private constant _INTERFACE_ID_IERC2981 = 0x2a55205a;
     bytes4 private constant _INTERFACE_ID_ERC2981Collection = 0x6af56a00;
-    uint16 internal constant maxMints = 3;
+    uint16 internal constant maxMints = 20;
     uint8 internal constant royaltyPercent = 5;
     uint16 internal giveAwayCounter = 0;
     uint256 internal totalPop = 0;

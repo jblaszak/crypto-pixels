@@ -4,6 +4,7 @@ import { ethers } from "ethers";
 
 import { updateStatus } from "../helpers/updateStatus";
 import { mintActions } from "./mint-slice";
+
 import * as CONSTANTS from "../constants";
 import CryptoFlexPixelsNFT from "../artifacts/contracts/CryptoFlexPixelsNFT.sol/CryptoFlexPixelsNFT.json";
 
@@ -11,18 +12,109 @@ const CryptoContext = React.createContext({
   isWalletConnected: false,
   provider: null,
   contract: null,
+  mintedPixels: [],
+  setMintedPixels: () => {},
   connectWallet: () => {},
 });
 
 export const CryptoContextProvider = (props) => {
   const [isWalletConnected, setIsWalletConnected] = useState(false);
+  const [mintedPixels, setMintedPixels] = useState([]);
   const [provider, setProvider] = useState(null);
   const [contract, setContract] = useState(null);
+
   const dispatch = useDispatch();
 
   useEffect(async () => {
     await connectWeb3();
   }, []);
+
+  useEffect(async () => {
+    if (provider !== null && contract !== null) {
+      const signer = provider.getSigner();
+      let signerAddress = null;
+      if (signer !== null) {
+        signerAddress = await signer.getAddress();
+      }
+
+      createListener(
+        contract,
+        "createdRandomNFT",
+        signerAddress,
+        "Someone minted"
+      );
+      createListener(
+        contract,
+        "createdGiveAwayNFT",
+        signerAddress,
+        "Minted give away"
+      );
+    }
+  }, [contract, mintedPixels]);
+
+  const createListener = (
+    contract,
+    event,
+    signerAddress,
+    statusStringUnique
+  ) => {
+    contract.once(event, async (createdBy, tokenId, numLeft) => {
+      if (createdBy !== signerAddress) {
+        updateStatus(
+          "notification",
+          `${statusStringUnique} CFP #${tokenId.toNumber()}. ${numLeft.toNumber()} left!`,
+          dispatch
+        );
+      }
+      getMintInfo(contract);
+      updateMintedPixelsSingle(tokenId.toNumber());
+    });
+  };
+
+  const updateMintedPixels = async (contract) => {
+    let tokensMinted;
+    const tryUpdateMintedPixels = async () => {
+      let tokensAvailable = await contract.getAvailableTokensList();
+      tokensAvailable = tokensAvailable.map((token) => token.toNumber());
+      tokensMinted = CONSTANTS.TOTAL_TOKENS_ARRAY.filter(
+        (x) => !tokensAvailable.includes(x)
+      );
+      setMintedPixels(tokensMinted);
+      console.log(tokensMinted);
+    };
+    try {
+      await tryUpdateMintedPixels();
+      const mintChange = new CustomEvent("mintChange", {
+        detail: tokensMinted,
+      });
+      window.dispatchEvent(mintChange);
+    } catch (error) {
+      console.log("Error grabbing minted pixels info", error);
+      updateStatus("error", "Error grabbing minted pixels info!", dispatch);
+    }
+    return tokensMinted;
+  };
+
+  const updateMintedPixelsSingle = async (tokenId) => {
+    let mintedTokens;
+    const tryUpdateMintedPixelsSingle = async () => {
+      mintedTokens = [...mintedPixels];
+      if (!mintedTokens.includes(tokenId)) {
+        mintedTokens.push(tokenId);
+      }
+      setMintedPixels(mintedTokens);
+    };
+    try {
+      await tryUpdateMintedPixelsSingle();
+      const mintChange = new CustomEvent("mintChange", {
+        detail: mintedTokens,
+      });
+      window.dispatchEvent(mintChange);
+    } catch (error) {
+      console.log("Error updating minted pixels info", error);
+      updateStatus("error", "Error updating minted pixels info!", dispatch);
+    }
+  };
 
   const connectWeb3 = async () => {
     const setupContract = async () => {
@@ -34,25 +126,8 @@ export const CryptoContextProvider = (props) => {
         newProvider
       );
 
-      newContract.on("createdRandomNFT", (createdBy, tokenId, numLeft) => {
-        console.log("blaaaah");
-        updateStatus(
-          "notification",
-          `Someone minted CFP #${tokenId.toNumber()}. ${numLeft.toNumber()} left!`,
-          dispatch
-        );
-        getMintInfo(newContract);
-      });
-      newContract.on("createdGiveAwayNFT", (createdBy, tokenId, numLeft) => {
-        updateStatus(
-          "notification",
-          `Minted give away CFP #${tokenId.toNumber()}. ${numLeft.toNumber()} left!`,
-          dispatch
-        );
-        getMintInfo(newContract);
-      });
+      await updateMintedPixels(newContract);
 
-      // Need to set contract here to context so getMintInfo can access it
       setProvider(newProvider);
       setContract(newContract);
     };
@@ -83,29 +158,6 @@ export const CryptoContextProvider = (props) => {
       //   throw "NOT_MAIN_NET";
       // }
 
-      const signer = newProvider.getSigner();
-      const signerAddress = await signer.getAddress();
-
-      newContract.on("createdRandomNFT", (createdBy, tokenId, numLeft) => {
-        if (createdBy !== signerAddress) {
-          updateStatus(
-            "notification",
-            `Someone minted CFP #${tokenId.toNumber()}. ${numLeft.toNumber()} left!`,
-            dispatch
-          );
-        }
-        getMintInfo(newContract);
-      });
-      newContract.on("createdGiveAwayNFT", (createdBy, tokenId, numLeft) => {
-        updateStatus(
-          "notification",
-          `Minted give away CFP #${tokenId.toNumber()}. ${numLeft.toNumber()} left!`,
-          dispatch
-        );
-        getMintInfo(newContract);
-      });
-
-      // update contract with listeners
       setContract(newContract);
       setProvider(newProvider);
       setIsWalletConnected(true);
@@ -154,6 +206,8 @@ export const CryptoContextProvider = (props) => {
         isWalletConnected: isWalletConnected,
         provider: provider,
         contract: contract,
+        mintedPixels: mintedPixels,
+        setMintedPixels: setMintedPixels,
         connectWallet: connectWallet,
       }}
     >

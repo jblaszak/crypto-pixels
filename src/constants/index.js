@@ -11,3 +11,6 @@ export const DISCORD = "https://discord.gg/Epy2xtzZrx";
 export const TWITTER = "https://twitter.com/Flex_Pixels_NFT";
 export const OPENSEA = "";
 export const CONTRACT_ADDRESS = "0x1D514d1FF604d6BF12faEfe80786567b4d1439ba";
+export const TOTAL_TOKENS_ARRAY = [...new Array(COLLECTION_SIZE)].map(
+  (x, i) => i + 1
+);
