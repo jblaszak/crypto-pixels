@@ -7,18 +7,16 @@ export default class PixelField {
     width,
     height,
     data,
-    mouseX,
-    mouseY,
     pixelFieldAnimation,
     didChangeHappen,
-    hoveredPixel,
     mintedPixels
   ) {
     this.ctx = ctx;
     this.width = width;
     this.height = height;
-    this.mouseX = mouseX;
-    this.mouseY = mouseY;
+    this.mouseX = 0;
+    this.mouseY = 0;
+    this.hoveredPixel = -1;
     this.pixelArray = [...Array(CONSTANTS.COLLECTION_SIZE)].map(
       (val, index) => {
         if (mintedPixels.includes(index + 1)) {

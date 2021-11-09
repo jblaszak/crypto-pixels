@@ -1,7 +1,8 @@
-import { useRef, useEffect, useContext } from "react";
+import React, { useRef, useEffect, useContext } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import PixelField from "./PixelField";
+import ToolTip from "./ToolTip";
 import Card from "../UI/Card";
 
 import { dataMapActions } from "../../store/dataMap-slice";
@@ -11,7 +12,8 @@ import * as CONSTANTS from "../../constants";
 import classes from "./PixelMap.module.css";
 
 const useCanvas = () => {
-  const canvasRef = useRef(null);
+  const canvasRefPixelMap = useRef(null);
+  const canvasRefToolTip = useRef(null);
   const dispatch = useDispatch();
 
   const data = useSelector((state) => state.dataMap.pixelAttributes);
@@ -19,18 +21,20 @@ const useCanvas = () => {
 
   // const selectedPixel = useSelector((state) => state.dataMap.selectedPixel);
 
-  const initialMouseX = 0;
-  const initialMouseY = 0;
-
   useEffect(() => {
-    const canvas = canvasRef.current;
+    const canvas = canvasRefPixelMap.current;
     const ctx = canvas.getContext("2d");
     canvas.width = CONSTANTS.INITIAL_CANVAS_WIDTH;
     canvas.height = CONSTANTS.INITIAL_CANVAS_WIDTH;
 
+    const canvasToolTip = canvasRefToolTip.current;
+    const ctxToolTip = canvasToolTip.getContext("2d");
+    canvasToolTip.width = CONSTANTS.INITIAL_CANVAS_WIDTH;
+    canvasToolTip.height = CONSTANTS.INITIAL_CANVAS_WIDTH;
+
     let pixelFieldAnimation;
+    let toolTipAnimation;
     const didChangeHappen = true;
-    const hoveredPixel = -1;
     const mintedPixels = cryptoCtx.mintedPixels;
 
     const pixelField = new PixelField(
@@ -38,44 +42,71 @@ const useCanvas = () => {
       canvas.width,
       canvas.height,
       data,
-      initialMouseX,
-      initialMouseY,
       pixelFieldAnimation,
       didChangeHappen,
-      hoveredPixel,
       mintedPixels
     );
 
+    const toolTip = new ToolTip(
+      ctxToolTip,
+      canvasToolTip.width,
+      canvasToolTip.height,
+      toolTipAnimation
+    );
+
     pixelField.pixelFieldAnimation = requestAnimationFrame(pixelField.animate);
+    toolTip.toolTipAnimation = requestAnimationFrame(toolTip.animate);
 
     const handleResize = (e) => {
       cancelAnimationFrame(pixelField.pixelFieldAnimation);
+      cancelAnimationFrame(toolTip.toolTipAnimation);
 
       pixelField.didChangeHappen = true;
 
       pixelField.pixelFieldAnimation = requestAnimationFrame(
         pixelField.animate
       );
+      toolTip.toolTipAnimation = requestAnimationFrame(toolTip.animate);
     };
 
     const handleMouseMove = (e) => {
       cancelAnimationFrame(pixelField.pixelFieldAnimation);
+      cancelAnimationFrame(toolTip.toolTipAnimation);
 
       pixelField.didChangeHappen = true;
 
       const bodyCoords = document.body.getBoundingClientRect();
       const canvasCoords = canvas.getBoundingClientRect();
 
-      pixelField.mouseX =
+      const mouseX =
         (e.x - (canvasCoords.left - bodyCoords.left)) *
         (CONSTANTS.INITIAL_CANVAS_WIDTH / canvasCoords.width);
-      pixelField.mouseY =
+      const mouseY =
         (e.y + window.scrollY - (canvasCoords.top - bodyCoords.top)) *
         (CONSTANTS.INITIAL_CANVAS_WIDTH / canvasCoords.height);
+
+      pixelField.mouseX = mouseX;
+      pixelField.mouseY = mouseY;
 
       pixelField.pixelFieldAnimation = requestAnimationFrame(
         pixelField.animate
       );
+
+      if (pixelField.hoveredPixel !== -1) {
+        const x = `${(pixelField.hoveredPixel - 1) % CONSTANTS.MAX_WIDTH}`;
+        const y = `${Math.floor(
+          (pixelField.hoveredPixel - 1) / CONSTANTS.MAX_WIDTH
+        )}`;
+        toolTip.mouseX = mouseX;
+        toolTip.mouseY = mouseY;
+        toolTip.text = `CFP #${pixelField.hoveredPixel} (${x},${y})`;
+      } else {
+        toolTip.mouseX = -1;
+        toolTip.mouseY = -1;
+        toolTip.text = "";
+      }
+
+      toolTip.toolTipAnimation = requestAnimationFrame(toolTip.animate);
     };
 
     const handleClick = (e) => {
@@ -114,15 +145,16 @@ const useCanvas = () => {
     };
   }, [data, dispatch]);
 
-  return canvasRef;
+  return [canvasRefPixelMap, canvasRefToolTip];
 };
 
 const PixelMap = () => {
-  const canvasRef = useCanvas();
+  const [canvasRefPixelMap, canvasRefToolTip] = useCanvas();
 
   return (
-    <Card>
-      <canvas className={classes.canvas} ref={canvasRef} />
+    <Card className={classes.container}>
+      <canvas className={classes.canvasPixelMap} ref={canvasRefPixelMap} />
+      <canvas className={classes.canvasToolTip} ref={canvasRefToolTip} />
     </Card>
   );
 };

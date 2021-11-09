@@ -1,4 +1,12 @@
-.canvas {
+.container {
+    display: grid;
+}
+
+.canvasToolTip,
+.canvasPixelMap {
+    grid-column: 1;
+    grid-row: 1;
     width: 100%;
+    object-fit: contain;
     aspect-ratio: 1 / 1;
 }
