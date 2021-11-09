@@ -7,7 +7,7 @@ const Roadmap = () => {
       isReached: true,
       title: "Launch Project",
       description: `We've been working hard to get the project completed and are excited to release it to the public. The first 
-        phase of the launch is underway and giveaways are being minted! We've set aside 99 'Influential Pixels' to hand 
+        phase of the launch is underway and giveaways are being minted! We've set aside 100 'Influential Pixels' to hand 
         out to influencers in the NFT space to get their attention and reward them for making the market what it is.  We've 
         also opened up minting to the public so get in early to get the best price on your NFTs! Early adopters that help 
         grow the community will be rewarded the most.`,
@@ -30,20 +30,17 @@ const Roadmap = () => {
       isReached: false,
       title: "75% Sold Out",
       description: `Blockchain and the associated technologies have demonstrated the importance of decentralization and limiting 
-        points of failure. While these technologies have focused primarily on finance and contract based solutions, 
-        there is one group that is focusing on decentralizing the human species and making us multiplanetary. In honor
-         of this we've given a portion of our collection the attribute 'Musky Pixels' (402 total) that will not be 
-         sold as part of the initial sale but will be given to Elon Musk and the team at SpaceX to give to their team 
-         members or to sell to generate funds for SpaceX. We will begin contacting the Doge-father (and we ask the 
-          community to participate) once the collection reaches 75% sold out, in order to increase the value given and
-          to garner more opportunity for him to notice as the community will be larger and louder at that point.`,
+        points of failure. While decentralized technologies have focused primarily on finance and contract based solutions, 
+        SpaceX is focusing on decentralizing the human species and making us multiplanetary. In honor
+         of this we've given a portion of our collection the attribute 'Musky Pixels' (402 total).  At 75% this project has shown
+         mooning potential and we're doing another community giveaway, but this time with 100 of the special "Musky Pixels".`,
     },
     {
       isReached: false,
       title: "100% Sold Out",
       description: `Great success!  The community is strong and funding to develop future projects has been secured. 
-      We've got a number of innovative ideas that we're excited to bring to the NFT space. As a thank-you to our 
-      supportive community we will be giving out special perks/giveaways for NFT owners on these future projects.`,
+      We've got a number of innovative ideas that we're excited to bring to the NFT space. Stayed tuned for more announcements 
+      as we will also be giving out special perks/giveaways for NFT owners on these future projects.`,
     },
   ];
 

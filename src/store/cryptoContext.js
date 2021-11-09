@@ -153,7 +153,7 @@ export const CryptoContextProvider = (props) => {
 
       const network = await provider.getNetwork();
       const chainId = network.chainId;
-      // if (chainId !== 1) {
+      // if (chainId !== 137) {
       //   throw "NOT_MAIN_NET";
       // }
 

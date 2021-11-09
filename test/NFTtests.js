@@ -12,6 +12,7 @@ describe("CryptoFlexPixelsNFT", () => {
     await CFPNFT.deployed();
     console.log("Nft deployed to:", CFPNFT.address);
   });
+
   // it("Should populate array of available tokens to 10000 but not more", async () => {
   //   for (let i = 0; i < 10; i++) {
   //     const shift = i * 1000;
@@ -25,13 +26,13 @@ describe("CryptoFlexPixelsNFT", () => {
   //     numTokens = await CFPNFT.getAvailableTokensCount();
   //     console.log(`numTokens: ${numTokens}`);
   //   } catch (error) {
-  //     console.log(error);
   //     expect(
   //       error ==
   //         "Error: VM Exception while processing transaction: reverted with reason string 'Max tokens already populated!'"
   //     ).to.be.true;
   //   }
   // });
+
   // it("Should allow creation of giveaways by owner", async () => {
   //   for (let i = 0; i < 10; i++) {
   //     const shift = i * 1000;
@@ -43,6 +44,7 @@ describe("CryptoFlexPixelsNFT", () => {
   //   numTokens = await CFPNFT.getAvailableTokensCount();
   //   expect(numTokens.toNumber() == 9999).to.be.true;
   // });
+
   // it("Should allow batch creation of giveaways by owner", async () => {
   //   for (let i = 0; i < 10; i++) {
   //     const shift = i * 1000;
@@ -57,19 +59,21 @@ describe("CryptoFlexPixelsNFT", () => {
   //   numTokens = await CFPNFT.getAvailableTokensCount();
   //   expect(numTokens.toNumber() == 9987).to.be.true;
   // });
-  // it("Should allow creation of giveaways by owner only up to 601", async () => {
+
+  // it("Should allow creation of giveaways by owner only up to 300", async () => {
   //   for (let i = 0; i < 10; i++) {
   //     const shift = i * 1000;
   //     await CFPNFT.populateAvailableTokens(1 + shift, 1000 + shift);
   //   }
-  //   for (let j = 1; j <= 601; j++) {
+  //   for (let j = 1; j <= 300; j++) {
   //     await CFPNFT.createGiveAway(j);
   //   }
   //   numTokens = await CFPNFT.getAvailableTokensCount();
-  //   expect(numTokens.toNumber() == 9399).to.be.true;
+  //   console.log(`numTokens: ${numTokens}`);
+  //   expect(numTokens.toNumber() == 9700).to.be.true;
 
   //   try {
-  //     tx = await CFPNFT.createGiveAway(602);
+  //     tx = await CFPNFT.createGiveAway(301);
   //     // console.log(tx);
   //     tx = await tx.wait();
   //     console.log(tx);
@@ -78,12 +82,12 @@ describe("CryptoFlexPixelsNFT", () => {
   //   } catch (error) {
   //     expect(
   //       error ==
-  //         "Error: VM Exception while processing transaction: reverted with reason string 'All giveaway NFTs minted'"
+  //         "Error: VM Exception while processing transaction: reverted with reason string 'All giveaway NFTs already minted'"
   //     ).to.be.true;
   //   }
   // });
 
-  // CHANGE numLeft to 0 to make this work, or rewrite to mint all 10k and wait forever!
+  /////// CHANGE numLeft to 0 to make this work, or rewrite to mint all 10k and wait forever!
   // it("Should fail if no NFTs left", async () => {
   //   try {
   //     tx = await CFPNFT.create();
@@ -115,32 +119,32 @@ describe("CryptoFlexPixelsNFT", () => {
 
   // it("Should succeeed if giveaways minted and starting w/ correct starting price", async () => {
   //   for (let i = 0; i < 10; i++) {
-  //     const shift = i * 10;
+  //     const shift = i * 1000;
   //     await CFPNFT.populateAvailableTokens(1 + shift, 1000 + shift);
   //   }
 
-  //   for (let j = 1; j <= 601; j++) {
+  //   for (let j = 1; j <= 300; j++) {
   //     await CFPNFT.createGiveAway(j);
   //   }
 
   //   let mintFee = await CFPNFT.getMintFee();
 
+  //   console.log(`mintfee: ${mintFee}`);
   //   expect(mintFee.toNumber() == ethers.utils.parseUnits("0.001", "ether"));
   //   mintFee = mintFee.toString();
-  //   console.log(mintFee);
   //   tx = await CFPNFT.create({ value: mintFee });
 
   //   numTokens = await CFPNFT.getAvailableTokensCount();
-  //   expect(numTokens.toNumber() == 9398).to.be.true;
+  //   expect(numTokens.toNumber() == 9699).to.be.true;
   // });
 
   // it("Should fail if giveaways minted and starting w/ incorrect starting price", async () => {
   //   for (let i = 0; i < 10; i++) {
-  //     const shift = i * 10;
+  //     const shift = i * 1000;
   //     await CFPNFT.populateAvailableTokens(1 + shift, 1000 + shift);
   //   }
 
-  //   for (let j = 1; j <= 601; j++) {
+  //   for (let j = 1; j <= 300; j++) {
   //     await CFPNFT.createGiveAway(j);
   //   }
 
@@ -155,23 +159,29 @@ describe("CryptoFlexPixelsNFT", () => {
   //   }
   // });
 
-  // THIS TEST TAKES STUPID LONG!!!!  Don't run it unless you have to. Hahaha.
-  // Also, it is required to change the maxMints per account to 10,000 so it
-  // doesn't fail...  Turn it back after!
+  /* THIS TEST TAKES STUPID LONG!!!!  Don't run it unless you have to. Hahaha.
+   Also, it is required to change the maxMints per account to 10,000 so it
+   doesn't fail...  ALSO change maxmints per account to uint256!!! Turn it back after!*/
   // it("Should have correct minting price at end", async () => {
   //   for (let i = 0; i < 10; i++) {
-  //     const shift = i * 10;
+  //     const shift = i * 1000;
   //     await CFPNFT.populateAvailableTokens(1 + shift, 1000 + shift);
   //   }
 
-  //   for (let j = 1; j <= 601; j++) {
+  //   for (let j = 1; j <= 300; j++) {
   //     await CFPNFT.createGiveAway(j);
   //   }
 
   //   let mintFee;
-  //   for (let k = 1; k <= 9399; k++) {
+  //   for (let k = 1; k <= 9700; k++) {
+  //     // const tokensLeft = await CFPNFT.getAvailableTokensList();
+  //     // console.log(`tokensLeft: ${tokensLeft}`);
   //     mintFee = await CFPNFT.getMintFee();
   //     tx = await CFPNFT.create({ value: mintFee });
+  //     tx = await tx.wait();
+  //     // console.log(
+  //     //   `tokenId: ${tx.events[1].args[1]}, tokensLeft: ${tx.events[1].args[2]}`
+  //     // );
   //   }
   //   console.log(`mintfee: ${mintFee}`);
 
