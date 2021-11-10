@@ -13,14 +13,19 @@ async function main() {
   // manually to make sure everything is compiled
   // await hre.run('compile');
 
+  const [deployer] = await hre.ethers.getSigners();
+
+  console.log("Deploying contracts with the account:", deployer.address);
+  console.log("Account balance:", (await deployer.getBalance()).toString());
+
   // We get the contract to deploy
   const CFPNFT = await hre.ethers.getContractFactory("CryptoFlexPixelsNFT");
   const cfpnft = await CFPNFT.deploy();
   await cfpnft.deployed();
   console.log("CryptoFlexPixelsNft deployed to:", cfpnft.address);
 
-  console.log("---------------------");
-  console.log("Populating tokens...");
+  // console.log("---------------------");
+  // console.log("Populating tokens...");
   // for (let i = 0; i < 10; i++) {
   //   const shift = i * 1000;
   //   await cfpnft.populateAvailableTokens(1 + shift, 1000 + shift);
@@ -67,8 +72,8 @@ async function main() {
   // const numLeft = await cfpnft.getAvailableTokensCount();
   // console.log(`Numleft: ${numLeft}`);
   console.log("Done!");
-  console.log("---------------------");
-  console.log("CryptoFlexPixelsNft deployed to:", cfpnft.address);
+  // console.log("---------------------");
+  // console.log("CryptoFlexPixelsNft deployed to:", cfpnft.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

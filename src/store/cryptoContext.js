@@ -22,6 +22,7 @@ export const CryptoContextProvider = (props) => {
   const [mintedPixels, setMintedPixels] = useState([]);
   const [provider, setProvider] = useState(null);
   const [contract, setContract] = useState(null);
+  const PROJECT_ID = process.env.REACT_APP_PROJECT_ID;
 
   const dispatch = useDispatch();
 
@@ -31,34 +32,19 @@ export const CryptoContextProvider = (props) => {
 
   useEffect(async () => {
     if (provider !== null && contract !== null) {
-      const signer = provider.getSigner();
       let signerAddress = null;
-      if (signer !== null) {
-        signerAddress = await signer.getAddress();
+      if (!provider.connection.url.includes("infura")) {
+        const signer = await provider.getSigner();
+        if (signer !== null) {
+          signerAddress = await signer.getAddress();
+          createListener(contract, signerAddress, "Someone minted");
+        }
       }
-
-      createListener(
-        contract,
-        "createdRandomNFT",
-        signerAddress,
-        "Someone minted"
-      );
-      createListener(
-        contract,
-        "createdGiveAwayNFT",
-        signerAddress,
-        "Minted give away"
-      );
     }
-  }, [contract, mintedPixels]);
+  }, [contract, provider, mintedPixels]);
 
-  const createListener = (
-    contract,
-    event,
-    signerAddress,
-    statusStringUnique
-  ) => {
-    contract.once(event, async (createdBy, tokenId, numLeft) => {
+  const createListener = (contract, signerAddress, statusStringUnique) => {
+    contract.once("createdRandomNFT", async (createdBy, tokenId, numLeft) => {
       if (createdBy !== signerAddress) {
         updateStatus(
           "notification",
@@ -116,7 +102,9 @@ export const CryptoContextProvider = (props) => {
 
   const connectWeb3 = async () => {
     const setupContract = async () => {
-      const newProvider = new ethers.providers.JsonRpcProvider();
+      const newProvider = new ethers.providers.JsonRpcProvider(
+        `https://polygon-mumbai.infura.io/v3/${PROJECT_ID}`
+      );
 
       const newContract = new ethers.Contract(
         CONSTANTS.CONTRACT_ADDRESS,
@@ -141,8 +129,9 @@ export const CryptoContextProvider = (props) => {
   const connectWallet = async (e) => {
     const setupContractWallet = async () => {
       const oldContract = contract;
-      oldContract.removeAllListeners();
+      oldContract?.removeAllListeners();
 
+      await window.ethereum.request({ method: "eth_requestAccounts" });
       const newProvider = new ethers.providers.Web3Provider(window.ethereum);
 
       const newContract = new ethers.Contract(
@@ -157,8 +146,8 @@ export const CryptoContextProvider = (props) => {
       //   throw "NOT_MAIN_NET";
       // }
 
-      setContract(newContract);
       setProvider(newProvider);
+      setContract(newContract);
       setIsWalletConnected(true);
     };
     try {

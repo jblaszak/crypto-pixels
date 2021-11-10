@@ -36,6 +36,39 @@
     color: #a977ff;
 }
 
+.isMinting {
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.isMinting span {
+    height: 1rem;
+    width: 1rem;
+    margin-left: 1rem;
+    border-radius: 2px;
+    animation: flash 2s linear infinite;
+}
+
+@keyframes flash {
+    0% {
+        background-color: red;
+    }
+    25% {
+        background-color: yellow;
+    }
+    50% {
+        background-color: green;
+    }
+    75% {
+        background-color: blue;
+    }
+    100% {
+        background-color: red;
+    }
+}
+
 .container button {
     padding: 1rem;
     font-size: 1.25rem;
