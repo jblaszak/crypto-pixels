@@ -22,7 +22,7 @@ contract CryptoFlexPixelsNFT is ERC721URIStorage, ERC165Storage, ERC2981Collecti
     uint16 public totalPop = 0;
     uint16[] public availableTokens = new uint16[](10000);
     uint256 public numLeft = 10000;
-    string public baseURI = 'ipfs://ouwoeiruoiau/';
+    string public baseURI = 'ipfs://QmWCVznx2ofDkAfGqMxHZK3c5uaabBxTrMLbamfdNJ15eZ/';
 
     constructor() 
     ERC721("CryptoFlexPixels", "CFPNFT")

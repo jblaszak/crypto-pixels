@@ -26,7 +26,6 @@ const Minting = () => {
       // console.log("tx", tx);
       tx = await tx.wait();
       // console.log("tx", tx.events);
-      setIsMinting((prevState) => false);
       const event = tx.events[2];
       const address = event.args[0].toString();
       const tokenId = event.args[1].toNumber();
@@ -43,12 +42,12 @@ const Minting = () => {
     } catch (error) {
       console.log("There was an error minting!", error);
       if (
-        error?.message.includes("insufficient funds") ||
-        error?.data?.message.includes("Insufficient funds!")
+        error.message?.includes("insufficient funds") ||
+        error.data?.message?.includes("Insufficient funds!")
       ) {
         updateStatus("error", "Failed to mint: insufficient funds.", dispatch);
       } else if (
-        error?.data?.message.includes(
+        error.data?.message?.includes(
           "Already minted max amount for this address!"
         )
       ) {
@@ -57,24 +56,37 @@ const Minting = () => {
           "Failed to mint: max amount minted for this address (20).",
           dispatch
         );
-      } else if (error?.data?.message.includes("No tokens left")) {
+      } else if (error.data?.message?.includes("No tokens left")) {
         updateStatus("error", "Failed to mint: no tokens left!", dispatch);
       } else if (
-        error?.data?.message.includes("Giveaway tokens not minted yet!")
+        error.data?.message?.includes("Giveaway tokens not minted yet!")
       ) {
         updateStatus(
           "error",
           "Failed to mint: giveaways not minted yet.",
           dispatch
         );
-      } else if (error.includes("transaction failed")) {
+      } else if (
+        error.includes?.("transaction failed") ||
+        error.message?.includes("transaction failed") ||
+        error.data?.message?.includes("transaction failed")
+      ) {
+        updateStatus("error", "Transaction failed. Not enough gas?", dispatch);
+      } else if (error.message?.includes("intrinsic gas too low")) {
         updateStatus(
           "error",
-          "Transaction failed. Not enough gas? :/",
+          "Transaction failed: intrinsic gas too low.",
+          dispatch
+        );
+      } else {
+        updateStatus(
+          "error",
+          "Unknown error occured. Check console and let us know!",
           dispatch
         );
       }
     }
+    setIsMinting((prevState) => false);
   };
 
   let message = (
