@@ -88,9 +88,9 @@ contract CryptoFlexPixelsNFT is ERC721URIStorage, ERC165Storage, ERC2981Collecti
     function getMintFee() public view returns (uint256) {
         uint256 numberLeft = numLeft;
         require(numberLeft <= 9700, "Giveaway tokens not minted yet!");
-        uint256 startingPrice = 0.001 ether;
-        uint256 endingPrice = 0.2 ether;
-        uint256 mintFee = (9700 - numberLeft) * (endingPrice-startingPrice) / 9398 + startingPrice;
+        uint256 startingPrice = 25 ether; // NOTE: These are MATIC on Polygon
+        uint256 endingPrice = 500 ether; // NOTE: These are MATIC on Polygon
+        uint256 mintFee = (9700 - numberLeft) * (endingPrice-startingPrice) / 9699 + startingPrice;
         return mintFee;
     }
 
