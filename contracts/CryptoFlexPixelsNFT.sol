@@ -1,13 +1,14 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity >=0.8.0 <0.9.0;
 
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/introspection/ERC165Storage.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "./ERC2981Collection.sol";
+import "./ContextMixin.sol";
 
-contract CryptoFlexPixelsNFT is ERC721URIStorage, ERC165Storage, ERC2981Collection, Ownable {
+contract CryptoFlexPixelsNFT is ERC721, ContextMixin, ERC165Storage, ERC2981Collection, Ownable {
 
     event createdRandomNFT(address indexed createdBy, uint256 indexed tokenId, uint256 indexed tokensLeft);
     event createdGiveAwayNFT(address indexed createdBy, uint256 indexed tokenId, uint256 indexed tokensLeft);
@@ -104,11 +105,38 @@ contract CryptoFlexPixelsNFT is ERC721URIStorage, ERC165Storage, ERC2981Collecti
 
         uint256 tokenId = availableTokens[index];
         _safeMint(msg.sender, tokenId);
-        // _setTokenURI(tokenId, string(abi.encodePacked(Strings.toString(tokenId), URIextension)));
         availableTokens[index] = availableTokens[numLeft-1];
         numLeft--;
         addressToMintCount[msg.sender]++;
         emit createdRandomNFT(msg.sender, tokenId, numLeft);
         return tokenId;
+    }
+
+    /**
+   * Override isApprovedForAll to auto-approve OS's proxy contract
+   */
+    function isApprovedForAll(
+        address _owner,
+        address _operator
+    ) public override view returns (bool isOperator) {
+      // if OpenSea's ERC721 Proxy Address is detected, auto-return true
+        if (_operator == address(0x58807baD0B376efc12F5AD86aAc70E78ed67deaE)) {
+            return true;
+        }
+        
+        // otherwise, use the default ERC721.isApprovedForAll()
+        return ERC721.isApprovedForAll(_owner, _operator);
+    }
+
+    /**
+     * This is used instead of msg.sender as transactions won't be sent by the original token owner, but by OpenSea.
+     */
+    function _msgSender()
+        internal
+        override
+        view
+        returns (address sender)
+    {
+        return ContextMixin.msgSender();
     }
 }
