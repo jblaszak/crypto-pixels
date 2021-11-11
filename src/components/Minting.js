@@ -78,6 +78,8 @@ const Minting = () => {
           "Transaction failed: intrinsic gas too low.",
           dispatch
         );
+      } else if (error.message?.includes("User denied transaction signature")) {
+        updateStatus("error", "User cancelled transaction.", dispatch);
       } else {
         updateStatus(
           "error",

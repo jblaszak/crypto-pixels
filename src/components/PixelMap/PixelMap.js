@@ -69,7 +69,7 @@ const useCanvas = () => {
       toolTip.toolTipAnimation = requestAnimationFrame(toolTip.animate);
     };
 
-    const handleMouseMove = (e) => {
+    const handleMouseMove = async (e) => {
       cancelAnimationFrame(pixelField.pixelFieldAnimation);
       cancelAnimationFrame(toolTip.toolTipAnimation);
 
@@ -79,7 +79,7 @@ const useCanvas = () => {
       const canvasCoords = canvas.getBoundingClientRect();
 
       const mouseX =
-        (e.x - (canvasCoords.left - bodyCoords.left)) *
+        (e.x + window.scrollX - (canvasCoords.left - bodyCoords.left)) *
         (CONSTANTS.INITIAL_CANVAS_WIDTH / canvasCoords.width);
       const mouseY =
         (e.y + window.scrollY - (canvasCoords.top - bodyCoords.top)) *
@@ -91,6 +91,8 @@ const useCanvas = () => {
       pixelField.pixelFieldAnimation = requestAnimationFrame(
         pixelField.animate
       );
+
+      pixelField.getHoveredPixel();
 
       if (pixelField.hoveredPixel !== -1) {
         const x = `${(pixelField.hoveredPixel - 1) % CONSTANTS.MAX_WIDTH}`;

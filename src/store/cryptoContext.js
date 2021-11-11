@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { ethers } from "ethers";
+// import detectEthereumProvider from "@metamask/detect-provider";
+import Web3Modal from "web3modal";
 
 import { updateStatus } from "../helpers/updateStatus";
 import { mintActions } from "./mint-slice";
@@ -133,8 +135,22 @@ export const CryptoContextProvider = (props) => {
       const oldContract = contract;
       oldContract?.removeAllListeners();
 
-      await window.ethereum.request({ method: "eth_requestAccounts" });
-      const newProvider = new ethers.providers.Web3Provider(window.ethereum);
+      // await window.ethereum.request({ method: "eth_requestAccounts" });
+      // const newProvider = new ethers.providers.Web3Provider(window.ethereum);
+
+      // const metaMaskProvider = await detectEthereumProvider();
+      // if (metaMaskProvider) {
+      //   console.log("Metamask detected");
+      // } else {
+      //   throw "NO_METAMASK";
+      // }
+
+      // const newProvider = new ethers.providers.Web3Provider(metaMaskProvider);
+      // await newProvider.send("eth_requestAccounts", []);
+
+      const web3Modal = new Web3Modal();
+      const connection = await web3Modal.connect();
+      const newProvider = new ethers.providers.Web3Provider(connection);
 
       const newContract = new ethers.Contract(
         CONSTANTS.CONTRACT_ADDRESS,
@@ -162,6 +178,8 @@ export const CryptoContextProvider = (props) => {
           "You are not connected to Polygon Mainnet!",
           dispatch
         );
+      } else if (error === "NO_METAMASK") {
+        updateStatus("error", "Please install MetaMask to connect!", dispatch);
       } else {
         updateStatus("error", "Failed to connect wallet!", dispatch);
       }
