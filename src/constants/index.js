@@ -9,8 +9,8 @@ export const NAME = "Crypto Flex Pixels";
 export const NAME_SHORT = "CFP";
 export const DISCORD = "https://discord.gg/Epy2xtzZrx";
 export const TWITTER = "https://twitter.com/Flex_Pixels_NFT";
-export const OPENSEA = "";
-export const CONTRACT_ADDRESS = "0x815a8a1cB75f8162A7B55CbBE98297D693D207F8";
+export const OPENSEA = "https://opensea.io/collection/cryptoflexpixels";
+export const CONTRACT_ADDRESS = "0xF355fc2509a527A6988619B1E11AF08e828c5b06";
 export const TOTAL_TOKENS_ARRAY = [...new Array(COLLECTION_SIZE)].map(
   (x, i) => i + 1
 );

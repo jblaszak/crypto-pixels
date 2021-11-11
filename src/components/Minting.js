@@ -27,8 +27,8 @@ const Minting = () => {
       tx = await tx.wait();
       // console.log("tx", tx.events);
       const event = tx.events[2];
-      const address = event.args[0].toString();
-      const tokenId = event.args[1].toNumber();
+      const address = event.args[0];
+      const tokenId = event.args[1];
       return [address, tokenId];
     };
 
@@ -95,7 +95,7 @@ const Minting = () => {
         Total Minted: <span>{mintCount}/10000</span>
       </div>
       <div className={classes.mintFee}>
-        Current Mint Fee: <span>{(mintFee / 10 ** 18).toFixed(6)} MATIC</span>
+        Current Mint Fee: <span>{(mintFee / 10 ** 18).toFixed(2)} MATIC</span>
       </div>
       {isMinting && (
         <div className={classes.isMinting}>

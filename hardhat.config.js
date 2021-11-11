@@ -10,8 +10,7 @@ require("hardhat-deploy");
 require("dotenv").config();
 
 const MNEMONIC = process.env.MNEMONIC;
-const ETHERSCAN_API_KEY =
-  process.env.ETHERSCAN_API_KEY || "Your etherscan API key";
+const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY;
 // optional
 const PRIVATE_KEY = process.env.PRIVATE_KEY;
 const PROJECT_ID = process.env.PROJECT_ID;
@@ -53,10 +52,10 @@ module.exports = {
     mumbai: {
       chainId: 80001,
       url: `https://polygon-mumbai.infura.io/v3/${PROJECT_ID}`,
-      accounts: [PRIVATE_KEY],
-      // accounts: {
-      //   mnemonic: MNEMONIC,
-      // },
+      // accounts: [PRIVATE_KEY],
+      accounts: {
+        mnemonic: MNEMONIC,
+      },
       saveDeployments: true,
     },
   },

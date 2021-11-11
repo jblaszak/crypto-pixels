@@ -37,7 +37,9 @@ export const CryptoContextProvider = (props) => {
         const signer = await provider.getSigner();
         if (signer !== null) {
           signerAddress = await signer.getAddress();
-          createListener(contract, signerAddress, "Someone minted");
+          if (isWalletConnected) {
+            createListener(contract, signerAddress, "Someone minted");
+          }
         }
       }
     }
@@ -103,7 +105,7 @@ export const CryptoContextProvider = (props) => {
   const connectWeb3 = async () => {
     const setupContract = async () => {
       const newProvider = new ethers.providers.JsonRpcProvider(
-        `https://polygon-mumbai.infura.io/v3/${PROJECT_ID}`
+        `https://polygon-mainnet.infura.io/v3/${PROJECT_ID}`
       );
 
       const newContract = new ethers.Contract(
@@ -142,9 +144,9 @@ export const CryptoContextProvider = (props) => {
 
       const network = await provider.getNetwork();
       const chainId = network.chainId;
-      // if (chainId !== 137) {
-      //   throw "NOT_MAIN_NET";
-      // }
+      if (chainId !== 137) {
+        throw "NOT_MAIN_NET";
+      }
 
       setProvider(newProvider);
       setContract(newContract);
@@ -172,7 +174,7 @@ export const CryptoContextProvider = (props) => {
       let mintFee = await contract.getMintFee();
 
       mintCount = 10000 - mintCount.toNumber();
-      mintFee = mintFee.toNumber();
+      mintFee = `${mintFee}`;
 
       return [mintCount, mintFee];
     };

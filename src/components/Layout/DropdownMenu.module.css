@@ -13,6 +13,7 @@
 
 .link {
     padding: 0.5rem 1rem;
+    transition: 0.25s;
 }
 
 .link:hover {
