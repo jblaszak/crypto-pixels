@@ -3,9 +3,6 @@ import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 
-import "./fonts/Roboto-Bold.ttf";
-import "./fonts/Roboto-Regular.ttf";
-
 import "./index.css";
 import store from "./store";
 import ScrollToTop from "./components/UI/ScrollToTop";
