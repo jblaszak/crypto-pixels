@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { ethers } from "ethers";
 // import detectEthereumProvider from "@metamask/detect-provider";
-import Web3Modal from "web3modal";
+// import Web3Modal from "web3modal";
 
 import { updateStatus } from "../helpers/updateStatus";
 import { mintActions } from "./mint-slice";
@@ -136,21 +136,22 @@ export const CryptoContextProvider = (props) => {
       oldContract?.removeAllListeners();
 
       // await window.ethereum.request({ method: "eth_requestAccounts" });
-      // const newProvider = new ethers.providers.Web3Provider(window.ethereum);
 
-      // const metaMaskProvider = await detectEthereumProvider();
-      // if (metaMaskProvider) {
-      //   console.log("Metamask detected");
-      // } else {
-      //   throw "NO_METAMASK";
-      // }
+      const metaMaskProvider = await detectEthereumProvider();
+      if (metaMaskProvider) {
+        console.log("Metamask detected");
+      } else {
+        throw "NO_METAMASK";
+      }
 
+      // window.ethereum.enable();
+      const newProvider = new ethers.providers.Web3Provider(window.ethereum);
       // const newProvider = new ethers.providers.Web3Provider(metaMaskProvider);
-      // await newProvider.send("eth_requestAccounts", []);
+      await newProvider.send("eth_requestAccounts", []);
 
-      const web3Modal = new Web3Modal();
-      const connection = await web3Modal.connect();
-      const newProvider = new ethers.providers.Web3Provider(connection);
+      // const web3Modal = new Web3Modal();
+      // const connection = await web3Modal.connect();
+      // const newProvider = new ethers.providers.Web3Provider(connection);
 
       const newContract = new ethers.Contract(
         CONSTANTS.CONTRACT_ADDRESS,
