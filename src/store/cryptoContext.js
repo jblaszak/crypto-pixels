@@ -137,12 +137,12 @@ export const CryptoContextProvider = (props) => {
 
       // await window.ethereum.request({ method: "eth_requestAccounts" });
 
-      const metaMaskProvider = await detectEthereumProvider();
-      if (metaMaskProvider) {
-        console.log("Metamask detected");
-      } else {
-        throw "NO_METAMASK";
-      }
+      // const metaMaskProvider = await detectEthereumProvider();
+      // if (metaMaskProvider) {
+      //   console.log("Metamask detected");
+      // } else {
+      //   throw "NO_METAMASK";
+      // }
 
       // window.ethereum.enable();
       const newProvider = new ethers.providers.Web3Provider(window.ethereum);
@@ -159,7 +159,9 @@ export const CryptoContextProvider = (props) => {
         newProvider
       );
 
-      const network = await provider.getNetwork();
+      // console.log(newProvider);
+
+      const network = await newProvider.getNetwork();
       const chainId = network.chainId;
       if (chainId !== 137) {
         throw "NOT_MAIN_NET";
