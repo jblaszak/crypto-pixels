@@ -1,0 +1,36 @@
+.callout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: white;
+    margin: 4rem auto;
+}
+
+.callout div {
+    max-width: 500px;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.callout a {
+    text-decoration: none;
+    font-family: 'InterBold';
+    font-size: 1.25rem;
+    padding: 1rem;
+    color: white;
+    border-radius: 5px;
+    background-color: var(--color-green-dark);
+    white-space: nowrap;
+}
+
+.callout a:hover {
+    background-color: var(--color-green-light);
+}
+
+@media (max-width: 500px) {
+    .callout a {
+        font-size: 1rem;
+    }
+}

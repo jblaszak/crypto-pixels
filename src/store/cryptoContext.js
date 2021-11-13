@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { ethers } from "ethers";
-// import detectEthereumProvider from "@metamask/detect-provider";
-// import Web3Modal from "web3modal";
 
 import { updateStatus } from "../helpers/updateStatus";
 import { mintActions } from "./mint-slice";
@@ -135,31 +133,14 @@ export const CryptoContextProvider = (props) => {
       const oldContract = contract;
       oldContract?.removeAllListeners();
 
-      // await window.ethereum.request({ method: "eth_requestAccounts" });
-
-      // const metaMaskProvider = await detectEthereumProvider();
-      // if (metaMaskProvider) {
-      //   console.log("Metamask detected");
-      // } else {
-      //   throw "NO_METAMASK";
-      // }
-
-      // window.ethereum.enable();
       const newProvider = new ethers.providers.Web3Provider(window.ethereum);
-      // const newProvider = new ethers.providers.Web3Provider(metaMaskProvider);
       await newProvider.send("eth_requestAccounts", []);
-
-      // const web3Modal = new Web3Modal();
-      // const connection = await web3Modal.connect();
-      // const newProvider = new ethers.providers.Web3Provider(connection);
 
       const newContract = new ethers.Contract(
         CONSTANTS.CONTRACT_ADDRESS,
         CryptoFlexPixelsNFT.abi,
         newProvider
       );
-
-      // console.log(newProvider);
 
       const network = await newProvider.getNetwork();
       const chainId = network.chainId;
@@ -183,6 +164,16 @@ export const CryptoContextProvider = (props) => {
         );
       } else if (error === "NO_METAMASK") {
         updateStatus("error", "Please install MetaMask to connect!", dispatch);
+      } else if (
+        error.includes?.("missing provider") ||
+        error.message?.includes("missing provider") ||
+        error.data?.message?.includes("missing provider")
+      ) {
+        updateStatus(
+          "error",
+          "Metamask not detected. Use Metamask browser to mint on mobile.",
+          dispatch
+        );
       } else {
         updateStatus("error", "Failed to connect wallet!", dispatch);
       }

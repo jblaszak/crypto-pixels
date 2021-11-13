@@ -20,7 +20,10 @@ const Overview = () => {
     {
       title: "Bigger Picture",
       description:
-        "Your nft doesn't exist on its own but as an integral part of a collection.",
+        "Your nft doesn't exist on its own but as an integral part of ",
+      linkText: "a collection.",
+      link: "/collection-viewer",
+      internal: true,
     },
     {
       title: "Community Perks",
@@ -48,6 +51,7 @@ const Overview = () => {
           description={card.description}
           linkText={card.linkText}
           link={card.link}
+          internal={card.internal}
         />
       ))}
     </Section>

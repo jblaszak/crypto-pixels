@@ -35,8 +35,8 @@ const CollectionViewer = () => {
 
   return (
     <React.Fragment>
+      <Minting />
       <Section>
-        <Minting />
         <p className={classes.usageDescription}>
           Enter information below or click on pixel to get more information
           about it! Best viewed on desktop.

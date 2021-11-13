@@ -1,4 +1,5 @@
 import React from "react";
+import Callout from "../components/Callout";
 import Community from "../components/Community";
 import Hero from "../components/Hero";
 import Minting from "../components/Minting";
@@ -10,11 +11,13 @@ const Home = () => {
   return (
     <React.Fragment>
       <Hero />
+      <Callout />
       <Overview />
       <Minting />
       <Community />
       <OpenSea />
       <Roadmap />
+      <Callout />
     </React.Fragment>
   );
 };

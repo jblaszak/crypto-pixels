@@ -42,3 +42,9 @@
     font-size: 0.8rem;
     color: #41b964;
 }
+
+@media (max-width: 500px) {
+    .attributeName {
+        font-size: 0.85rem;
+    }
+}

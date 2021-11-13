@@ -1,14 +1,12 @@
 @font-face {
   font-family: "InterRegular";
-  src: local("InterRegular"),
-   url("./fonts/Inter-Regular.ttf") format("truetype");
+  src: local("InterRegular"), url("./fonts/Inter-Regular.woff2") format("woff2"), url("./fonts/Inter-Regular.ttf") format("truetype");
   font-weight: 400;
 }
 
 @font-face {
   font-family: "InterBold";
-  src: local("InterBold"),
-   url("./fonts/Inter-Bold.ttf") format("truetype");
+  src: local("InterBold"), url("./fonts/Inter-Bold.woff2") format("woff2"), url("./fonts/Inter-Bold.ttf") format("truetype");
   font-weight: bold;
   }
 
@@ -67,7 +65,7 @@
 body {
   margin: 0;
   width: 100%;
-  font-family: 'InterRegular', sans-serif;
+  font-family: 'InterRegular', sans-serif !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--color-background);

@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 import classes from "./OverviewCard.module.css";
 
 const OverviewCard = (props) => {
@@ -6,14 +8,17 @@ const OverviewCard = (props) => {
       <h1 className={classes.title}>{props.title}</h1>
       <p className={classes.description}>
         {props.description}
-        <a
-          href={props.link}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label={props.linkText}
-        >
-          {props.linkText}
-        </a>
+        {props.internal && <Link to={props.link}>{props.linkText}</Link>}
+        {!props.internal && (
+          <a
+            href={props.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={props.linkText}
+          >
+            {props.linkText}
+          </a>
+        )}
       </p>
     </div>
   );

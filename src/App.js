@@ -7,6 +7,11 @@ import LoadingSpinner from "./components/UI/LoadingSpinner";
 import StatusMessage from "./components/UI/StatusMessage";
 import TermsPopup from "./components/UI/TermsPopup";
 
+import "./fonts/Inter-Regular.ttf";
+import "./fonts/Inter-Bold.ttf";
+import "./fonts/Inter-Regular.woff2";
+import "./fonts/Inter-Bold.woff2";
+
 const NotFound = React.lazy(() => import("./Pages/NotFound"));
 const Home = React.lazy(() => import("./Pages/Home"));
 const CollectionViewer = React.lazy(() => import("./Pages/CollectionViewer"));
