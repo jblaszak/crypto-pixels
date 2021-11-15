@@ -3,6 +3,11 @@ import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 
+import "./fonts/Inter-Regular.ttf";
+import "./fonts/Inter-Bold.ttf";
+import "./fonts/Inter-Regular.woff2";
+import "./fonts/Inter-Bold.woff2";
+
 import "./index.css";
 import store from "./store";
 import ScrollToTop from "./components/UI/ScrollToTop";

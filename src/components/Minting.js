@@ -12,6 +12,7 @@ const Minting = () => {
   const mintCount = useSelector((state) => state.mint.mintCount);
   const mintFee = useSelector((state) => state.mint.mintFee);
   const [isMinting, setIsMinting] = useState(false);
+  const [errorText, setErrorText] = useState("");
 
   const dispatch = useDispatch();
 
@@ -82,6 +83,7 @@ const Minting = () => {
         updateStatus("error", "User cancelled transaction.", dispatch);
       } else {
         updateStatus("error", `Unknown error occured: ${error}`, dispatch);
+        setErrorText(JSON.stringify(error, null, 2));
       }
     }
     setIsMinting((prevState) => false);
@@ -105,6 +107,7 @@ const Minting = () => {
       ) : (
         <button onClick={ctx.connectWallet}>Connect Wallet to Mint</button>
       )}
+      <div>{errorText}</div>
     </React.Fragment>
   );
   if (mintCount === 10000) {

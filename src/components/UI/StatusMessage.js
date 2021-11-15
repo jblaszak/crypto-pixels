@@ -26,7 +26,6 @@ const StatusMessage = (props) => {
         })
       );
     }, 3000);
-
     return () => {
       clearTimeout(clearMessage);
     };
