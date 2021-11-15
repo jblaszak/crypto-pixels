@@ -81,11 +81,7 @@ const Minting = () => {
       } else if (error.message?.includes("User denied transaction signature")) {
         updateStatus("error", "User cancelled transaction.", dispatch);
       } else {
-        updateStatus(
-          "error",
-          "Unknown error occured. Check console and let us know!",
-          dispatch
-        );
+        updateStatus("error", `Unknown error occured: ${error}`, dispatch);
       }
     }
     setIsMinting((prevState) => false);

@@ -133,8 +133,12 @@ export const CryptoContextProvider = (props) => {
       const oldContract = contract;
       oldContract?.removeAllListeners();
 
+      if (!window.ethereum) {
+        throw new Error("NO_WALLET");
+      }
+
+      await window.ethereum.send("eth_requestAccounts");
       const newProvider = new ethers.providers.Web3Provider(window.ethereum);
-      await newProvider.send("eth_requestAccounts", []);
 
       const newContract = new ethers.Contract(
         CONSTANTS.CONTRACT_ADDRESS,
@@ -145,7 +149,7 @@ export const CryptoContextProvider = (props) => {
       const network = await newProvider.getNetwork();
       const chainId = network.chainId;
       if (chainId !== 137) {
-        throw "NOT_MAIN_NET";
+        throw new Error("NOT_MAIN_NET");
       }
 
       setProvider(newProvider);
@@ -162,8 +166,12 @@ export const CryptoContextProvider = (props) => {
           "You are not connected to Polygon Mainnet!",
           dispatch
         );
-      } else if (error === "NO_METAMASK") {
-        updateStatus("error", "Please install MetaMask to connect!", dispatch);
+      } else if (error.message === "NO_WALLET") {
+        updateStatus(
+          "error",
+          "Crypto wallet not found! Please install one.",
+          dispatch
+        );
       } else if (
         error.includes?.("missing provider") ||
         error.message?.includes("missing provider") ||
@@ -171,7 +179,7 @@ export const CryptoContextProvider = (props) => {
       ) {
         updateStatus(
           "error",
-          "Metamask not detected. Use Metamask browser to mint on mobile.",
+          "Crypto wallet not found! Please install one.",
           dispatch
         );
       } else {
