@@ -46,7 +46,7 @@
 
 .timeline li::before {
     position: absolute;
-    left: -19px;
+    left: -14px;
     top: 0px;
     content: " ";
     border: 5px solid var(--color-gray-600);
@@ -68,21 +68,26 @@
 
 .title {
     color: var(--color-gray-600);
-    margin-bottom: 1rem;
+    /* margin-bottom: 1rem; */
+    top: -0.5rem;
+    left: 30px;
     padding: 0;
-    position: relative;
+    position: absolute;
     font-family: Inter-Bold;
     font-size: 1.75rem;
 }
 
 .isReached .title {
-    background: linear-gradient(255deg, white 50%, var(--color-link-color) 100%);
+    background: linear-gradient(255deg, white 0%, var(--color-link-color) 100%);
+    /* background: linear-gradient(255deg, white 50%, var(--color-link-color) 100%); */
     background-clip: text;
     color: transparent;
 }
 
 .description {
+    padding-top: 2.5rem;
     font-size: 1.25rem;
+    line-height: 1.5rem;
     color: var(--color-gray-600);
 }
 

@@ -137,7 +137,7 @@ export const CryptoContextProvider = (props) => {
         throw new Error("NO_WALLET");
       }
 
-      await window.ethereum.send("eth_requestAccounts");
+      await window.ethereum.request({ method: "eth_requestAccounts" });
       const newProvider = new ethers.providers.Web3Provider(window.ethereum);
 
       const newContract = new ethers.Contract(
@@ -160,10 +160,10 @@ export const CryptoContextProvider = (props) => {
       await setupContractWallet();
     } catch (error) {
       console.log("There was an error connecting wallet!", error);
-      if (error === "NOT_MAIN_NET") {
+      if (error.message === "NOT_MAIN_NET") {
         updateStatus(
           "error",
-          "You are not connected to Polygon Mainnet!",
+          "Change wallet network to Polygon Mainnet!",
           dispatch
         );
       } else if (error.message === "NO_WALLET") {

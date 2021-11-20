@@ -3,6 +3,7 @@ import * as CONSTANTS from "../constants";
 import { attributeData } from "./attributeData";
 
 const atts = ["dia", "e", "42", "m", "d", "f", "h", "i"];
+const atts2 = ["l", "s", "q"];
 const coins = [
   "LUNA",
   "AVAX",
@@ -37,8 +38,12 @@ export const getAttributeCounts = () => {
   for (let i = 0; i < atts.length; i++) {
     attributeCountsTemp[atts[i]] = 0;
   }
+  // initialize counts in atts2 list
+  for (let i = 0; i < atts2.length; i++) {
+    attributeCountsTemp[atts2[i]] = 0;
+  }
 
-  for (let i = 0; i < 21 * CONSTANTS.COLLECTION_SIZE; i += 21) {
+  for (let i = 0; i < 24 * CONSTANTS.COLLECTION_SIZE; i += 24) {
     // 'r' attribute
     if (attributeData.slice(i, i + 3) in attributeCountsTemp["r"]) {
       attributeCountsTemp["r"][attributeData.slice(i, i + 3)]++;
@@ -68,12 +73,12 @@ export const getAttributeCounts = () => {
       if (attributeData[i + 11 + atts.indexOf(att)] === "1") {
         attributeCountsTemp[att]++;
 
-        if (att === "i") {
-          influential.push(i / 21 + 1);
-        }
-        if (att === "m") {
-          musky.push(i / 21 + 1);
-        }
+        // if (att === "i") {
+        //   influential.push(i / 24 + 1);
+        // }
+        // if (att === "m") {
+        //   musky.push(i / 24 + 1);
+        // }
       }
     }
     // 'c' attribute
@@ -83,6 +88,13 @@ export const getAttributeCounts = () => {
         attributeCountsTemp["c"][coins[coinVal - 1]]++;
       } else {
         attributeCountsTemp["c"][coins[coinVal - 1]] = 1;
+      }
+    }
+
+    // for all attributes in atts list
+    for (const att of atts2) {
+      if (attributeData[i + 21 + atts2.indexOf(att)] === "1") {
+        attributeCountsTemp[att]++;
       }
     }
   }
@@ -96,7 +108,7 @@ export const getAttributeCounts = () => {
 export const getAttributes = () => {
   // console.log("inside get attributes!");
   let attributesTemp = {};
-  for (let i = 0; i < 21 * CONSTANTS.COLLECTION_SIZE; i += 21) {
+  for (let i = 0; i < 24 * CONSTANTS.COLLECTION_SIZE; i += 24) {
     let pixel = {};
 
     // 'r' attribute
@@ -120,7 +132,14 @@ export const getAttributes = () => {
       pixel["c"] = coins[coinVal - 1];
     }
 
-    attributesTemp[i / 21 + 1] = pixel;
+    // for all atts in atts2 list
+    for (const att of atts2) {
+      if (attributeData[i + 21 + atts2.indexOf(att)] === "1") {
+        pixel[att] = attributeData[i + 21 + atts2.indexOf(att)];
+      }
+    }
+
+    attributesTemp[i / 24 + 1] = pixel;
   }
   return attributesTemp;
 };

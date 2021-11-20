@@ -5,6 +5,8 @@ import { Provider } from "react-redux";
 
 import "./fonts/Inter-Regular.ttf";
 import "./fonts/Inter-Bold.ttf";
+import "./fonts/Inter-Regular.woff";
+import "./fonts/Inter-Bold.woff";
 import "./fonts/Inter-Regular.woff2";
 import "./fonts/Inter-Bold.woff2";
 

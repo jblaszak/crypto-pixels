@@ -114,8 +114,8 @@ input[type=number] {
 
 label {
    position: absolute;
-   left: 1rem;
-   top: 0.5rem;
+   left: 0.75rem;
+   top: 0.35rem;
    padding: 0 0.5rem;
    color: white;
    cursor: text;

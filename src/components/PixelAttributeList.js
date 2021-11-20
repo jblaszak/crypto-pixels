@@ -64,6 +64,15 @@ const PixelAttributeList = (props) => {
       case "h":
         attribute = "Hand Crafted";
         break;
+      case "l":
+        attribute = "Load Bearing";
+        break;
+      case "s":
+        attribute = "Structural";
+        break;
+      case "q":
+        attribute = "Queen";
+        break;
       case "minted":
         continue;
       default:
