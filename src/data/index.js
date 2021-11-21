@@ -141,5 +141,121 @@ export const getAttributes = () => {
 
     attributesTemp[i / 24 + 1] = pixel;
   }
+
+  // edit boost
+  const editBoost = (pixel, boostedFrom) => {
+    if (attributesTemp[pixel]?.["Boost"]) {
+      attributesTemp[pixel]["Boost"].push(boostedFrom);
+    } else {
+      attributesTemp[pixel]["Boost"] = [boostedFrom];
+    }
+  };
+
+  for (let k = 1; k <= Object.keys(attributesTemp).length; k++) {
+    // Add influential pixels boosts
+    if (attributesTemp[k]?.["i"]) {
+      // Sweep left to right
+      for (let x = -3; x < 4; x++) {
+        if ((k % 100) + x < 0) continue; // If outside left wall
+        if ((k % 100) + x > 99) break; // If outside right wall
+
+        // Sweep top to bottom
+        for (let y = -300; y < 400; y = y + 100) {
+          if (k + y < 0) continue; // If outside top wall
+          if (k + y > 9999) break; // If outside bottom wall
+
+          const pixel = k + x + y;
+          editBoost(pixel, k);
+        }
+      }
+    }
+
+    // If load bearing, add boost to 5 pixels above
+    if (attributesTemp[k]?.["l"]) {
+      // Sweep up
+      for (let y = -500; y < 100; y = y + 100) {
+        if (k + y < 0) continue; // If outside top wall
+
+        const pixel = k + y;
+
+        editBoost(pixel, k);
+      }
+    }
+
+    // If structural support, add boost to 5 pixels left and right
+    if (attributesTemp[k]?.["s"]) {
+      // Sweep left to right
+      for (let x = -5; x < 6; x++) {
+        if ((k % 100) + x < 0) continue; // If outside left wall
+        if ((k % 100) + x > 99) break; // If outside right wall
+
+        const pixel = k + x;
+        editBoost(pixel, k);
+      }
+    }
+
+    // If queen, add boost to 3x3 pixels
+    if (attributesTemp[k]?.["q"]) {
+      // X,Y movements for focus
+      const moveArray = [
+        [-5, -500],
+        [0, -500],
+        [5, -500],
+        [-4, -400],
+        [0, -400],
+        [4, -400],
+        [-3, -300],
+        [0, -300],
+        [3, -300],
+        [-2, -200],
+        [0, -200],
+        [2, -200],
+        [-1, -100],
+        [0, -100],
+        [1, -100],
+        [-1, 100],
+        [0, 100],
+        [1, 100],
+        [-2, 200],
+        [0, 200],
+        [2, 200],
+        [-3, 300],
+        [0, 300],
+        [3, 300],
+        [-4, 400],
+        [0, 400],
+        [4, 400],
+        [-5, 500],
+        [0, 500],
+        [5, 500],
+      ];
+
+      // Do each item in movement array
+      for (let j = 0; j < moveArray.length; j++) {
+        const x = moveArray[j][0];
+        const y = moveArray[j][1];
+
+        if ((k % 100) + x < 0) continue; // If outside left wall
+        if ((k % 100) + x > 99) break; // If outside right wall
+
+        if (k + y < 0) continue; // If outside top wall
+        if (k + y > 9999) break; // If outside bottom wall
+
+        const pixel = k + y + x;
+        editBoost(pixel, k);
+      }
+
+      // do the 0th row
+      // Sweep left to right
+      for (let x = -5; x < 6; x++) {
+        if ((k % 100) + x < 0) continue; // If outside left wall
+        if ((k % 100) + x > 99) break; // If outside right wall
+
+        const pixel = k + x;
+        editBoost(pixel, k);
+      }
+    }
+  }
+
   return attributesTemp;
 };

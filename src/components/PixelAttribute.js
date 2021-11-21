@@ -8,10 +8,12 @@ const PixelInfoAttribute = (props) => {
         {`${props.attribute} `}
         <span className={classes.attributeValue}>{props.value}</span>
       </h2>
-      <p className={classes.rarity}>
-        Rarity: <span className={classes.rarityValue}>{props.rarity}</span>
-        /10000
-      </p>
+      {props.rarity !== "" && (
+        <p className={classes.rarity}>
+          Rarity: <span className={classes.rarityValue}>{props.rarity}</span>
+          /10000
+        </p>
+      )}
     </div>
   );
 };

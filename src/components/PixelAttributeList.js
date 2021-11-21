@@ -73,6 +73,11 @@ const PixelAttributeList = (props) => {
       case "q":
         attribute = "Queen";
         break;
+      case "Boost":
+        attribute = "Boost: ";
+        attributeValue = value.length;
+        rarity = "";
+        break;
       case "minted":
         continue;
       default:
