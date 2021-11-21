@@ -7,7 +7,8 @@ const Callout = () => {
   return (
     <Section className={classes.callout}>
       <div>
-        View your pixel and see how it relates to the rest of the collection!
+        Introducing the concept of relational value - NFTs now affect each other
+        based on their physical proximity and attributes!
       </div>
       <Link to="/collection-viewer">Collection Viewer</Link>
     </Section>
