@@ -60,7 +60,7 @@ const Hero = () => {
       <canvas ref={canvasRef} />
       <div className={classes.content}>
         <h1 className={classes.title}>Crypto Flex Pixels</h1>
-        <h2 className={classes.subtitle}>An innovative new NFT project</h2>
+        <h2 className={classes.subtitle}>NFTs that influence each other!</h2>
       </div>
     </div>
   );
