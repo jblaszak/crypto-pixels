@@ -38,7 +38,7 @@
 }
 
 .rarityValue {
-    font-family: Inter-Bold, sans-serif;
+    font-weight: 700;
     font-size: 0.8rem;
     color: #41b964;
 }

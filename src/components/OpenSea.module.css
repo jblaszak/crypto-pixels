@@ -21,7 +21,7 @@
 
 .opensea a {
     text-decoration: none;
-    font-family: Inter-Bold;
+    font-weight: 700;
     font-size: 1.25rem;
     padding: 1rem;
     color: white;

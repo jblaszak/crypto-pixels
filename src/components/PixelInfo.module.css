@@ -33,7 +33,7 @@
 
 .name,
 .position {
-    font-family: Inter-Bold, sans-serif;
+    font-weight: 700;
     margin: 0 1rem;
     padding: 0;
 }
@@ -53,7 +53,7 @@
 .position span,
 .sales span,
 .owner span {
-    font-family: Inter-Bold, sans-serif;
+    font-weight: 700;
     padding: 0px;
     margin: 0px;
 }

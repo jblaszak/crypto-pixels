@@ -31,14 +31,7 @@ const MainHeader = (props) => {
     <nav className={classes.navbar}>
       <ul className={classes.nav}>
         <li>
-          <NavLink to="/" activeClassName={classes.active} exact>
-            Home
-          </NavLink>
-        </li>
-        <li>
-          <NavLink to="/collection-viewer" activeClassName={classes.active}>
-            Collection Viewer
-          </NavLink>
+          <a href="https://www.perfectpixels.club">Perfect Pixels Club</a>
         </li>
       </ul>
       <IconLinks />

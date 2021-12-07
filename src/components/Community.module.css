@@ -13,13 +13,13 @@
 
 .community h1 {
     margin: 0;
-    font-family: Inter-Bold;
+    font-weight: 700;
     font-size: 1.75rem;
 }
 
 .community a {
     text-decoration: none;
-    font-family: Inter-Bold;
+    font-weight: 700;
     font-size: 1.25rem;
     padding: 1rem;
     color: white;

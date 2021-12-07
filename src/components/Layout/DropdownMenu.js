@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import * as CONSTANTS from "../../constants";
 
 import classes from "./DropdownMenu.module.css";
 
@@ -10,12 +10,9 @@ const DropdownMenu = (props) => {
       className={classes.dropdown}
       onClick={props.onClickHandler}
     >
-      <Link className={classes.link} to="/">
-        Home
-      </Link>
-      <Link className={classes.link} to="/collection-viewer">
-        Collection Viewer
-      </Link>
+      <a className={classes.link} to="/">
+        Perfect Pixels Club
+      </a>
       <a className={classes.link} href="https://twitter.com/Flex_Pixels_NFT">
         Twitter
       </a>
@@ -24,6 +21,15 @@ const DropdownMenu = (props) => {
       </a>
       <a className={classes.link} href="https://www.opensea.io">
         OpenSea
+      </a>
+      <a
+        href={`https://polygonscan.com/address/${CONSTANTS.CONTRACT_ADDRESS}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Smart Contract"
+        className={classes.link}
+      >
+        Smart Contract
       </a>
     </div>
   );
