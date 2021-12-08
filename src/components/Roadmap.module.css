@@ -22,6 +22,7 @@
 .header p {
     margin-top: 1rem;
     font-size: 1.25rem;
+    line-height: 1.35rem;
     padding: 0;
     color: var(--color-soft-text);
     max-width: 60%;
@@ -87,7 +88,7 @@
 .description {
     padding-top: 2.5rem;
     font-size: 1.25rem;
-    line-height: 1.5rem;
+    line-height: 1.35rem;
     color: var(--color-gray-600);
 }
 
@@ -97,8 +98,8 @@
 
 @media (max-width: 650px) {
     .title {
-        padding-top: 0.25rem;
-        font-size: 1.5rem;
+        padding-top: 0.4rem;
+        font-size: 1.25rem;
     }
     
     .description {

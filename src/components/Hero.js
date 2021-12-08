@@ -61,7 +61,7 @@ const Hero = () => {
       <div className={classes.content}>
         <h1 className={classes.title}>Crypto Flex Pixels</h1>
         <h2 className={classes.subtitle}>
-          A Community of NFTs that boost each other!
+          A community of NFTs that boost each other!
         </h2>
       </div>
     </div>

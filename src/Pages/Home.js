@@ -12,6 +12,8 @@ import PixelInfo from "../components/PixelInfo";
 import Card from "../components/UI/Card";
 import Section from "../components/Layout/Section";
 import PixelMap from "../components/PixelMap/PixelMap";
+import Story from "../components/Story";
+import PixelTypes from "../components/PixelTypes";
 import Roadmap from "../components/Roadmap";
 
 import classes from "./Home.module.css";
@@ -105,15 +107,19 @@ const Home = () => {
         </Card>
       </Section>
       <Section>
-        <PixelInfo className={classes.pixelInfo} />
-      </Section>
-      <Section>
         <PixelMap />
       </Section>
+      <Section>
+        <PixelInfo className={classes.pixelInfo} />
+      </Section>
       <Overview />
+      <Story />
+      <PixelTypes />
       <Community />
+      <Minting />
       <OpenSea />
       <Roadmap />
+      <Minting />
     </React.Fragment>
   );
 };

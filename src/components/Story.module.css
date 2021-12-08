@@ -1,0 +1,14 @@
+.story {
+    color: white;
+}
+
+.title {
+    font-size: 2rem;
+}
+
+.story p {
+    font-size: 1.1rem;
+    line-height: 1.35rem;
+    color: var(--color-soft-text);
+}
+
