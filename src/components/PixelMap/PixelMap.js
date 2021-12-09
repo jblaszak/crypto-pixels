@@ -152,6 +152,17 @@ const useCanvas = () => {
 
 const PixelMap = () => {
   const [canvasRefPixelMap, canvasRefToolTip] = useCanvas();
+  // const data = useSelector((state) => state.dataMap.pixelAttributes);
+  // const dispatch = useDispatch();
+
+  // useEffect(() => {
+  //   dispatch(
+  //     dataMapActions.updateAttributes({
+  //       pixelAttributes: getAttributes(),
+  //       pixelAttributeCounts: getAttributeCounts(),
+  //     })
+  //   );
+  // }, []);
 
   return (
     <Card className={classes.container}>

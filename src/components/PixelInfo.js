@@ -11,22 +11,27 @@ const PixelInfo = (props) => {
   const selectedPixel = useSelector((state) => state.dataMap.selectedPixel);
   let pixelAttributes = useSelector((state) => state.dataMap.pixelAttributes);
 
+  // const attributesLoaded = pixelAttributes.length > 0;
+  let styles = {};
+  let pixelClass = "";
+  let position = "";
+
   pixelAttributes = pixelAttributes[selectedPixel];
 
   const color = `rgb(${pixelAttributes.r}, ${pixelAttributes.g}, ${pixelAttributes.b})`;
-  const position = (
+  position = (
     <span>{` (${(selectedPixel - 1) % CONSTANTS.MAX_WIDTH},${Math.floor(
       (selectedPixel - 1) / CONSTANTS.MAX_WIDTH
     )})`}</span>
   );
 
-  let styles = { backgroundColor: color };
-  let pixelClass = classes.pixelLarge;
-  if (pixelAttributes["f"]) {
+  styles = { backgroundColor: color };
+  pixelClass = classes.pixelLarge;
+  if (pixelAttributes?.["f"]) {
     pixelClass = `${pixelClass} ${classes.flashy}`;
     styles = {};
   }
-  if (pixelAttributes["d"]) {
+  if (pixelAttributes?.["d"]) {
     pixelClass = `${pixelClass} ${classes.dead}`;
     styles = {};
   }

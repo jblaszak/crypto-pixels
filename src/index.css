@@ -69,7 +69,7 @@
 body {
   margin: 0;
   width: 100%;
-  font-family: 'Inter', sans-serif;
+  font-family: sans-serif;
   /* text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   font-feature-settings: "kern";
@@ -79,6 +79,9 @@ body {
   background-color: var(--color-background);
 }
 
+body.fontLoaded {
+  font-family: 'Inter', sans-serif;
+}
 
 button {
   font-family: 'Inter', sans-serif;

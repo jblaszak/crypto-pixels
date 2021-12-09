@@ -93,7 +93,6 @@ const PixelAttributeList = (props) => {
       />
     );
   }
-
   return <React.Fragment>{attributesList}</React.Fragment>;
 };
 

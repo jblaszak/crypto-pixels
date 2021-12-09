@@ -12,6 +12,10 @@ const dataMapSlice = createSlice({
     updateSelectedPixel(state, action) {
       state.selectedPixel = action.payload;
     },
+    // updateAttributes(state, action) {
+    //   state.pixelAttributes = action.payload.pixelAttributes;
+    //   state.pixelAttributeCounts = action.payload.pixelAttributeCounts;
+    // },
   },
 });
 

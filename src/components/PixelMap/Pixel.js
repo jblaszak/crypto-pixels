@@ -11,7 +11,7 @@ export default class Pixel {
     this.y =
       Math.floor((index - 1) / CONSTANTS.MAX_WIDTH) *
       (CONSTANTS.PIXEL_WIDTH + CONSTANTS.PIXEL_GAP);
-    this.color = data["d"]
+    this.color = data?.["d"]
       ? "rgb(0,0,0)"
       : `rgb(${data["r"]},${data["g"]},${data["b"]})`;
     this.flashyTime = data["f"] ? Date.now() + Math.random() * 1000 : false;
