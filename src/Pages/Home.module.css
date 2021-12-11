@@ -1,46 +1,38 @@
-/* form {
-    display: flex;
-    align-items: center;
-} */
-
 *::before,
 *::after {
     margin: 0;
     padding: 0;
 }
 
-.bothForms {
-    display: flex;
-    flex-direction: row;
-    gap: 1rem;
-    align-items: center;
-}
-
-.bothForms form {
+.pixelSelector form {
     display: contents;
 }
 
-.positionFinder,
-.numberFinder {
+.pixelSelector {
     display: flex;
     flex-direction: row;
-    gap: 1rem;
+    justify-content: center;
+    /* justify-items: center; */
+    gap: 3rem;
     width: 100%;
 }
 
-.numberFinder {
-    justify-content: flex-end;
+.pixelNumber {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+
+.showMyPixels {
+    max-width: 200px;
 }
 
 
-@media (max-width: 820px) {
-    .bothForms {
+@media (max-width: 575px) {
+    .pixelSelector {
         flex-direction: column;
-    }
-
-    .positionFinder,
-    .numberFinder {
-        justify-content: center;
+        align-items: center;
+        gap: 1rem;
     }
 }
 

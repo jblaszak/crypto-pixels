@@ -2,6 +2,7 @@
     display: grid;
 }
 
+.canvasBackground,
 .canvasToolTip,
 .canvasPixelMap {
     grid-column: 1;

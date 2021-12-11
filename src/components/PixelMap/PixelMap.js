@@ -1,9 +1,9 @@
 import React, { useRef, useEffect, useContext } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
+import Background from "./Background";
 import PixelField from "./PixelField";
 import ToolTip from "./ToolTip";
-import Card from "../UI/Card";
 
 import { dataMapActions } from "../../store/dataMap-slice";
 import CryptoContext from "../../store/cryptoContext";
@@ -14,6 +14,7 @@ import classes from "./PixelMap.module.css";
 const useCanvas = () => {
   const canvasRefPixelMap = useRef(null);
   const canvasRefToolTip = useRef(null);
+  const canvasRefBackground = useRef(null);
   const dispatch = useDispatch();
 
   const data = useSelector((state) => state.dataMap.pixelAttributes);
@@ -32,8 +33,14 @@ const useCanvas = () => {
     canvasToolTip.width = CONSTANTS.INITIAL_CANVAS_WIDTH;
     canvasToolTip.height = CONSTANTS.INITIAL_CANVAS_WIDTH;
 
+    const canvasBackground = canvasRefBackground.current;
+    const ctxBackground = canvasBackground.getContext("2d");
+    canvasBackground.width = CONSTANTS.INITIAL_CANVAS_WIDTH;
+    canvasBackground.height = CONSTANTS.INITIAL_CANVAS_WIDTH;
+
     let pixelFieldAnimation;
     let toolTipAnimation;
+    let backgroundAnimation;
     const didChangeHappen = true;
     const mintedPixels = cryptoCtx.mintedPixels;
 
@@ -54,15 +61,27 @@ const useCanvas = () => {
       toolTipAnimation
     );
 
+    const background = new Background(
+      ctxBackground,
+      canvasBackground.width,
+      canvasBackground.height,
+      backgroundAnimation
+    );
+
     pixelField.pixelFieldAnimation = requestAnimationFrame(pixelField.animate);
     toolTip.toolTipAnimation = requestAnimationFrame(toolTip.animate);
+    background.backgroundAnimation = requestAnimationFrame(background.animate);
 
     const handleResize = (e) => {
+      cancelAnimationFrame(background.pixelFieldAnimation);
       cancelAnimationFrame(pixelField.pixelFieldAnimation);
       cancelAnimationFrame(toolTip.toolTipAnimation);
 
       pixelField.didChangeHappen = true;
 
+      background.backgroundAnimation = requestAnimationFrame(
+        background.animate
+      );
       pixelField.pixelFieldAnimation = requestAnimationFrame(
         pixelField.animate
       );
@@ -147,11 +166,12 @@ const useCanvas = () => {
     };
   }, [data, dispatch]);
 
-  return [canvasRefPixelMap, canvasRefToolTip];
+  return [canvasRefPixelMap, canvasRefToolTip, canvasRefBackground];
 };
 
 const PixelMap = () => {
-  const [canvasRefPixelMap, canvasRefToolTip] = useCanvas();
+  const [canvasRefPixelMap, canvasRefToolTip, canvasRefBackground] =
+    useCanvas();
   // const data = useSelector((state) => state.dataMap.pixelAttributes);
   // const dispatch = useDispatch();
 
@@ -165,10 +185,11 @@ const PixelMap = () => {
   // }, []);
 
   return (
-    <Card className={classes.container}>
+    <div className={classes.container}>
+      <canvas className={classes.canvasBackground} ref={canvasRefBackground} />
       <canvas className={classes.canvasPixelMap} ref={canvasRefPixelMap} />
       <canvas className={classes.canvasToolTip} ref={canvasRefToolTip} />
-    </Card>
+    </div>
   );
 };
 

@@ -1,8 +1,9 @@
-import React, { useRef } from "react";
+import React, { useRef, Suspense } from "react";
 import { useDispatch } from "react-redux";
 import useReponsive from "../hooks/useResponsive";
 import { dataMapActions } from "../store/dataMap-slice";
 
+import LoadingSpinner from "../components/UI/LoadingSpinner";
 import Community from "../components/Community";
 import Hero from "../components/Hero";
 import Minting from "../components/Minting";
@@ -48,43 +49,8 @@ const Home = () => {
           about it! Best viewed on desktop.
         </p>
         <Card>
-          <div className={classes.bothForms}>
-            <div className={classes.positionFinder}>
-              <form onSubmit={submitHandler}>
-                <div className={classes.formEntry}>
-                  <input
-                    ref={xRef}
-                    id="x"
-                    type="number"
-                    min="0"
-                    max="99"
-                    placeholder=" "
-                    autoComplete="off"
-                  />
-                  <label htmlFor="x">
-                    {isSmallScreen ? "X Pos" : "X Position"}
-                  </label>
-                </div>
-                <div className={classes.formEntry}>
-                  <input
-                    ref={yRef}
-                    id="y"
-                    type="number"
-                    min="0"
-                    max="99"
-                    placeholder=" "
-                    autoComplete="off"
-                  />
-                  <label htmlFor="y">
-                    {isSmallScreen ? "Y Pos" : "Y Position"}
-                  </label>
-                </div>
-                <button type="submit" className={classes.findPixel}>
-                  Find Pixel
-                </button>
-              </form>
-            </div>
-            <div className={classes.numberFinder}>
+          <div className={classes.pixelSelector}>
+            <div className={classes.pixelNumber}>
               <form onSubmit={submitHandler2}>
                 <div className={classes.formEntry}>
                   <input
@@ -103,15 +69,26 @@ const Home = () => {
                 </button>
               </form>
             </div>
+            <button type="submit" className={classes.showMyPixels} disabled>
+              Show My Pixels
+            </button>
           </div>
         </Card>
       </Section>
-      <Section>
-        <PixelMap />
-      </Section>
-      <Section>
-        <PixelInfo className={classes.pixelInfo} />
-      </Section>
+      <Suspense
+        fallback={
+          <div className="centered">
+            <LoadingSpinner />
+          </div>
+        }
+      >
+        <Section>
+          <PixelMap />
+        </Section>
+        <Section>
+          <PixelInfo className={classes.pixelInfo} />
+        </Section>
+      </Suspense>
       <Overview />
       <Story />
       <PixelTypes />

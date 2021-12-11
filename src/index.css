@@ -1,18 +1,20 @@
 @import url(sanitize.css);
 
-/* @font-face {
-  font-family: Inter-Regular;
+@font-face {
+  font-family: "Inter";
   src: local("Inter-Regular"), local("InterRegular"), url(./fonts/Inter-Regular.woff2) format("woff2"), url(./fonts/Inter-Regular.woff) format("woff"), url(./fonts/Inter-Regular.ttf) format("truetype");
   font-weight: 400;
   font-display: swap;
+  unicode-range: U+0025-00FF;
 }
 
 @font-face {
-  font-family: Inter-Bold;
+  font-family: "Inter";
   src: local("Inter-Bold"), local("InterBold"), url(./fonts/Inter-Bold.woff2) format("woff2"), url(./fonts/Inter-Bold.woff) format("woff"), url(./fonts/Inter-Bold.ttf) format("truetype");
-  font-weight: bold;
+  font-weight: 700;
   font-display: swap;
-  } */
+  unicode-range: U+0025-00FF;
+}
 
   * {
     box-sizing: border-box;
@@ -69,19 +71,19 @@
 body {
   margin: 0;
   width: 100%;
-  font-family: sans-serif;
-  /* text-rendering: optimizeLegibility;
+  font-family: 'Inter', sans-serif;
+  text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   font-feature-settings: "kern";
   -webkit-font-feature-settings: "kern";
-  -moz-osx-font-smoothing: grayscale; */
+  -moz-osx-font-smoothing: grayscale;
   letter-spacing: 0 !important;
   background-color: var(--color-background);
 }
 
-body.fontLoaded {
+/* body.fontLoaded {
   font-family: 'Inter', sans-serif;
-}
+} */
 
 button {
   font-family: 'Inter', sans-serif;
@@ -100,6 +102,11 @@ button:hover,
 button:active {
   background-color: var(--color-green-light);
   border: 1px solid var(--color-green-light);
+}
+
+button:disabled {
+  background-color: var(--color-gray-500);
+  border: 1px solid var(--color-gray-200);
 }
 
 .centered {
