@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { dataMapActions } from "../store/dataMap-slice";
-import { getAttributes, getAttributeCounts } from "../data/";
+import { getAttributeData, getAttributes, getAttributeCounts } from "../data/";
 
 import PixelInfo from "../components/PixelInfo";
 import Card from "../components/UI/Card";
@@ -22,11 +22,13 @@ const PixelSection = () => {
     dispatch(dataMapActions.updateSelectedPixel(index));
   };
 
-  useEffect(() => {
+  useEffect(async () => {
+    const attributeData = await getAttributeData();
+    console.log(attributeData);
     dispatch(
       dataMapActions.updateAttributes({
-        pixelAttributes: getAttributes(),
-        pixelAttributeCounts: getAttributeCounts(),
+        pixelAttributes: getAttributes(attributeData),
+        pixelAttributeCounts: getAttributeCounts(attributeData),
       })
     );
   }, []);

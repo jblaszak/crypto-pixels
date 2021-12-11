@@ -1,7 +1,5 @@
 import * as CONSTANTS from "../constants";
 
-import { attributeData } from "./attributeData";
-
 const atts = ["dia", "e", "42", "m", "d", "f", "h", "i"];
 const atts2 = ["l", "s", "q"];
 const coins = [
@@ -22,7 +20,7 @@ const coins = [
   "ATOM",
 ];
 
-export const getAttributeCounts = () => {
+export const getAttributeCounts = (attributeData) => {
   let attributeCountsTemp = {
     r: {},
     g: {},
@@ -105,7 +103,7 @@ export const getAttributeCounts = () => {
   return attributeCountsTemp;
 };
 
-export const getAttributes = () => {
+export const getAttributes = (attributeData) => {
   // console.log("inside get attributes!");
   let attributesTemp = {};
   for (let i = 0; i < 24 * CONSTANTS.COLLECTION_SIZE; i += 24) {
@@ -258,4 +256,12 @@ export const getAttributes = () => {
   }
 
   return attributesTemp;
+};
+
+export const getAttributeData = () => {
+  return new Promise((res, rej) => {
+    import("./attributeData.json").then((attributeData) => {
+      res(attributeData.data);
+    });
+  });
 };
