@@ -1,17 +1,19 @@
-import React, { useRef, Suspense } from "react";
-import { useDispatch } from "react-redux";
+import React, { useEffect, useRef, Suspense } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { dataMapActions } from "../store/dataMap-slice";
+import { getAttributes, getAttributeCounts } from "../data/";
 
-import LoadingSpinner from "./UI/LoadingSpinner";
-import PixelInfo from "./PixelInfo";
-import Card from "./UI/Card";
-import Section from "./Layout/Section";
-import PixelMap from "./PixelMap/PixelMap";
+import LoadingSpinner from "../components/UI/LoadingSpinner";
+import PixelInfo from "../components/PixelInfo";
+import Card from "../components/UI/Card";
+import Section from "../components/Layout/Section";
+import PixelMap from "../components/PixelMap/PixelMap";
 
 import classes from "./PixelSection.module.css";
 
 const PixelSection = () => {
   const dispatch = useDispatch();
+  const selectedPixel = useSelector((state) => state.dataMap.selectedPixel);
 
   const numRef = useRef();
 
@@ -20,6 +22,25 @@ const PixelSection = () => {
     const index = +numRef.current.value;
     dispatch(dataMapActions.updateSelectedPixel(index));
   };
+
+  useEffect(() => {
+    dispatch(
+      dataMapActions.updateAttributes({
+        pixelAttributes: getAttributes(),
+        pixelAttributeCounts: getAttributeCounts(),
+      })
+    );
+  }, []);
+
+  let pixelInfoDisplay = (
+    <Card>
+      <p className={classes.pixelInfoDisplay}>Select a pixel to see stats.</p>
+    </Card>
+  );
+
+  if (selectedPixel !== -1) {
+    pixelInfoDisplay = <PixelInfo className={classes.pixelInfo} />;
+  }
 
   return (
     <React.Fragment>
@@ -65,9 +86,7 @@ const PixelSection = () => {
         <Section>
           <PixelMap />
         </Section>
-        <Section>
-          <PixelInfo className={classes.pixelInfo} />
-        </Section>
+        <Section>{pixelInfoDisplay}</Section>
       </Suspense>
     </React.Fragment>
   );

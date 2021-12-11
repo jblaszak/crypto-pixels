@@ -133,3 +133,9 @@ label {
     text-align: center;
     margin-top: -2.5rem;
 }
+
+.pixelInfoDisplay {
+    color: white;
+    font-size: 1.5rem;
+    text-align: center;
+}
