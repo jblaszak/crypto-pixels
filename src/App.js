@@ -36,6 +36,9 @@ function App() {
             <Route path="/terms" exact>
               <Terms />
             </Route>
+            <Route path="/collection-viewer" exact>
+              <Home />
+            </Route>
             <Route path="*">
               <NotFound />
             </Route>
