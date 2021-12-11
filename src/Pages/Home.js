@@ -1,8 +1,10 @@
-import React from "react";
+import React, { Suspense } from "react";
 
 import Hero from "../components/Hero";
 import Minting from "../components/Minting";
-import PixelSection from "../components/PixelSection";
+const PixelSection = React.lazy(() => import("../components/PixelSection"));
+import LoadingSpinner from "../components/UI/LoadingSpinner";
+// import PixelSection from "../components/PixelSection";
 import Overview from "../components/Overview";
 import Story from "../components/Story";
 import PixelTypes from "../components/PixelTypes";
@@ -15,7 +17,15 @@ const Home = () => {
     <React.Fragment>
       <Hero />
       <Minting />
-      <PixelSection />
+      <Suspense
+        fallback={
+          <div className="centered">
+            <LoadingSpinner />
+          </div>
+        }
+      >
+        <PixelSection />
+      </Suspense>
       <Overview />
       <Story />
       <PixelTypes />

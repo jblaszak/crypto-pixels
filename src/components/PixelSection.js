@@ -1,9 +1,8 @@
-import React, { useEffect, useRef, Suspense } from "react";
+import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { dataMapActions } from "../store/dataMap-slice";
 import { getAttributes, getAttributeCounts } from "../data/";
 
-import LoadingSpinner from "../components/UI/LoadingSpinner";
 import PixelInfo from "../components/PixelInfo";
 import Card from "../components/UI/Card";
 import Section from "../components/Layout/Section";
@@ -76,18 +75,10 @@ const PixelSection = () => {
           </div>
         </Card>
       </Section>
-      <Suspense
-        fallback={
-          <div className="centered">
-            <LoadingSpinner />
-          </div>
-        }
-      >
-        <Section>
-          <PixelMap />
-        </Section>
-        <Section>{pixelInfoDisplay}</Section>
-      </Suspense>
+      <Section>
+        <PixelMap />
+      </Section>
+      <Section>{pixelInfoDisplay}</Section>
     </React.Fragment>
   );
 };
