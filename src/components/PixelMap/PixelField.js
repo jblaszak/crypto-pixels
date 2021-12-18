@@ -17,6 +17,17 @@ export default class PixelField {
     this.mouseX = 0;
     this.mouseY = 0;
     this.hoveredPixel = -1;
+    this.cameraZoom = 1;
+    this.lastZoom = this.cameraZoom;
+    this.MIN_ZOOM = 1;
+    this.MAX_ZOOM = 5;
+    this.SCROLL_SENSITIVITY = 0.005;
+    this.didScale = false;
+    this.trackTransforms();
+    this.pt = this.ctx.transformedPoint(this.mouseX, this.mouseY);
+    this.dragged = false;
+    this.dragStart = null;
+    this.initialPinchDistance = null;
     this.pixelArray = [...Array(CONSTANTS.COLLECTION_SIZE)].map(
       (val, index) => {
         if (mintedPixels.includes(index + 1)) {
@@ -30,9 +41,81 @@ export default class PixelField {
     this.pixelFieldAnimation = pixelFieldAnimation;
     this.didChangeHappen = didChangeHappen;
   }
+  // Adds ctx.getTransform() - returns an SVGMatrix
+  // Adds ctx.transformedPoint(x,y) - returns an SVGPoint
+  trackTransforms = () => {
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    let xform = svg.createSVGMatrix();
+    this.ctx.getTransform = () => {
+      return xform;
+    };
+
+    const savedTransforms = [];
+    const save = this.ctx.save;
+    this.ctx.save = () => {
+      savedTransforms.push(xform.translate(0, 0));
+      return save.call(this.ctx);
+    };
+
+    const restore = this.ctx.restore;
+    this.ctx.restore = () => {
+      xform = savedTransforms.pop();
+      return restore.call(this.ctx);
+    };
+
+    const scale = this.ctx.scale;
+    this.ctx.scale = (sx, sy) => {
+      xform = xform.scaleNonUniform(sx, sy);
+      return scale.call(this.ctx, sx, sy);
+    };
+
+    const rotate = this.ctx.rotate;
+    this.ctx.rotate = (radians) => {
+      xform = xform.rotate((radians * 180) / Math.PI);
+      return rotate.call(this.ctx, radians);
+    };
+
+    const translate = this.ctx.translate;
+    this.ctx.translate = (dx, dy) => {
+      xform = xform.translate(dx, dy);
+      return translate.call(this.ctx, dx, dy);
+    };
+
+    const transform = this.ctx.transform;
+    this.ctx.transform = (a, b, c, d, e, f) => {
+      const m2 = svg.createSVGMatrix();
+      m2.a = a;
+      m2.b = b;
+      m2.c = c;
+      m2.d = d;
+      m2.e = e;
+      m2.f = f;
+      xform = xform.multiply(m2);
+      return transform.call(this.ctx, a, b, c, d, e, f);
+    };
+
+    const setTransform = this.ctx.setTransform;
+    this.ctx.setTransform = (a, b, c, d, e, f) => {
+      xform.a = a;
+      xform.b = b;
+      xform.c = c;
+      xform.d = d;
+      xform.e = e;
+      xform.f = f;
+      return setTransform.call(this.ctx, a, b, c, d, e, f);
+    };
+
+    const pt = svg.createSVGPoint();
+    this.ctx.transformedPoint = (x, y) => {
+      pt.x = x;
+      pt.y = y;
+      return pt.matrixTransform(xform.inverse());
+    };
+  };
+
   isMouseNear = (x, y) => {
-    let dx = this.mouseX - x;
-    let dy = this.mouseY - y;
+    let dx = this.pt.x - x;
+    let dy = this.pt.y - y;
     let distance = dx * dx + dy * dy;
 
     // posMod min: 0, max: 1, min at threshold
@@ -50,12 +133,14 @@ export default class PixelField {
     }
   };
   getHoveredPixel = () => {
+    this.pt = this.ctx.transformedPoint(this.mouseX, this.mouseY);
+
     // Is mouse outside of canvas
     if (
-      this.mouseX < 0 ||
-      this.mouseY < 0 ||
-      this.mouseX >= CONSTANTS.INITIAL_CANVAS_WIDTH ||
-      this.mouseY >= CONSTANTS.INITIAL_CANVAS_WIDTH
+      this.pt.x < 0 ||
+      this.pt.y < 0 ||
+      this.pt.x >= CONSTANTS.INITIAL_CANVAS_WIDTH ||
+      this.pt.y >= CONSTANTS.INITIAL_CANVAS_WIDTH
     ) {
       this.hoveredPixel = -1;
       return;
@@ -63,22 +148,56 @@ export default class PixelField {
 
     // Find pixel index
     const pixelXCoord = Math.floor(
-      this.mouseX / (CONSTANTS.PIXEL_WIDTH + CONSTANTS.PIXEL_GAP)
+      this.pt.x / (CONSTANTS.PIXEL_WIDTH + CONSTANTS.PIXEL_GAP)
     );
     const pixelYCoord = Math.floor(
-      this.mouseY / (CONSTANTS.PIXEL_WIDTH + CONSTANTS.PIXEL_GAP)
+      this.pt.y / (CONSTANTS.PIXEL_WIDTH + CONSTANTS.PIXEL_GAP)
     );
     this.hoveredPixel = pixelXCoord + 1 + pixelYCoord * 100;
   };
+  adjustZoom = (zoomAmount, zoomFactor) => {
+    if (!this.isDragging) {
+      this.lastZoom = this.cameraZoom;
+      if (zoomAmount) {
+        this.cameraZoom += zoomAmount;
+      } else if (zoomFactor) {
+        this.cameraZoom = zoomFactor * this.lastZoom;
+      }
+
+      this.cameraZoom = Math.min(this.cameraZoom, this.MAX_ZOOM);
+      this.cameraZoom = Math.max(this.cameraZoom, this.MIN_ZOOM);
+    }
+  };
+  checkBounds = () => {
+    const topLeft = this.ctx.transformedPoint(0, 0);
+    const bottomRight = this.ctx.transformedPoint(800, 800);
+
+    if (topLeft.x < 0) this.ctx.translate(topLeft.x, 0);
+    if (topLeft.y < 0) this.ctx.translate(0, topLeft.y);
+    if (bottomRight.x > 800) this.ctx.translate(bottomRight.x - 800, 0);
+    if (bottomRight.y > 800) this.ctx.translate(0, bottomRight.y - 800);
+  };
   animate = (timeStamp) => {
     cancelAnimationFrame(this.pixelFieldAnimation);
-    // const deltaTime = timeStamp - this.lastTime;
-    // this.lastTime = timeStamp;
-    // console.log(deltaTime);
+    this.pt = this.ctx.transformedPoint(this.mouseX, this.mouseY);
 
     if (this.didChangeHappen) {
       // All pixels need to be changed!
+      if (this.didScale) {
+        const scaleFactor = this.cameraZoom / this.lastZoom;
+
+        this.ctx.translate(this.pt.x, this.pt.y);
+        this.ctx.scale(scaleFactor, scaleFactor);
+        this.ctx.translate(-this.pt.x, -this.pt.y);
+
+        this.checkBounds();
+
+        this.didScale = false;
+      }
+      this.ctx.save();
+      this.ctx.setTransform(1, 0, 0, 1, 0, 0);
       this.ctx.clearRect(0, 0, this.width, this.height);
+      this.ctx.restore();
 
       this.getHoveredPixel();
 

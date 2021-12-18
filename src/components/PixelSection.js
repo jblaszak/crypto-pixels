@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { dataMapActions } from "../store/dataMap-slice";
 import { getAttributeData, getAttributes, getAttributeCounts } from "../data/";
@@ -11,6 +11,7 @@ import PixelMap from "../components/PixelMap/PixelMap";
 import classes from "./PixelSection.module.css";
 
 const PixelSection = () => {
+  const [firstLoad, setFirstLoad] = useState(true);
   const dispatch = useDispatch();
   const selectedPixel = useSelector((state) => state.dataMap.selectedPixel);
 
@@ -22,16 +23,22 @@ const PixelSection = () => {
     dispatch(dataMapActions.updateSelectedPixel(index));
   };
 
-  useEffect(async () => {
-    const attributeData = await getAttributeData();
-    console.log(attributeData);
-    dispatch(
-      dataMapActions.updateAttributes({
-        pixelAttributes: getAttributes(attributeData),
-        pixelAttributeCounts: getAttributeCounts(attributeData),
-      })
-    );
+  useEffect(() => {
+    setFirstLoad(false);
   }, []);
+
+  useEffect(async () => {
+    if (!firstLoad) {
+      const attributeData = await getAttributeData();
+      // console.log(attributeData);
+      dispatch(
+        dataMapActions.updateAttributes({
+          pixelAttributes: getAttributes(attributeData),
+          pixelAttributeCounts: getAttributeCounts(attributeData),
+        })
+      );
+    }
+  }, [firstLoad]);
 
   let pixelInfoDisplay = (
     <Card>

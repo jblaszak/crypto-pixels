@@ -72,6 +72,29 @@ const useCanvas = () => {
     toolTip.toolTipAnimation = requestAnimationFrame(toolTip.animate);
     background.backgroundAnimation = requestAnimationFrame(background.animate);
 
+    // Gets the relevant location from a mouse or single touch event
+    const getEventLocation = (e) => {
+      if (e.touches && e.touches.length == 1) {
+        return { x: e.touches[0].clientX, y: e.touches[0].clientY };
+      } else if (e.clientX && e.clientY) {
+        return { x: e.clientX, y: e.clientY };
+      }
+    };
+
+    const getMouseX = (xPos, bodyCoords, canvasCoords) => {
+      return (
+        (xPos + window.scrollX - (canvasCoords.left - bodyCoords.left)) *
+        (CONSTANTS.INITIAL_CANVAS_WIDTH / canvasCoords.width)
+      );
+    };
+
+    const getMouseY = (yPos, bodyCoords, canvasCoords) => {
+      return (
+        (yPos + window.scrollY - (canvasCoords.top - bodyCoords.top)) *
+        (CONSTANTS.INITIAL_CANVAS_WIDTH / canvasCoords.height)
+      );
+    };
+
     const handleResize = (e) => {
       cancelAnimationFrame(background.pixelFieldAnimation);
       cancelAnimationFrame(pixelField.pixelFieldAnimation);
@@ -88,6 +111,47 @@ const useCanvas = () => {
       toolTip.toolTipAnimation = requestAnimationFrame(toolTip.animate);
     };
 
+    const handleMouseDown = (e) => {
+      const bodyCoords = document.body.getBoundingClientRect();
+      const canvasCoords = canvas.getBoundingClientRect();
+      const { x, y } = getEventLocation(e);
+      const mouseX = getMouseX(x, bodyCoords, canvasCoords);
+      const mouseY = getMouseY(y, bodyCoords, canvasCoords);
+
+      pixelField.dragStart = pixelField.ctx.transformedPoint(mouseX, mouseY);
+      pixelField.dragged = false;
+    };
+
+    const handleMouseUp = (e) => {
+      pixelField.dragStart = null;
+    };
+
+    const handleTouch = (e, singleTouchHandler) => {
+      if (e.touches.length == 1) {
+        singleTouchHandler(e);
+      } else if (e.type == "touchmove" && e.touches.length == 2) {
+        pixelField.dragged = false;
+        handlePinch(e);
+      }
+    };
+
+    const handlePinch = (e) => {
+      e.preventDefault();
+
+      let touch1 = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+      let touch2 = { x: e.touches[1].clientX, y: e.touches[1].clientY };
+
+      // This is distance squared, but no need for an expensive sqrt as it's only used in ratio
+      let currentDistance =
+        (touch1.x - touch2.x) ** 2 + (touch1.y - touch2.y) ** 2;
+
+      if (pixelField.initialPinchDistance == null) {
+        pixelField.initialPinchDistance = currentDistance;
+      } else {
+        pixelField.adjustZoom(null, currentDistance / initialPinchDistance);
+      }
+    };
+
     const handleMouseMove = async (e) => {
       cancelAnimationFrame(pixelField.pixelFieldAnimation);
       cancelAnimationFrame(toolTip.toolTipAnimation);
@@ -96,16 +160,22 @@ const useCanvas = () => {
 
       const bodyCoords = document.body.getBoundingClientRect();
       const canvasCoords = canvas.getBoundingClientRect();
-
-      const mouseX =
-        (e.x + window.scrollX - (canvasCoords.left - bodyCoords.left)) *
-        (CONSTANTS.INITIAL_CANVAS_WIDTH / canvasCoords.width);
-      const mouseY =
-        (e.y + window.scrollY - (canvasCoords.top - bodyCoords.top)) *
-        (CONSTANTS.INITIAL_CANVAS_WIDTH / canvasCoords.height);
+      const { x, y } = getEventLocation(e);
+      const mouseX = getMouseX(x, bodyCoords, canvasCoords);
+      const mouseY = getMouseY(y, bodyCoords, canvasCoords);
 
       pixelField.mouseX = mouseX;
       pixelField.mouseY = mouseY;
+
+      pixelField.dragged = true;
+      if (pixelField.dragStart) {
+        pixelField.pt = pixelField.ctx.transformedPoint(mouseX, mouseY);
+        pixelField.ctx.translate(
+          pixelField.pt.x - pixelField.dragStart.x,
+          pixelField.pt.y - pixelField.dragStart.y
+        );
+        pixelField.checkBounds();
+      }
 
       pixelField.pixelFieldAnimation = requestAnimationFrame(
         pixelField.animate
@@ -113,6 +183,7 @@ const useCanvas = () => {
 
       pixelField.getHoveredPixel();
 
+      // UPDATE TOOLTIP
       if (pixelField.hoveredPixel !== -1) {
         const x = `${(pixelField.hoveredPixel - 1) % CONSTANTS.MAX_WIDTH}`;
         const y = `${Math.floor(
@@ -132,6 +203,7 @@ const useCanvas = () => {
 
     const handleClick = (e) => {
       if (pixelField.hoveredPixel !== -1) {
+        // console.log(pixelField.hoveredPixel);
         dispatch(dataMapActions.updateSelectedPixel(pixelField.hoveredPixel));
       }
     };
@@ -154,16 +226,66 @@ const useCanvas = () => {
       );
     };
 
-    window.addEventListener("resize", handleResize);
-    window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("click", handleClick);
-    window.addEventListener("mintChange", handleMintChange);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("click", handleClick);
-      window.removeEventListener("mintChange", handleMintChange);
+    const handleScroll = (e) => {
+      if (pixelField.hoveredPixel !== -1) {
+        e.preventDefault();
+        pixelField.adjustZoom(-e.deltaY * pixelField.SCROLL_SENSITIVITY);
+        pixelField.didChangeHappen = true;
+        pixelField.didScale = true;
+      }
     };
+
+    const handleTouchMove = (e) => {
+      e.preventDefault();
+      handleTouch(e, handleMouseMove);
+    };
+    const handleTouchStart = (e) => handleTouch(e, handleMouseDown);
+    const handleTouchEnd = (e) => handleTouch(e, handleMouseUp);
+
+    if (canvasRefToolTip && canvasRefToolTip.current) {
+      window.addEventListener("resize", handleResize);
+      window.addEventListener("mousemove", handleMouseMove);
+      window.addEventListener("mintChange", handleMintChange);
+      canvasRefToolTip.current.addEventListener("click", handleClick);
+      canvasRefToolTip.current.addEventListener(
+        "mousedown",
+        handleMouseDown,
+        false
+      );
+      canvasRefToolTip.current.addEventListener(
+        "mouseup",
+        handleMouseUp,
+        false
+      );
+      canvasRefToolTip.current.addEventListener("touchmove", handleTouchMove);
+      canvasRefToolTip.current.addEventListener("touchstart", handleTouchStart);
+      canvasRefToolTip.current.addEventListener("touchend", handleTouchEnd);
+      window.addEventListener("wheel", handleScroll, { passive: false });
+      return () => {
+        window.removeEventListener("resize", handleResize);
+        window.removeEventListener("mousemove", handleMouseMove);
+        window.removeEventListener("mintChange", handleMintChange);
+        canvasRefToolTip.current.removeEventListener("click", handleClick);
+        canvasRefToolTip.current.removeEventListener(
+          "mousedown",
+          handleMouseDown
+        );
+        canvasRefToolTip.current.removeEventListener("mouseup", handleMouseUp);
+        canvasRefToolTip.current.removeEventListener(
+          "touchmove",
+          handleTouchMove
+        );
+        canvasRefToolTip.current.removeEventListener(
+          "touchstart",
+          handleTouchStart
+        );
+        canvasRefToolTip.current.removeEventListener(
+          "touchend",
+          handleTouchEnd
+        );
+        window.removeEventListener("wheel", handleScroll);
+      };
+    }
   }, [data, dispatch]);
 
   return [canvasRefPixelMap, canvasRefToolTip, canvasRefBackground];
