@@ -166,6 +166,18 @@ export default class PixelField {
 
       this.cameraZoom = Math.min(this.cameraZoom, this.MAX_ZOOM);
       this.cameraZoom = Math.max(this.cameraZoom, this.MIN_ZOOM);
+
+      if (this.lastZoom !== this.cameraZoom) {
+        const scaleFactor = this.cameraZoom / this.lastZoom;
+
+        this.ctx.translate(this.pt.x, this.pt.y);
+        this.ctx.scale(scaleFactor, scaleFactor);
+        this.ctx.translate(-this.pt.x, -this.pt.y);
+
+        this.checkBounds();
+        this.didChangeHappen = true;
+      }
+      // console.log("after", this.cameraZoom);
     }
   };
   checkBounds = () => {
@@ -183,21 +195,10 @@ export default class PixelField {
 
     if (this.didChangeHappen) {
       // All pixels need to be changed!
-      if (this.didScale) {
-        const scaleFactor = this.cameraZoom / this.lastZoom;
-
-        this.ctx.translate(this.pt.x, this.pt.y);
-        this.ctx.scale(scaleFactor, scaleFactor);
-        this.ctx.translate(-this.pt.x, -this.pt.y);
-
-        this.checkBounds();
-
-        this.didScale = false;
-      }
-      this.ctx.save();
-      this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+      // this.ctx.save();
+      // this.ctx.setTransform(1, 0, 0, 1, 0, 0);
       this.ctx.clearRect(0, 0, this.width, this.height);
-      this.ctx.restore();
+      // this.ctx.restore();
 
       this.getHoveredPixel();
 

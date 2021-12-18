@@ -76,7 +76,7 @@ const useCanvas = () => {
     const getEventLocation = (e) => {
       if (e.touches && e.touches.length == 1) {
         return { x: e.touches[0].clientX, y: e.touches[0].clientY };
-      } else if (e.clientX && e.clientY) {
+      } else if (e.x && e.y) {
         return { x: e.clientX, y: e.clientY };
       }
     };
@@ -124,10 +124,16 @@ const useCanvas = () => {
 
     const handleMouseUp = (e) => {
       pixelField.dragStart = null;
+      console.log(pixelField.hoveredPixel);
+      if (pixelField.hoveredPixel !== -1) {
+        // console.log(pixelField.hoveredPixel);
+        dispatch(dataMapActions.updateSelectedPixel(pixelField.hoveredPixel));
+      }
     };
 
     const handleTouch = (e, singleTouchHandler) => {
-      if (e.touches.length == 1) {
+      console.log(e.type, e.touches);
+      if (e.touches.length < 2) {
         singleTouchHandler(e);
       } else if (e.type == "touchmove" && e.touches.length == 2) {
         pixelField.dragged = false;
@@ -140,6 +146,8 @@ const useCanvas = () => {
 
       let touch1 = { x: e.touches[0].clientX, y: e.touches[0].clientY };
       let touch2 = { x: e.touches[1].clientX, y: e.touches[1].clientY };
+
+      console.log(touch1, touch2);
 
       // This is distance squared, but no need for an expensive sqrt as it's only used in ratio
       let currentDistance =
@@ -230,8 +238,6 @@ const useCanvas = () => {
       if (pixelField.hoveredPixel !== -1) {
         e.preventDefault();
         pixelField.adjustZoom(-e.deltaY * pixelField.SCROLL_SENSITIVITY);
-        pixelField.didChangeHappen = true;
-        pixelField.didScale = true;
       }
     };
 
@@ -244,7 +250,7 @@ const useCanvas = () => {
 
     if (canvasRefToolTip && canvasRefToolTip.current) {
       window.addEventListener("resize", handleResize);
-      window.addEventListener("mousemove", handleMouseMove);
+      canvasRefToolTip.current.addEventListener("mousemove", handleMouseMove);
       window.addEventListener("mintChange", handleMintChange);
       canvasRefToolTip.current.addEventListener("click", handleClick);
       canvasRefToolTip.current.addEventListener(
@@ -260,10 +266,15 @@ const useCanvas = () => {
       canvasRefToolTip.current.addEventListener("touchmove", handleTouchMove);
       canvasRefToolTip.current.addEventListener("touchstart", handleTouchStart);
       canvasRefToolTip.current.addEventListener("touchend", handleTouchEnd);
-      window.addEventListener("wheel", handleScroll, { passive: false });
+      canvasRefToolTip.current.addEventListener("wheel", handleScroll, {
+        passive: false,
+      });
       return () => {
         window.removeEventListener("resize", handleResize);
-        window.removeEventListener("mousemove", handleMouseMove);
+        canvasRefToolTip.current.removeEventListener(
+          "mousemove",
+          handleMouseMove
+        );
         window.removeEventListener("mintChange", handleMintChange);
         canvasRefToolTip.current.removeEventListener("click", handleClick);
         canvasRefToolTip.current.removeEventListener(
@@ -283,7 +294,7 @@ const useCanvas = () => {
           "touchend",
           handleTouchEnd
         );
-        window.removeEventListener("wheel", handleScroll);
+        canvasRefToolTip.current.removeEventListener("wheel", handleScroll);
       };
     }
   }, [data, dispatch]);
