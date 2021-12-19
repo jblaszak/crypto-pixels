@@ -1,5 +1,5 @@
 export default class ToolTip {
-  constructor(ctx, width, height, toolTipAnimation) {
+  constructor(ctx, width, height, toolTipAnimation, isSmallScreen) {
     this.ctx = ctx;
     this.width = width;
     this.height = height;
@@ -7,11 +7,12 @@ export default class ToolTip {
     this.mouseY = 0;
     this.text = "";
     this.toolTipAnimation = toolTipAnimation;
-
-    this.ctx.font = "bold 16px sans-serif";
+    this.ctx.font = isSmallScreen
+      ? "bold 32px sans-serif"
+      : "bold 16px sans-serif";
     this.ctx.textBaseline = "top";
-    this.textBoxHeight = 22;
-    this.textBoxPadding = 8;
+    this.textBoxHeight = isSmallScreen ? 44 : 22;
+    this.textBoxPadding = isSmallScreen ? 16 : 8;
   }
   getOffSets = (textWidth) => {
     let offsetX;

@@ -9,6 +9,8 @@ import { dataMapActions } from "../../store/dataMap-slice";
 import CryptoContext from "../../store/cryptoContext";
 import * as CONSTANTS from "../../constants";
 
+import useResponsive from "../../hooks/useResponsive";
+
 import classes from "./PixelMap.module.css";
 
 const useCanvas = () => {
@@ -16,6 +18,9 @@ const useCanvas = () => {
   const canvasRefToolTip = useRef(null);
   const canvasRefBackground = useRef(null);
   const dispatch = useDispatch();
+
+  const isSmallScreen = useResponsive("(max-width: 600px)");
+  console.log(isSmallScreen);
 
   const data = useSelector((state) => state.dataMap.pixelAttributes);
   const cryptoCtx = useContext(CryptoContext);
@@ -58,7 +63,8 @@ const useCanvas = () => {
       ctxToolTip,
       canvasToolTip.width,
       canvasToolTip.height,
-      toolTipAnimation
+      toolTipAnimation,
+      isSmallScreen
     );
 
     const background = new Background(
