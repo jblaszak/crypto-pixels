@@ -15,11 +15,39 @@ export default class Pixel {
       ? "rgb(0,0,0)"
       : `rgb(${data["r"]},${data["g"]},${data["b"]})`;
     this.flashyTime = data["f"] ? Date.now() + Math.random() * 1000 : false;
+    this.boosting = false;
+    this.boosted = false;
   }
   lerp = (a, b, n) => {
     return (b - a) * n + a;
   };
   getColor = () => {
+    if (this.boosting) {
+      let t = (Date.now() - this.boosting) % 1000;
+      let c;
+
+      if (t <= 500) {
+        t = t / 500;
+        c = this.lerp(255, 0, t);
+      } else {
+        t = (t - 500) / 500;
+        c = this.lerp(0, 255, t);
+      }
+      return `rgb(${c},${c},${c})`;
+    }
+    if (this.boosted) {
+      let t = (Date.now() - this.boosted) % 1000;
+      let c;
+
+      if (t <= 500) {
+        t = t / 500;
+        c = this.lerp(255, 0, t);
+      } else {
+        t = (t - 500) / 500;
+        c = this.lerp(0, 255, t);
+      }
+      return `rgb(${c},${c},${c})`;
+    }
     if (!this.visibility) {
       return `rgb(0,0,0)`;
     }
@@ -55,9 +83,8 @@ export default class Pixel {
       //     `r: ${red.toFixed(0)}, g: ${green.toFixed(0)} b: ${blue.toFixed(0)}`
       //   );
       return `rgb(${red},${green},${blue})`;
-    } else {
-      return this.color;
     }
+    return this.color;
   };
   draw = (posMod = 0, sizeMod = 1) => {
     if (sizeMod === 1) {

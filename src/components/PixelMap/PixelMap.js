@@ -20,10 +20,129 @@ const useCanvas = () => {
   const dispatch = useDispatch();
 
   const isSmallScreen = useResponsive("(max-width: 600px)");
-  console.log(isSmallScreen);
 
   const data = useSelector((state) => state.dataMap.pixelAttributes);
   const cryptoCtx = useContext(CryptoContext);
+
+  const boostedBy = (hoveredPixel) => {
+    if (hoveredPixel !== -1) {
+      if (data[hoveredPixel]?.["Boost"]) {
+        return data[hoveredPixel]?.["Boost"];
+      }
+    }
+    return [];
+  };
+
+  const boosted = (hoveredPixel) => {
+    if (hoveredPixel !== -1) {
+      let boostedPixels = new Set();
+      const k = hoveredPixel;
+
+      if (data[k]?.["i"]) {
+        // Sweep left to right
+        for (let x = -3; x < 4; x++) {
+          if ((k % 100) + x < 0) continue; // If outside left wall
+          if ((k % 100) + x > 99) break; // If outside right wall
+
+          // Sweep top to bottom
+          for (let y = -300; y < 400; y = y + 100) {
+            if (k + y < 0) continue; // If outside top wall
+            if (k + y > 9999) break; // If outside bottom wall
+
+            const pixel = k + x + y;
+            boostedPixels.add(pixel);
+          }
+        }
+      }
+
+      // If load bearing, add boost to 5 pixels above
+      if (data[k]?.["l"]) {
+        // Sweep up
+        for (let y = -500; y < 100; y = y + 100) {
+          if (k + y < 0) continue; // If outside top wall
+
+          const pixel = k + y;
+          boostedPixels.add(pixel);
+        }
+      }
+
+      // If structural support, add boost to 5 pixels left and right
+      if (data[k]?.["s"]) {
+        // Sweep left to right
+        for (let x = -5; x < 6; x++) {
+          if ((k % 100) + x < 0) continue; // If outside left wall
+          if ((k % 100) + x > 99) break; // If outside right wall
+
+          const pixel = k + x;
+          boostedPixels.add(pixel);
+        }
+      }
+
+      // If queen, add boost to 3x3 pixels
+      if (data[k]?.["q"]) {
+        // X,Y movements for focus
+        const moveArray = [
+          [-5, -500],
+          [0, -500],
+          [5, -500],
+          [-4, -400],
+          [0, -400],
+          [4, -400],
+          [-3, -300],
+          [0, -300],
+          [3, -300],
+          [-2, -200],
+          [0, -200],
+          [2, -200],
+          [-1, -100],
+          [0, -100],
+          [1, -100],
+          [-1, 100],
+          [0, 100],
+          [1, 100],
+          [-2, 200],
+          [0, 200],
+          [2, 200],
+          [-3, 300],
+          [0, 300],
+          [3, 300],
+          [-4, 400],
+          [0, 400],
+          [4, 400],
+          [-5, 500],
+          [0, 500],
+          [5, 500],
+        ];
+
+        // Do each item in movement array
+        for (let j = 0; j < moveArray.length; j++) {
+          const x = moveArray[j][0];
+          const y = moveArray[j][1];
+
+          if ((k % 100) + x < 0) continue; // If outside left wall
+          if ((k % 100) + x > 99) break; // If outside right wall
+
+          if (k + y < 0) continue; // If outside top wall
+          if (k + y > 9999) break; // If outside bottom wall
+
+          const pixel = k + y + x;
+          boostedPixels.add(pixel);
+        }
+
+        // do the 0th row
+        // Sweep left to right
+        for (let x = -5; x < 6; x++) {
+          if ((k % 100) + x < 0) continue; // If outside left wall
+          if ((k % 100) + x > 99) break; // If outside right wall
+
+          const pixel = k + x;
+          boostedPixels.add(pixel);
+        }
+      }
+
+      return [...boostedPixels];
+    }
+  };
 
   // const selectedPixel = useSelector((state) => state.dataMap.selectedPixel);
 
@@ -56,7 +175,9 @@ const useCanvas = () => {
       data,
       pixelFieldAnimation,
       didChangeHappen,
-      mintedPixels
+      mintedPixels,
+      boostedBy,
+      boosted
     );
 
     const toolTip = new ToolTip(

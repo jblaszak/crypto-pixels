@@ -9,7 +9,9 @@ export default class PixelField {
     data,
     pixelFieldAnimation,
     didChangeHappen,
-    mintedPixels
+    mintedPixels,
+    boostedByFunc,
+    boostedFunc
   ) {
     this.ctx = ctx;
     this.width = width;
@@ -17,6 +19,7 @@ export default class PixelField {
     this.mouseX = 0;
     this.mouseY = 0;
     this.hoveredPixel = -1;
+    this.lastHoveredPixel = -1;
     this.cameraZoom = 1;
     this.lastZoom = this.cameraZoom;
     this.MIN_ZOOM = 1;
@@ -40,6 +43,8 @@ export default class PixelField {
     this.lastTime = 0;
     this.pixelFieldAnimation = pixelFieldAnimation;
     this.didChangeHappen = didChangeHappen;
+    this.boostedBy = (pixel) => boostedByFunc(pixel);
+    this.boosted = (pixel) => boostedFunc(pixel);
   }
   // Adds ctx.getTransform() - returns an SVGMatrix
   // Adds ctx.transformedPoint(x,y) - returns an SVGPoint
@@ -142,6 +147,7 @@ export default class PixelField {
       this.pt.x >= CONSTANTS.INITIAL_CANVAS_WIDTH ||
       this.pt.y >= CONSTANTS.INITIAL_CANVAS_WIDTH
     ) {
+      this.lastHoveredPixel = this.hoveredPixel;
       this.hoveredPixel = -1;
       return;
     }
@@ -153,7 +159,32 @@ export default class PixelField {
     const pixelYCoord = Math.floor(
       this.pt.y / (CONSTANTS.PIXEL_WIDTH + CONSTANTS.PIXEL_GAP)
     );
+
+    this.lastHoveredPixel = this.hoveredPixel;
     this.hoveredPixel = pixelXCoord + 1 + pixelYCoord * 100;
+
+    if (this.lastHoveredPixel !== this.hoveredPixel) {
+      this.updateBoosting(this.lastHoveredPixel, false);
+      this.updateBoosted(this.lastHoveredPixel, false);
+      this.updateBoosting(this.hoveredPixel, Date.now() + Math.random() * 1000);
+      this.updateBoosted(this.hoveredPixel, Date.now() + Math.random() * 1000);
+    }
+  };
+  updateBoosting = (pixel, status) => {
+    if (pixel !== -1) {
+      const boostedByPixels = this.boostedBy(pixel);
+      for (const pixelIndex of boostedByPixels) {
+        this.pixelArray[+pixelIndex - 1].boosting = status;
+      }
+    }
+  };
+  updateBoosted = (pixel, status) => {
+    if (pixel !== -1) {
+      const boostedPixels = this.boosted(pixel);
+      for (const pixelIndex of boostedPixels) {
+        this.pixelArray[+pixelIndex - 1].boosted = status;
+      }
+    }
   };
   adjustZoom = (zoomAmount, zoomFactor) => {
     if (!this.isDragging) {
@@ -189,30 +220,27 @@ export default class PixelField {
     if (bottomRight.x > 800) this.ctx.translate(bottomRight.x - 800, 0);
     if (bottomRight.y > 800) this.ctx.translate(0, bottomRight.y - 800);
   };
+  drawPixel = (pixel) => {
+    // Check if mouse is near pixel
+    const [isNearPixel, posMod, sizeMod] = this.isMouseNear(pixel.x, pixel.y);
+    if (isNearPixel) {
+      pixel.draw(posMod, sizeMod);
+    } else {
+      pixel.draw();
+    }
+  };
   animate = (timeStamp) => {
     cancelAnimationFrame(this.pixelFieldAnimation);
     this.pt = this.ctx.transformedPoint(this.mouseX, this.mouseY);
 
     if (this.didChangeHappen) {
       // All pixels need to be changed!
-      // this.ctx.save();
-      // this.ctx.setTransform(1, 0, 0, 1, 0, 0);
       this.ctx.clearRect(0, 0, this.width, this.height);
-      // this.ctx.restore();
 
       this.getHoveredPixel();
 
       this.pixelArray.forEach((pixel) => {
-        // Check if mouse is near pixel
-        const [isNearPixel, posMod, sizeMod] = this.isMouseNear(
-          pixel.x,
-          pixel.y
-        );
-        if (isNearPixel) {
-          pixel.draw(posMod, sizeMod);
-        } else {
-          pixel.draw();
-        }
+        this.drawPixel(pixel);
       });
 
       this.didChangeHappen = false;
@@ -220,18 +248,19 @@ export default class PixelField {
       // No change in canvas size/mouse position happened, just change flashy pixels
       this.pixelArray.forEach((pixel) => {
         if (pixel.flashyTime) {
-          const [isNearPixel, posMod, sizeMod] = this.isMouseNear(
-            pixel.x,
-            pixel.y
-          );
-
-          if (isNearPixel) {
-            pixel.draw(posMod, sizeMod);
-          } else {
-            pixel.draw();
-          }
+          this.drawPixel(pixel);
         }
       });
+
+      const boostedByPixels = this.boostedBy(this.hoveredPixel);
+      for (const pixelIndex of boostedByPixels) {
+        this.drawPixel(this.pixelArray[+pixelIndex - 1]);
+      }
+
+      const boostedPixels = this.boosted(this.hoveredPixel);
+      for (const pixelIndex of boostedPixels) {
+        this.drawPixel(this.pixelArray[+pixelIndex - 1]);
+      }
     }
     this.pixelFieldAnimation = requestAnimationFrame(this.animate.bind(this));
   };
