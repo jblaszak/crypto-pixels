@@ -124,15 +124,13 @@ const useCanvas = () => {
 
     const handleMouseUp = (e) => {
       pixelField.dragStart = null;
-      console.log(pixelField.hoveredPixel);
+      pixelField.initialPinchDistance = null;
       if (pixelField.hoveredPixel !== -1) {
-        // console.log(pixelField.hoveredPixel);
         dispatch(dataMapActions.updateSelectedPixel(pixelField.hoveredPixel));
       }
     };
 
     const handleTouch = (e, singleTouchHandler) => {
-      console.log(e.type, e.touches);
       if (e.touches.length < 2) {
         singleTouchHandler(e);
       } else if (e.type == "touchmove" && e.touches.length == 2) {
@@ -146,9 +144,6 @@ const useCanvas = () => {
 
       let touch1 = { x: e.touches[0].clientX, y: e.touches[0].clientY };
       let touch2 = { x: e.touches[1].clientX, y: e.touches[1].clientY };
-
-      console.log(touch1, touch2);
-
       // This is distance squared, but no need for an expensive sqrt as it's only used in ratio
       let currentDistance =
         (touch1.x - touch2.x) ** 2 + (touch1.y - touch2.y) ** 2;
@@ -156,7 +151,10 @@ const useCanvas = () => {
       if (pixelField.initialPinchDistance == null) {
         pixelField.initialPinchDistance = currentDistance;
       } else {
-        pixelField.adjustZoom(null, currentDistance / initialPinchDistance);
+        pixelField.adjustZoom(
+          null,
+          currentDistance / pixelField.initialPinchDistance
+        );
       }
     };
 

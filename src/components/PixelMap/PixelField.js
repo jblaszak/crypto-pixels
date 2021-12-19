@@ -161,7 +161,7 @@ export default class PixelField {
       if (zoomAmount) {
         this.cameraZoom += zoomAmount;
       } else if (zoomFactor) {
-        this.cameraZoom = zoomFactor * this.lastZoom;
+        this.cameraZoom = zoomFactor ** 0.25 * this.lastZoom;
       }
 
       this.cameraZoom = Math.min(this.cameraZoom, this.MAX_ZOOM);
