@@ -166,12 +166,14 @@ export default class PixelField {
     if (this.lastHoveredPixel !== this.hoveredPixel) {
       this.updateBoosting(this.lastHoveredPixel, false);
       this.updateBoosted(this.lastHoveredPixel, false);
-      this.updateBoosting(this.hoveredPixel, Date.now() + Math.random() * 1000);
-      this.updateBoosted(this.hoveredPixel, Date.now() + Math.random() * 1000);
+      const time = Date.now() + Math.random() * 1000;
+      this.updateBoosting(this.hoveredPixel, time);
+      this.updateBoosted(this.hoveredPixel, time);
     }
   };
   updateBoosting = (pixel, status) => {
     if (pixel !== -1) {
+      console.log("updateboosting: ", pixel);
       const boostedByPixels = this.boostedBy(pixel);
       for (const pixelIndex of boostedByPixels) {
         this.pixelArray[+pixelIndex - 1].boosting = status;
@@ -180,6 +182,7 @@ export default class PixelField {
   };
   updateBoosted = (pixel, status) => {
     if (pixel !== -1) {
+      console.log("updateboosted: ", pixel);
       const boostedPixels = this.boosted(pixel);
       for (const pixelIndex of boostedPixels) {
         this.pixelArray[+pixelIndex - 1].boosted = status;
@@ -253,12 +256,12 @@ export default class PixelField {
       });
 
       const boostedByPixels = this.boostedBy(this.hoveredPixel);
-      for (const pixelIndex of boostedByPixels) {
-        this.drawPixel(this.pixelArray[+pixelIndex - 1]);
-      }
-
       const boostedPixels = this.boosted(this.hoveredPixel);
-      for (const pixelIndex of boostedPixels) {
+      console.log(
+        `boostedByPixels:${boostedByPixels}, boostedPixels:${boostedPixels}, hoveredPixel:${this.hoveredPixel}`
+      );
+      const pixels = [...new Set([...boostedByPixels, ...boostedPixels])];
+      for (const pixelIndex of pixels) {
         this.drawPixel(this.pixelArray[+pixelIndex - 1]);
       }
     }

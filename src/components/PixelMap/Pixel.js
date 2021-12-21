@@ -11,9 +11,10 @@ export default class Pixel {
     this.y =
       Math.floor((index - 1) / CONSTANTS.MAX_WIDTH) *
       (CONSTANTS.PIXEL_WIDTH + CONSTANTS.PIXEL_GAP);
-    this.color = data?.["d"]
-      ? "rgb(0,0,0)"
-      : `rgb(${data["r"]},${data["g"]},${data["b"]})`;
+    this.r = data?.["d"] ? 0 : data["r"];
+    this.g = data?.["d"] ? 0 : data["g"];
+    this.b = data?.["d"] ? 0 : data["b"];
+    this.dead = data?.["d"] ? true : false;
     this.flashyTime = data["f"] ? Date.now() + Math.random() * 1000 : false;
     this.boosting = false;
     this.boosted = false;
@@ -23,30 +24,38 @@ export default class Pixel {
   };
   getColor = () => {
     if (this.boosting) {
-      let t = (Date.now() - this.boosting) % 1000;
-      let c;
-
-      if (t <= 500) {
-        t = t / 500;
-        c = this.lerp(255, 0, t);
+      let t = (Date.now() - this.boosting) % 2000;
+      let r, g, b, a;
+      // flash between red and original color
+      // alpha * (R1,G1,B1) + (1-alpha) * (R2,G2,B2)
+      if (t <= 1000) {
+        t = t / 1000;
+        a = this.lerp(0, 1, t);
       } else {
-        t = (t - 500) / 500;
-        c = this.lerp(0, 255, t);
+        t = (t - 1000) / 1000;
+        a = this.lerp(0, 1, t);
       }
-      return `rgb(${c},${c},${c})`;
+      r = a * (this.visibility ? this.r : 0) + (1 - a) * 255;
+      g = a * (this.visibility ? this.g : (1 - a) * 128); // + (1-a)*0
+      b = a * (this.visibility ? this.b : (1 - a) * 128); // + (1-a)*0
+      return `rgb(${r},${g},${b})`;
     }
     if (this.boosted) {
-      let t = (Date.now() - this.boosted) % 1000;
-      let c;
-
-      if (t <= 500) {
-        t = t / 500;
-        c = this.lerp(255, 0, t);
+      let t = (Date.now() - this.boosting) % 2000;
+      let r, g, b, a;
+      // flash between green and original color
+      // alpha * (R1,G1,B1) + (1-alpha) * (R2,G2,B2)
+      if (t <= 1000) {
+        t = t / 1000;
+        a = this.lerp(0, 1, t);
       } else {
-        t = (t - 500) / 500;
-        c = this.lerp(0, 255, t);
+        t = (t - 1000) / 1000;
+        a = this.lerp(0, 1, t);
       }
-      return `rgb(${c},${c},${c})`;
+      r = a * (this.visibility ? this.r : (1 - a) * 128);
+      g = a * (this.visibility ? this.g : 0) + (1 - a) * 255; // + (1-a)*0
+      b = a * (this.visibility ? this.b : (1 - a) * 128); // + (1-a)*0
+      return `rgb(${r},${g},${b})`;
     }
     if (!this.visibility) {
       return `rgb(0,0,0)`;
@@ -84,7 +93,7 @@ export default class Pixel {
       //   );
       return `rgb(${red},${green},${blue})`;
     }
-    return this.color;
+    return `rgb(${this.r},${this.g},${this.b})`;
   };
   draw = (posMod = 0, sizeMod = 1) => {
     if (sizeMod === 1) {

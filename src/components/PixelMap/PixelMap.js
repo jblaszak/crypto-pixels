@@ -41,8 +41,14 @@ const useCanvas = () => {
       if (data[k]?.["i"]) {
         // Sweep left to right
         for (let x = -3; x < 4; x++) {
-          if ((k % 100) + x < 0) continue; // If outside left wall
-          if ((k % 100) + x > 99) break; // If outside right wall
+          const kMod = k % 100;
+          if (kMod !== 0) {
+            // will be 0 at right wall
+            if (kMod + x < 1) continue; // If outside left wall
+            if (kMod + x > 100) break; // If outside right wall
+          } else {
+            if (kMod + x > 0) continue; // If at left wall after starting from right
+          }
 
           // Sweep top to bottom
           for (let y = -300; y < 400; y = y + 100) {
@@ -70,8 +76,14 @@ const useCanvas = () => {
       if (data[k]?.["s"]) {
         // Sweep left to right
         for (let x = -5; x < 6; x++) {
-          if ((k % 100) + x < 0) continue; // If outside left wall
-          if ((k % 100) + x > 99) break; // If outside right wall
+          const kMod = k % 100;
+          if (kMod !== 0) {
+            // will be 0 at right wall
+            if (kMod + x < 1) continue; // If outside left wall
+            if (kMod + x > 100) break; // If outside right wall
+          } else {
+            if (kMod + x > 0) break; // If at left wall after starting from right
+          }
 
           const pixel = k + x;
           boostedPixels.add(pixel);
@@ -119,11 +131,17 @@ const useCanvas = () => {
           const x = moveArray[j][0];
           const y = moveArray[j][1];
 
-          if ((k % 100) + x < 0) continue; // If outside left wall
-          if ((k % 100) + x > 99) break; // If outside right wall
+          const kMod = k % 100;
+          if (kMod !== 0) {
+            // will be 0 at right wall
+            if (kMod + x < 1) continue; // If outside left wall
+            if (kMod + x > 100) continue; // If outside right wall
+          } else {
+            if (kMod + x > 0) continue; // If at left wall after starting from right
+          }
 
           if (k + y < 0) continue; // If outside top wall
-          if (k + y > 9999) break; // If outside bottom wall
+          if (k + y > 9999) continue; // If outside bottom wall
 
           const pixel = k + y + x;
           boostedPixels.add(pixel);
@@ -132,8 +150,12 @@ const useCanvas = () => {
         // do the 0th row
         // Sweep left to right
         for (let x = -5; x < 6; x++) {
-          if ((k % 100) + x < 0) continue; // If outside left wall
-          if ((k % 100) + x > 99) break; // If outside right wall
+          const kMod = k % 100;
+          if (kMod !== 0) {
+            // will be 0 at right wall
+            if (kMod + x < 1) continue; // If outside left wall
+            if (kMod + x > 100) break; // If outside right wall
+          }
 
           const pixel = k + x;
           boostedPixels.add(pixel);
@@ -142,6 +164,7 @@ const useCanvas = () => {
 
       return [...boostedPixels];
     }
+    return [];
   };
 
   // const selectedPixel = useSelector((state) => state.dataMap.selectedPixel);
