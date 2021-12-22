@@ -18,13 +18,14 @@ export default class Pixel {
     this.flashyTime = data["f"] ? Date.now() + Math.random() * 1000 : false;
     this.boosting = false;
     this.boosted = false;
+    this.hovered = false;
   }
   lerp = (a, b, n) => {
     return (b - a) * n + a;
   };
   getColor = () => {
-    if (this.boosting) {
-      let t = (Date.now() - this.boosting) % 2000;
+    const boostColor = (type, color) => {
+      let t = (Date.now() - type) % 2000;
       let r, g, b, a;
       // flash between red and original color
       // alpha * (R1,G1,B1) + (1-alpha) * (R2,G2,B2)
@@ -35,27 +36,19 @@ export default class Pixel {
         t = (t - 1000) / 1000;
         a = this.lerp(0, 1, t);
       }
-      r = a * (this.visibility ? this.r : 0) + (1 - a) * 255;
-      g = a * (this.visibility ? this.g : (1 - a) * 128); // + (1-a)*0
-      b = a * (this.visibility ? this.b : (1 - a) * 128); // + (1-a)*0
+      r = a * (this.visibility ? this.r : 0) + (1 - a) * color.r;
+      g = a * (this.visibility ? this.g : 0) + (1 - a) * color.g; // + (1-a)*0
+      b = a * (this.visibility ? this.b : 0) + (1 - a) * color.b; // + (1-a)*0
       return `rgb(${r},${g},${b})`;
+    };
+    if (this.hovered) {
+      return boostColor(this.hovered, { r: 0, g: 0, b: 255 });
+    }
+    if (this.boosting) {
+      return boostColor(this.boosting, { r: 255, g: 0, b: 0 });
     }
     if (this.boosted) {
-      let t = (Date.now() - this.boosting) % 2000;
-      let r, g, b, a;
-      // flash between green and original color
-      // alpha * (R1,G1,B1) + (1-alpha) * (R2,G2,B2)
-      if (t <= 1000) {
-        t = t / 1000;
-        a = this.lerp(0, 1, t);
-      } else {
-        t = (t - 1000) / 1000;
-        a = this.lerp(0, 1, t);
-      }
-      r = a * (this.visibility ? this.r : (1 - a) * 128);
-      g = a * (this.visibility ? this.g : 0) + (1 - a) * 255; // + (1-a)*0
-      b = a * (this.visibility ? this.b : (1 - a) * 128); // + (1-a)*0
-      return `rgb(${r},${g},${b})`;
+      return boostColor(this.boosted, { r: 0, g: 255, b: 0 });
     }
     if (!this.visibility) {
       return `rgb(0,0,0)`;
@@ -88,9 +81,6 @@ export default class Pixel {
         blue = this.lerp(255, 0, t);
         red = this.lerp(0, 255, t);
       }
-      //   console.log(
-      //     `r: ${red.toFixed(0)}, g: ${green.toFixed(0)} b: ${blue.toFixed(0)}`
-      //   );
       return `rgb(${red},${green},${blue})`;
     }
     return `rgb(${this.r},${this.g},${this.b})`;

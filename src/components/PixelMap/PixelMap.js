@@ -191,6 +191,8 @@ const useCanvas = () => {
     const didChangeHappen = true;
     const mintedPixels = cryptoCtx.mintedPixels;
 
+    console.log("making new canvas...");
+
     const pixelField = new PixelField(
       ctx,
       canvas.width,

@@ -16,8 +16,8 @@ export default class PixelField {
     this.ctx = ctx;
     this.width = width;
     this.height = height;
-    this.mouseX = 0;
-    this.mouseY = 0;
+    this.mouseX = -1;
+    this.mouseY = -1;
     this.hoveredPixel = -1;
     this.lastHoveredPixel = -1;
     this.cameraZoom = 1;
@@ -162,30 +162,57 @@ export default class PixelField {
 
     this.lastHoveredPixel = this.hoveredPixel;
     this.hoveredPixel = pixelXCoord + 1 + pixelYCoord * 100;
+    console.log("pixelX: ", pixelXCoord, "pixelY: ", pixelYCoord);
 
     if (this.lastHoveredPixel !== this.hoveredPixel) {
-      this.updateBoosting(this.lastHoveredPixel, false);
-      this.updateBoosted(this.lastHoveredPixel, false);
+      this.updateStatus(
+        this.lastHoveredPixel,
+        this.boostedBy(this.lastHoveredPixel),
+        "boosting",
+        false
+      );
+      this.updateStatus(
+        this.lastHoveredPixel,
+        this.boosted(this.lastHoveredPixel),
+        "boosted",
+        false
+      );
+      if (this.lastHoveredPixel !== -1) {
+        this.updateStatus(
+          this.lastHoveredPixel,
+          [this.lastHoveredPixel],
+          "hovered",
+          false
+        );
+      }
+
       const time = Date.now() + Math.random() * 1000;
-      this.updateBoosting(this.hoveredPixel, time);
-      this.updateBoosted(this.hoveredPixel, time);
-    }
-  };
-  updateBoosting = (pixel, status) => {
-    if (pixel !== -1) {
-      console.log("updateboosting: ", pixel);
-      const boostedByPixels = this.boostedBy(pixel);
-      for (const pixelIndex of boostedByPixels) {
-        this.pixelArray[+pixelIndex - 1].boosting = status;
+      this.updateStatus(
+        this.hoveredPixel,
+        this.boostedBy(this.hoveredPixel),
+        "boosting",
+        time
+      );
+      this.updateStatus(
+        this.hoveredPixel,
+        this.boosted(this.hoveredPixel),
+        "boosted",
+        time
+      );
+      if (this.hoveredPixel !== -1) {
+        this.updateStatus(
+          this.hoveredPixel,
+          [this.hoveredPixel],
+          "hovered",
+          time
+        );
       }
     }
   };
-  updateBoosted = (pixel, status) => {
+  updateStatus = (pixel, updateArray, statusType, status) => {
     if (pixel !== -1) {
-      console.log("updateboosted: ", pixel);
-      const boostedPixels = this.boosted(pixel);
-      for (const pixelIndex of boostedPixels) {
-        this.pixelArray[+pixelIndex - 1].boosted = status;
+      for (const pixelIndex of updateArray) {
+        this.pixelArray[+pixelIndex - 1][statusType] = status;
       }
     }
   };
@@ -257,10 +284,10 @@ export default class PixelField {
 
       const boostedByPixels = this.boostedBy(this.hoveredPixel);
       const boostedPixels = this.boosted(this.hoveredPixel);
-      console.log(
-        `boostedByPixels:${boostedByPixels}, boostedPixels:${boostedPixels}, hoveredPixel:${this.hoveredPixel}`
-      );
-      const pixels = [...new Set([...boostedByPixels, ...boostedPixels])];
+      const hoveredPixels = this.hoveredPixel !== -1 ? [this.hoveredPixel] : [];
+      const pixels = [
+        ...new Set([...boostedByPixels, ...boostedPixels, ...hoveredPixels]),
+      ];
       for (const pixelIndex of pixels) {
         this.drawPixel(this.pixelArray[+pixelIndex - 1]);
       }
