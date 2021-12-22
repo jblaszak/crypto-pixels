@@ -34,7 +34,7 @@ export default class Pixel {
         a = this.lerp(0, 1, t);
       } else {
         t = (t - 1000) / 1000;
-        a = this.lerp(0, 1, t);
+        a = this.lerp(1, 0, t);
       }
       r = a * (this.visibility ? this.r : 0) + (1 - a) * color.r;
       g = a * (this.visibility ? this.g : 0) + (1 - a) * color.g; // + (1-a)*0
