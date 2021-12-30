@@ -14,9 +14,6 @@ export default class ToolTip {
     this.textBoxHeight = isSmallScreen ? 44 : 33;
     this.textBoxPadding = isSmallScreen ? 16 : 12;
   }
-  // 32 - 44 - 16
-  // 20 -
-  // 16 - 22 - 8
   getOffSets = (textWidth) => {
     let offsetX;
     let offsetY;

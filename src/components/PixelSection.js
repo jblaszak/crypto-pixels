@@ -54,12 +54,25 @@ const PixelSection = () => {
     <React.Fragment>
       <Section>
         <p className={classes.usageDescription}>
-          Enter information below or click on pixel to get more information
-          about it! Best viewed on desktop.
+          Note: Collection Viewer can take ~10 seconds to load on some mobile
+          devices.
         </p>
         <Card>
           <div className={classes.pixelSelector}>
+            <div className={classes.controlsDescription}>
+              <h1>Controls</h1>
+              <p>Click/Tap - Select Pixel</p>
+              <p>Scroll/Pinch - Zoom</p>
+              <p>Click/Tap & Drag - Pan</p>
+            </div>
+            <div className={classes.controlsDescription}>
+              <h1>Flashing</h1>
+              <p>Blue - Selected Pixel</p>
+              <p>Red - Boosted By Pixel</p>
+              <p>Green - Boosting Pixels</p>
+            </div>
             <div className={classes.pixelNumber}>
+              <h1>Select a Pixel</h1>
               <form onSubmit={submitHandler}>
                 <div className={classes.formEntry}>
                   <input
@@ -78,9 +91,6 @@ const PixelSection = () => {
                 </button>
               </form>
             </div>
-            <button type="submit" className={classes.showMyPixels} disabled>
-              Show My Pixels
-            </button>
           </div>
         </Card>
       </Section>

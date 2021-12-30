@@ -13,27 +13,47 @@
     flex-direction: row;
     justify-content: center;
     /* justify-items: center; */
-    gap: 3rem;
+    gap: 1.5rem;
     width: 100%;
 }
 
 .pixelNumber {
     display: flex;
-    flex-direction: row;
-    gap: 1rem;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.pixelNumber h1 {
+    font-size: 1.35rem;
+    font-weight: 700;
+    margin: 0 0 -0.5rem 0;
+    padding: 0;
 }
 
 
-.showMyPixels {
-    max-width: 200px;
-}
+@media (max-width: 650px) {
+    .controlsDescription p{
+        font-size: 0.9rem;
+    }
 
+    .pixelSelector {
+        gap: 0.5rem;
+    }
+}
 
 @media (max-width: 575px) {
     .pixelSelector {
         flex-direction: column;
         align-items: center;
         gap: 1rem;
+    }
+
+    .controlsDescription {
+        text-align: center;
+    }
+
+    .pixelNumber h1 {
+        text-align: center;
     }
 }
 
@@ -47,13 +67,6 @@
     position: relative;
     height: 2.25rem;
     width: 9.5rem;
-}
-
-.pixelMapSettings {
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    margin-top: 1rem;
 }
 
 input {
@@ -135,14 +148,21 @@ label {
     margin-top: -2.5rem;
 }
 
-
 .pixelContainer {
     display: grid;
     grid-template-columns: 3fr 1fr;
 }
 
-.pixelMap {
+.controlsDescription h1 {
+  margin: 0;
+  padding: 0;
+  font-size: 1.35rem;
+  font-weight: 700;
+}
 
+.controlsDescription p {
+    margin: 0;
+    padding: 0;
 }
 
 .pixelInfoDisplay {
@@ -157,3 +177,4 @@ label {
         /* margin: 1rem 1rem; */
     }
 }
+

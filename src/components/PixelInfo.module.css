@@ -4,6 +4,7 @@
 
 .infoHeader {
     display: inline-flex;
+    justify-content: center;
     align-items: center;
     padding-bottom: 0.75rem;
     overflow: hidden;
