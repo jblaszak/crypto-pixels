@@ -9,11 +9,14 @@ export default class ToolTip {
     this.toolTipAnimation = toolTipAnimation;
     this.ctx.font = isSmallScreen
       ? "bold 32px sans-serif"
-      : "bold 16px sans-serif";
+      : "bold 24px sans-serif";
     this.ctx.textBaseline = "top";
-    this.textBoxHeight = isSmallScreen ? 44 : 22;
-    this.textBoxPadding = isSmallScreen ? 16 : 8;
+    this.textBoxHeight = isSmallScreen ? 44 : 33;
+    this.textBoxPadding = isSmallScreen ? 16 : 12;
   }
+  // 32 - 44 - 16
+  // 20 -
+  // 16 - 22 - 8
   getOffSets = (textWidth) => {
     let offsetX;
     let offsetY;

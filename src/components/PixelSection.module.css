@@ -23,6 +23,7 @@
     gap: 1rem;
 }
 
+
 .showMyPixels {
     max-width: 200px;
 }
@@ -105,17 +106,17 @@ input[type=number] {
 }
 
 label {
-   position: absolute;
-   left: 0.75rem;
-   top: 0.40rem;
-   padding: 0 0.5rem;
-   margin: 0;
-   color: white;
-   cursor: text;
-
-   transition: top 200ms ease-in,
-   left 200ms ease-in,
-   font-size 200ms ease-in;
+    position: absolute;
+    left: 0.75rem;
+    top: 0.40rem;
+    padding: 0 0.5rem;
+    margin: 0;
+    color: white;
+    cursor: text;
+    
+    transition: top 200ms ease-in,
+    left 200ms ease-in,
+    font-size 200ms ease-in;
 }
 
 .findPixel {
@@ -134,8 +135,25 @@ label {
     margin-top: -2.5rem;
 }
 
+
+.pixelContainer {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+}
+
+.pixelMap {
+
+}
+
 .pixelInfoDisplay {
     color: white;
     font-size: 1.5rem;
     text-align: center;
+}
+
+@media (max-width: 850px) {
+    .pixelContainer {
+        display: block;
+        /* margin: 1rem 1rem; */
+    }
 }

@@ -162,7 +162,6 @@ export default class PixelField {
 
     this.lastHoveredPixel = this.hoveredPixel;
     this.hoveredPixel = pixelXCoord + 1 + pixelYCoord * 100;
-    console.log("pixelX: ", pixelXCoord, "pixelY: ", pixelYCoord);
 
     if (this.lastHoveredPixel !== this.hoveredPixel) {
       this.updateStatus(

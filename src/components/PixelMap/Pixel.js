@@ -19,6 +19,7 @@ export default class Pixel {
     this.boosting = false;
     this.boosted = false;
     this.hovered = false;
+    this.owned = false;
   }
   lerp = (a, b, n) => {
     return (b - a) * n + a;
@@ -41,6 +42,9 @@ export default class Pixel {
       b = a * (this.visibility ? this.b : 0) + (1 - a) * color.b; // + (1-a)*0
       return `rgb(${r},${g},${b})`;
     };
+    if (this.owned) {
+      return boostColor(this.hovered, { r: 255, g: 255, b: 0 });
+    }
     if (this.hovered) {
       return boostColor(this.hovered, { r: 0, g: 0, b: 255 });
     }

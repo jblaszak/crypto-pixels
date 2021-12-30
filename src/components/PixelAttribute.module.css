@@ -1,6 +1,6 @@
 .attribute {
     /* margin: 0.5rem; */
-    padding: 0.5rem;
+    padding: 0.25rem;
     border-radius: 8px;
     /* background: linear-gradient(45deg, rgba(250,100,100,1) 0%, rgba(179,183,130,1) 25%, rgba(123,179,129,1) 51%, rgba(63,210,216,1) 75%, rgba(0,18,255,1) 100%); */
     background: rgb(43,75,120);
@@ -17,8 +17,25 @@
     font-size: 0.75rem;
 }
 
+.info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.pixel {
+    width: 20px;
+    height: 20px;
+    margin-right: 0.25rem;
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+}
+
 .attributeName {
-    margin: 0.3rem 0;
+    margin: 0.25rem 0;
     padding: 0px;
     font-size: 0.9rem;
     display: flex;
@@ -27,8 +44,9 @@
 
 .attributeValue {
     margin-left: 0.25rem;
-    font-size: 1rem;
-    color: #41b964;
+    font-size: 0.9rem;
+    /* color: #41b964; */
+    color: #fdfb65;
 }
 
 .rarity {
@@ -40,7 +58,7 @@
 .rarityValue {
     font-weight: 700;
     font-size: 0.8rem;
-    color: #41b964;
+    color: #fdfb65;
 }
 
 @media (max-width: 500px) {

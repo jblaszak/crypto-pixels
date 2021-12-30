@@ -37,13 +37,11 @@ const PixelInfo = (props) => {
   }
 
   return (
-    <Card>
+    <Card className={classes.card}>
       <div className={classes.infoHeader}>
         <div className={pixelClass} style={styles} />
-        <h3 className={classes.name}>
-          {CONSTANTS.NAME} #{selectedPixel}
-        </h3>
-        <h3 className={classes.position}>Position:{position}</h3>
+        <h3 className={classes.name}>CFP #{selectedPixel}</h3>
+        {/* <h3 className={classes.position}>Position:{position}</h3> */}
       </div>
       <div className={classes.attributes}>
         <PixelAttributeList attributes={pixelAttributes} />

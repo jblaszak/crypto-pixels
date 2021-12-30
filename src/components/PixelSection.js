@@ -84,10 +84,10 @@ const PixelSection = () => {
           </div>
         </Card>
       </Section>
-      <Section>
-        <PixelMap />
+      <Section className={classes.pixelContainer}>
+        <PixelMap className={classes.pixelMap} />
+        {pixelInfoDisplay}
       </Section>
-      <Section>{pixelInfoDisplay}</Section>
     </React.Fragment>
   );
 };
