@@ -5,6 +5,7 @@
 
 .community {
     max-width: 600px;
+    margin: 2rem 0;
     display: flex;
     flex-direction: column;
     align-items: center;

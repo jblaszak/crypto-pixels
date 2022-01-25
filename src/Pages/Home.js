@@ -29,9 +29,9 @@ const Home = () => {
       <Overview />
       <Story />
       <PixelTypes />
+      <OpenSea />
       <Community />
       <Minting />
-      <OpenSea />
       {/* <Roadmap /> */}
       {/* <Minting /> */}
     </React.Fragment>

@@ -12,33 +12,12 @@ class PixelField {
   }
 
   genRGB = () => {
-    const PIXEL_COLORS = [
-      "#ffc897",
-      "#ffc796",
-      "#ffead2",
-      "#ffa4d4",
-      "#c5c5ff",
-      "#83ffc1",
-      "#ffe276",
-      "#ffe780",
-      "#94eaeb",
-      "#e7bafa",
-      "#e8a68b",
-      "#a4a4f4",
-      "#99e2ff",
-      "#f2e7ea",
-      "#b3ffc7",
-      "#e8a68b",
-      "#80b1ff",
-      "#bbefff",
-      "#99e2ff",
-    ];
-    // return Math.floor(Math.random() * 200);
-    return PIXEL_COLORS[Math.floor(Math.random() * PIXEL_COLORS.length)];
+    return Math.floor(Math.random() * 200);
+    // return PIXEL_COLORS[Math.floor(Math.random() * PIXEL_COLORS.length)];
   };
   drawRect = (x, y) => {
-    this.ctx.fillStyle = this.genRGB();
-    // this.ctx.fillStyle = `rgb(${this.genRGB()},${this.genRGB()},${this.genRGB()})`;
+    // this.ctx.fillStyle = this.genRGB();
+    this.ctx.fillStyle = `rgb(${this.genRGB()},${this.genRGB()},${this.genRGB()})`;
     this.ctx.fillRect(x, y, this.pixelSize, this.pixelSize);
   };
   drawAll = () => {
