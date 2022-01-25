@@ -13,13 +13,13 @@ const DropdownMenu = (props) => {
       <a className={classes.link} to="/">
         Perfect Pixels Club
       </a>
-      <a className={classes.link} href="https://twitter.com/Flex_Pixels_NFT">
+      <a className={classes.link} href={CONSTANTS.TWITTER}>
         Twitter
       </a>
-      <a className={classes.link} href="https://discord.gg/Epy2xtzZrx">
+      <a className={classes.link} href={CONSTANTS.DISCORD}>
         Discord
       </a>
-      <a className={classes.link} href="https://www.opensea.io">
+      <a className={classes.link} href={CONSTANTS.OPENSEA}>
         OpenSea
       </a>
       <a

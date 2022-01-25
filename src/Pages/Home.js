@@ -32,8 +32,8 @@ const Home = () => {
       <Community />
       <Minting />
       <OpenSea />
-      <Roadmap />
-      <Minting />
+      {/* <Roadmap /> */}
+      {/* <Minting /> */}
     </React.Fragment>
   );
 };
